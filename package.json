@@ -1,0 +1,17 @@
+{
+  "name": "Maroo",
+  "version": "0.0.1",
+  "description": "A lightweight, fast and extensible static code analyzer for smart contracts",
+  "bin": "./maroo",
+  "dependencies": {
+    "solidity-parser-antlr": "0.2.12",
+    "command-line-args": "5.0.2",
+    "command-line-usage": "5.0.5",
+    "mocha": "5.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "thec00n",
+  "license": "MIT"
+}
