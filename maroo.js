@@ -9,10 +9,11 @@ const commandLineUsage = require('command-line-usage')
 
 const analyzer = require('./src/analyzer.js')
 const file_utils = require('./src/file_utils.js')
+const Issue = require('./src/issue');
 
 const optionDefinitions = [
   { name: 'version', alias: 'v', type: Boolean },
-  { name: 'test', alias: 't', type: Boolean },
+  { name: 'run', alias: 'r', type: String },
   { name: 'help', alias: 'h', type: Boolean }
 ]
 const options = commandLineArgs(optionDefinitions)
@@ -41,12 +42,17 @@ if(options['help'] || options.length < 1 ){
 if (options['version']){
 	console.log('This is version 0.0.1')
 }
-else if(options['test']){
-	const files = file_utils.searchRecursive('./test/', '.sol'); 
-    for (var i in files) {
+else if(options['run']){
+	const files = file_utils.searchRecursive(options['run'], '.sol'); 
+  var issues = []
+  for (var i in files) {
     	const contract_content = fs.readFileSync(files[i]).toString();
-  		analyzer.checkInsecureArithmetic(contract_content);
+  		issues = issues.concat(analyzer.InsecureIntegerArithmetic(files[i],contract_content));
 	}
+
+      for(var issue of issues){
+        issue.print()
+      } 
 }	
 
 
