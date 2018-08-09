@@ -30,10 +30,12 @@ class Repository {
 	}
 
 	scan(){
-        Object.keys(files).forEach(function (filename) {
-            var filecontent = files[filename]
-            Analyzer.checkInsecureArithmetic(filecontent)
-        })
+		var issues = []
+		for (const [filename, filecontent] of Object.entries(this.files)) {
+		   issues += Analyzer.InsecureIntegerArithmetic(filename, filecontent)
+		}
+		return issues
+
     }
 
 }

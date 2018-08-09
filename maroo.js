@@ -45,7 +45,7 @@ else if(options['test']){
 	const files = file_utils.searchRecursive('./test/', '.sol'); 
     for (var i in files) {
     	const contract_content = fs.readFileSync(files[i]).toString();
-  		Analyzerzer.overflows(contract_content);
+  		analyzer.checkInsecureArithmetic(contract_content);
 	}
 }	
 

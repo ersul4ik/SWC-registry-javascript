@@ -1,20 +1,23 @@
 const parser = require('solidity-parser-antlr');
 const util = require('util')
+const Issue  = require('../src/issue.js')
+const AstUtility  = require('../src/ast_utility.js')
 
 class Analyzer { 
-	static checkInsecureArithmetic(contract_content){
+	static InsecureIntegerArithmetic(filename, contract_content){
 		var issues = []
 		var ast = parser.parse(contract_content, { loc: true });
-		//console.log(ast);
+		var type = "Insecure Integer Arithmetic"
+		
+		var contract_name = AstUtility.getContractName(ast)
 		// output the path of each import found
 		parser.visit(ast, {
 		  ExpressionStatement: function(node) {
-		 // 	console.log(node)
-		  	var code = ""
+		  //	console.log(node)
+	
 		    const expr = node.expression
 		    if (expr.type === 'BinaryOperation'){
-		    	//console.log(util.inspect(expr, false, null))
-
+	  			var code = ""
 		    	code += expr['left']['name']
 		    	code += expr['operator']
 
@@ -22,19 +25,19 @@ class Analyzer {
 		    		code += expr['right']['left']['name']
 		    		code += expr['right']['operator']
 		    		code += expr['right']['right']['number']
-		    	
 		    	} else {
 		    		//console.log(expr['right']['name'])	
 		    		code += expr['right']['name']
 		    	}
-		    	console.log(expr['loc']['start']['line'])
-		    	console.log("Integer Overflow detected")
-				console.log(code)
+		    	var linenumber = expr['loc']['start']['line']
+				var issue = new Issue(filename, contract_name, type , code, linenumber)
+
+				issues.push(issue);
 				
 		    }
 		  }
 		})
-		return true;    	
+		return issues;    	
 	}
 }	
 

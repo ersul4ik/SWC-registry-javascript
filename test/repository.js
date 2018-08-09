@@ -23,8 +23,9 @@ describe('Repository', function() {
         test.addFiles("./test",".sol")
 
         var issues = test.scan();
+ 
 
-        assert(Object.keys(test).length > 0);
+        assert(Object.keys(issues).length > 0);
     });
   });
 });

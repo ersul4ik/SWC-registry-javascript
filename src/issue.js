@@ -6,8 +6,19 @@ class Issue{
 		this.contract = contract
 		this.type = type
 		this.code = code
-		this.linenr = linenumber
+		this.linenumber = linenumber
 	}
+
+	print(){
+		console.log("filename: " + this.filename)
+		console.log("contract: " + this.contract)
+		console.log("type: " + this.type)
+		console.log("code: " + this.code)
+		console.log("linenumber: " + this.linenumber)
+
+	}
+
+
 }
 
 module.exports = Issue 
