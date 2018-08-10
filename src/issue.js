@@ -1,6 +1,6 @@
 
 
-class Issue{
+class IssueDetailed{
 	constructor(filename, contract, type, code, linenumber ) {
 		this.filename = filename
 		this.contract = contract
@@ -17,8 +17,22 @@ class Issue{
 		console.log("linenumber: " + this.linenumber)
 
 	}
+}
+
+class IssuePointer{
+	constructor( code, linenumber ) {
+		this.code = code
+		this.linenumber = linenumber
+	}
+
+	print(){
+		console.log("code: " + this.code)
+		console.log("linenumber: " + this.linenumber)
+
+	}
 
 
 }
 
-module.exports = Issue 
+
+module.exports = { IssueDetailed, IssuePointer }

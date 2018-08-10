@@ -1,43 +1,53 @@
 const parser = require('solidity-parser-antlr');
 const util = require('util')
-const Issue  = require('../src/issue.js')
-const AstUtility  = require('../src/ast_utility.js')
+const { IssueDetailed, IssuePointer }  = require('./issue.js')
+const AstUtility  = require('./ast_utility.js')
+const Logger  = require('./logger.js')
+
+var plugins = require('require-all')({
+  dirname     :  __dirname + '/../plugins/',
+  filter      :  /(.+)\.js$/,
+  excludeDirs :  /^\.(git|svn)$/,
+  recursive   : true
+});
+
 
 class Analyzer { 
-	static InsecureIntegerArithmetic(filename, contract_content){
-		var issues = []
-		var ast = parser.parse(contract_content, { loc: true });
-		var type = "Insecure Integer Arithmetic"
+	static runAllPlugins(repo,config){
+
+		for (const [filename, filecontent] of Object.entries(repo.files)) {
+			var issues = []
+			
+			var ast = parser.parse(filecontent, { loc: true });
+			var contract_name = AstUtility.getContractName(ast)
 		
-		var contract_name = AstUtility.getContractName(ast)
-		// output the path of each import found
-		parser.visit(ast, {
-		  ExpressionStatement: function(node) {
-		  //	console.log(node)
-	
-		    const expr = node.expression
-		    if (expr.type === 'BinaryOperation'){
-	  			var code = ""
-		    	code += expr['left']['name']
-		    	code += expr['operator']
+			for(var config_plugin_name in config.plugins){
+				if(config.plugins[config_plugin_name].active == "true"){
+					for(var plugin in plugins){
+						if (typeof plugins[plugin][config_plugin_name] === 'function'){
+							Logger.info("Executing Plugin: " + config_plugin_name)
+							var issue_pointers = plugins[plugin][config_plugin_name](ast)
+							var issue_type = config.plugins[config_plugin_name].type 
 
-		    	if(expr['right']['left'] != undefined ){
-		    		code += expr['right']['left']['name']
-		    		code += expr['right']['operator']
-		    		code += expr['right']['right']['number']
-		    	} else {
-		    		//console.log(expr['right']['name'])	
-		    		code += expr['right']['name']
-		    	}
-		    	var linenumber = expr['loc']['start']['line']
-				var issue = new Issue(filename, contract_name, type , code, linenumber)
+							Logger.info("Plugin " + config_plugin_name + " discovered " + issue_pointers.length + " issue(s) in " + filename)
 
-				issues.push(issue);
-				
-		    }
-		  }
-		})
-		return issues;    	
+							for(var issue_pointer of issue_pointers){
+
+								var issue_detailed = new IssueDetailed(filename, contract_name, issue_type, issue_pointer.code, issue_pointer.linenumber)
+								issues.push(issue_detailed)
+
+							}
+
+						} else {
+							Logger.warn("Implementation missing for " + config_plugin_name)	
+						}	
+					}
+				}
+			}
+
+		}	
+
+		return issues 	
 	}
 }	
 

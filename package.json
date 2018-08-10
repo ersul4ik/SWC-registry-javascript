@@ -7,7 +7,9 @@
     "solidity-parser-antlr": "0.2.12",
     "command-line-args": "5.0.2",
     "command-line-usage": "5.0.5",
-    "mocha": "5.2.0"
+    "mocha": "5.2.0",
+    "require-all": "3.0.0",
+    "logplease": "1.2.15"
   },
   "scripts": {
     "test": "mocha"

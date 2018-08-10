@@ -1,0 +1,14 @@
+{
+	"plugins":{
+		"InsecureIntegerArithmetic":{
+			"active": "true",
+			"description": "",
+			"type": "Insecure Integer Arithmetic"
+		},
+	 	"InsecureIntegerArithmetic2":{
+			"active": "true",
+			"description": "",
+			"type": "Insecure Integer Arithmetic"
+		}
+	}
+}
