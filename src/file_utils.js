@@ -22,6 +22,11 @@ class FileUtils {
 
     return results;
   }
+
+  static getCodeAtLine(filecontent, linenumber){
+    var lines = filecontent.split("\n")
+    return lines[linenumber-1]
+  }
 }
 
 

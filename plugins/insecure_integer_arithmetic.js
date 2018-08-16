@@ -1,6 +1,5 @@
 
 const parser = require('solidity-parser-antlr');
-const util = require('util')
 const { IssueDetailed, IssuePointer } = require('../src/issue.js')
 const AstUtility  = require('../src/ast_utility.js')
 

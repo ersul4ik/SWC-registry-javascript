@@ -20,17 +20,14 @@ class IssueDetailed{
 }
 
 class IssuePointer{
-	constructor( code, linenumber ) {
-		this.code = code
+	constructor( linenumber ) {
 		this.linenumber = linenumber
 	}
 
 	print(){
-		console.log("code: " + this.code)
 		console.log("linenumber: " + this.linenumber)
 
 	}
-
 
 }
 
