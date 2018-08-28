@@ -30,8 +30,7 @@ exports.UndeclaredStoragePointer = function (ast){
 	parser.visit(ast, {
 	    VariableDeclaration: function(node) {
 	    	var variable = node
-	    	console.log(variable)
-	   
+	    		   
 	    	if ( variable.storageLocation == null && variable.isStateVar == false && variable.typeName.type == 'UserDefinedTypeName' ){
 	  			var linenumber = AstUtility.getStartLine(variable)
 				var issue_pointer = new IssuePointer(linenumber)

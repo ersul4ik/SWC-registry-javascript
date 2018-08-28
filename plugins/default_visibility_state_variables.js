@@ -9,7 +9,7 @@ exports.DefaultVisibilityStateVariable = function (ast){
 	    StateVariableDeclaration: function(node) {
 	    	var variable = node.variables[0]
 	   
-	    	if (AstUtility.isDefaultVisibility(variable) && variable.isDeclaredConst == false ){
+	    	if(AstUtility.isDefaultVisibility(variable) && variable.isDeclaredConst == false ){
 	  			var linenumber = AstUtility.getStartLine(variable)
 				var issue_pointer = new IssuePointer(linenumber)
 				issue_pointers.push(issue_pointer);	

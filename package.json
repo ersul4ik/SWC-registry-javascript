@@ -1,19 +1,19 @@
 {
-  "name": "Maroo",
+  "name": "Maru",
   "version": "0.0.1",
   "description": "A lightweight, fast and extensible static code analyzer for smart contracts",
-  "bin": "./maroo",
+  "bin": "./maru",
   "dependencies": {
-    "solidity-parser-antlr": "0.3.1",
     "command-line-args": "5.0.2",
     "command-line-usage": "5.0.5",
+    "logplease": "1.2.15",
     "mocha": "5.2.0",
     "require-all": "3.0.0",
-    "logplease": "1.2.15"
+    "solidity-parser-antlr": ""
   },
   "scripts": {
     "test": "mocha"
   },
-  "author": "thec00n",
+  "author": "Gerhard Wagner",
   "license": "MIT"
 }
