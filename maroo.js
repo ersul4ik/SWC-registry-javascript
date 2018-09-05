@@ -1,71 +1,58 @@
 #!/usr/bin/env node
+/* eslint-disable global-require */
 
-const fs = require('fs');
-const path = require('path');
-const parser = require('solidity-parser-antlr');
-const util = require('util')
-const commandLineArgs = require('command-line-args')
-const commandLineUsage = require('command-line-usage')
+const commandLineArgs = require('command-line-args');
+const commandLineUsage = require('command-line-usage');
 
-const Analyzer = require('./src/analyzer.js')
-const File_utils = require('./src/file_utils.js')
-const Issue = require('./src/issue');
+const Analyzer = require('./src/analyzer.js');
 const Reporter = require('./src/reporter');
 const Repository = require('./src/repository');
 
-
 const optionDefinitions = [
-  { name: 'version', alias: 'v', type: Boolean },
-  { name: 'run', alias: 'r', type: String },
-  { name: 'help', alias: 'h', type: Boolean }
-]
-const options = commandLineArgs(optionDefinitions)
+  {
+    name: 'version', alias: 'v', type: Boolean, description: 'Print current version',
+  },
+  {
+    name: 'run', alias: 'r', type: String, typeLabel: '{underline directory}', description: 'Analyse files in specified directory',
+  },
+  {
+    name: 'help', alias: 'h', type: Boolean, description: 'Print this help message',
+  },
+];
+
+const options = commandLineArgs(optionDefinitions);
 
 const sections = [
   {
     header: 'Solidity Static Analyzer',
-    content: 'Looks for vulnerabilities in Solidity code.'
+    content: 'Looks for vulnerabilities in Solidity code.',
   },
   {
     header: 'Options',
-    optionList: optionDefinitions
-  }
-]
+    optionList: optionDefinitions,
+  },
+];
 
-
-
-if(options['help'] || options.length < 1 ){
-	const usage = commandLineUsage(sections);
-	console.log('usage');
-	console.log(usage);
-	return;
-}
-
-
-if (options['version']){
-	console.log('This is version 0.0.1')
-}
-else if(options['run']){
-  var config = {}
-  var issues = []
+if (options.help || options.length < 1) {
+  const usage = commandLineUsage(sections);
+  console.log('usage');
+  console.log(usage);
+} else if (options.version) {
+  /* eslint-disable-next-line prefer-destructuring */
+  const version = require('./package.json').version;
+  console.log(`This is version ${version}`);
+} else if (options.run) {
+  let config = {};
 
   try {
-    config = require('./config/config.json')
+    config = require('./config/config.json');
   } catch (e) {
-    throw new Error("Missing config")
-
+    throw new Error('Missing config');
   }
 
-  var repo =  new Repository()
-  repo.addFiles(options['run'], '.sol')
+  const repo = new Repository();
+  repo.addFiles(options.run, '.sol');
 
-  var issues = Analyzer.runAllPlugins(repo,config)
-  Reporter.toText(issues)
-
-}	
-
-
-
-
-
-
+  const issues = Analyzer.runAllPlugins(repo, config);
+  Reporter.toText(issues);
+}

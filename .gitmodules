@@ -1,0 +1,3 @@
+[submodule "test/fixtures/Omnibus"]
+	path = test/fixtures/Omnibus
+	url = https://github.com/EthereumAnalysisBenchmarks/Omnibus.git

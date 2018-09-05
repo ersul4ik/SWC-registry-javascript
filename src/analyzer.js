@@ -1,76 +1,72 @@
 const parser = require('solidity-parser-antlr');
-const util = require('util')
-const { IssueDetailed, IssuePointer }  = require('./issue.js')
-const AstUtility  = require('./ast_utility.js')
-const Logger  = require('./logger.js')
-const FileUtils = require('../src/file_utils.js')
 
-var plugins = require('require-all')({
-  dirname     :  __dirname + '/../plugins/',
-  filter      :  /(.+)\.js$/,
-  excludeDirs :  /^\.(git|svn)$/,
-  recursive   : true
+const plugins = require('require-all')({
+  dirname: `${__dirname}/../plugins/`,
+  filter: /(.+)\.js$/,
+  excludeDirs: /^\.(git|svn)$/,
+  recursive: true,
 });
 
+const Logger = require('./logger.js');
+const AstUtility = require('./ast_utility.js');
+const { IssueDetailed } = require('./issue.js');
+const FileUtils = require('../src/file_utils.js');
 
-class Analyzer { 
-	static runAllPlugins(repo,config){
-		var issues = []
+class Analyzer {
+  static runAllPlugins(repo, config) {
+    const issues = [];
 
-		for (const [filename, filecontent] of Object.entries(repo.files)) {
-			
-			var ast
+    for (const [filename, filecontent] of Object.entries(repo.files)) {
+      let ast;
 
-			try {
-			    ast = parser.parse(filecontent, { loc: true });
-			} catch (e) {
-				Logger.error("Exception during AST parsing for " + filename)
-				console.log(e)
-			}
+      try {
+        ast = parser.parse(filecontent, { loc: true });
+      } catch (e) {
+        Logger.error(`Exception during AST parsing for ${filename}`);
+        console.log(e);
+      }
 
-			
-			var contract_name = AstUtility.getContractName(ast)
-	
-			for(var config_plugin_name in config.plugins){
 
-				if(config.plugins[config_plugin_name].active == "true"){
-					var plugin_found = false 
+      const contractName = AstUtility.getContractName(ast);
 
-					for(var plugin in plugins){
-						if (typeof plugins[plugin][config_plugin_name] === 'function'){
-							plugin_found = true
-							var issue_pointers = []
-							var issue_type = config.plugins[config_plugin_name].type 
+      for (const configPluginName in config.plugins) {
+        if (config.plugins[configPluginName].active === 'true') {
+          let pluginFound = false;
 
-							Logger.info("Executing Plugin: " + config_plugin_name)
-							
-							try {
-								issue_pointers = plugins[plugin][config_plugin_name](ast)
+          for (const plugin in plugins) {
+            if (typeof plugins[plugin][configPluginName] === 'function') {
+              pluginFound = true;
+              let issuePointers = [];
+              const issueType = config.plugins[configPluginName].type;
 
-								Logger.info("Plugin " + config_plugin_name + " discovered " + issue_pointers.length + " issue(s) in " + filename)
+              Logger.info(`Executing Plugin: ${configPluginName}`);
 
-								for(var issue_pointer of issue_pointers){
-									var code = FileUtils.getCodeAtLine(filecontent,issue_pointer.linenumber)
-									var issue_detailed = new IssueDetailed(filename, contract_name, issue_type, code, issue_pointer.linenumber)
-									issues.push(issue_detailed)
+              try {
+                issuePointers = plugins[plugin][configPluginName](ast);
 
-								}
-							} catch(error){
-								Logger.debug("Something went wrong in plugin: " + config_plugin_name)
-							}
-						} 
-					}
+                Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
 
-					if(!plugin_found) {
-						Logger.warn("Implementation missing for " + config_plugin_name)	
-					}	
-				}
-			}
+                for (const issuePointer of issuePointers) {
+                  const code = FileUtils.getCodeAtLine(filecontent, issuePointer.linenumber);
+                  const issueDetailed = new IssueDetailed(filename, contractName, issueType,
+                    code, issuePointer.linenumber);
+                  issues.push(issueDetailed);
+                }
+              } catch (error) {
+                Logger.debug(`Something went wrong in plugin: ${configPluginName}`);
+              }
+            }
+          }
 
-		}	
+          if (!pluginFound) {
+            Logger.warn(`Implementation missing for ${configPluginName}`);
+          }
+        }
+      }
+    }
 
-		return issues 	
-	}
-}	
+    return issues;
+  }
+}
 
-module.exports = Analyzer
+module.exports = Analyzer;
