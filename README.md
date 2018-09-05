@@ -29,7 +29,7 @@
 * `npm run lint` Linter check
 
 ## Usage
-<i>If package is installed globally `maroo` executable is available globally as well</i>
+<i>If package is installed globally `maru` executable is available globally as well</i>
 
 ```console
   -v, --version         Print current version
@@ -38,7 +38,7 @@
 ```
 
 Example:
-`node maroo.js --run test/fixtures/contracts` Check all solidity files in `test/fixtures/contracts` directory
+`node maru.js --run test/fixtures/contracts` Check all solidity files in `test/fixtures/contracts` directory
 
 ## Project structure
 ```

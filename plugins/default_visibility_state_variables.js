@@ -4,7 +4,6 @@ const AstUtility = require('../src/ast_utility.js');
 
 exports.DefaultVisibilityStateVariable = (ast) => {
   const issuePointers = [];
-
   parser.visit(ast, {
     StateVariableDeclaration(node) {
       const variable = node.variables[0];

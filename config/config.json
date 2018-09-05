@@ -29,6 +29,11 @@
 			"active": "true",
 			"description": "",
 			"type": "Uninitialised storage pointer"
+		},
+		"DeprecatedFunctions":{
+			"active": "true",
+			"description": "",
+			"type": "Uninitialised storage pointer"
 		}
 	}
 }

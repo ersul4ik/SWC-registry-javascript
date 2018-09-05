@@ -9,7 +9,6 @@ exports.UndeclaredStoragePointer = (ast) => {
     VariableDeclaration(node) {
       const variable = node;
       console.log(variable);
-
       if (variable.storageLocation == null && variable.isStateVar === false && variable.typeName.type === 'UserDefinedTypeName') {
         const linenumber = AstUtility.getStartLine(variable);
         const issuePointer = new IssuePointer(linenumber);

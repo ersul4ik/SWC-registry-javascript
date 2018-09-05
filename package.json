@@ -1,8 +1,8 @@
 {
-  "name": "Maroo",
+  "name": "Maru",
   "version": "0.0.1",
   "description": "A lightweight, fast and extensible static code analyzer for smart contracts",
-  "bin": "./maroo",
+  "bin": "./maru",
   "dependencies": {
     "command-line-args": "5.0.2",
     "command-line-usage": "5.0.5",
@@ -22,13 +22,13 @@
     "test:functional": "nyc mocha test/functional/ --timeout 10000",
     "lint": "eslint --ext .js ."
   },
-  "author": "thec00n",
-  "license": "MIT",
   "devDependencies": {
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "istanbul": "^0.4.5",
     "nyc": "^13.0.1"
-  }
+  },
+  "author": "Gerhard Wagner",
+  "license": "MIT"
 }

@@ -4,7 +4,6 @@ const AstUtility = require('../src/ast_utility.js');
 
 exports.OutdatedCompilerVersion = (ast) => {
   const issuePointers = [];
-
   parser.visit(ast, {
     PragmaDirective(node) {
       const version = node.value;

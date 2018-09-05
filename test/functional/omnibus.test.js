@@ -40,7 +40,7 @@ describe('Omnibus', () => {
         // testName refers to directory that contains Solidity file
         const dirPath = path.dirname(path.join(OMNIBUS_DIR, 'benchmarks', testName));
 
-        const { stdout, stderr } = await exec(`node maroo.js --run ${dirPath}`);
+        const { stdout, stderr } = await exec(`node maru.js --run ${dirPath}`);
         // Verify that there are no errors
         strictEqual(stderr, '');
         const foundIssues = parseOutput(stdout);

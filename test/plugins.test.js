@@ -8,7 +8,7 @@ const Repository = require('../src/repository');
 const CONTRACTS_LOCATION = 'test/fixtures/contracts';
 
 /**
- * Helper function that executes Maroo analyser for a specified solidity file
+ * Helper function that executes Maru analyser for a specified solidity file
  * with list of configured plugins
  * @param {String} contractTestFile Filename of solidity file located in
  *                                  fixtures/contract (by default) directory
