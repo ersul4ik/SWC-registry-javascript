@@ -1,0 +1,11 @@
+{
+    "env": {
+        "mocha": true,
+        "node": true
+    },
+    "rules": {
+        "no-restricted-syntax": 0,
+        "no-console": 0
+    },
+    "extends": "airbnb-base"
+}

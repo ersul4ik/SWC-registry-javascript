@@ -12,13 +12,13 @@
 		},
 		"OutdatedCompilerVersion":{
 			"active": "true",
-			"description": "The compiler version that is used contains bugs that are woth upgrading to a newer version >=0.4.23. ",
+			"description": "The compiler version that is used contains bugs that are worth upgrading to a newer version >=0.4.23. ",
 			"type": "Outdated compiler version"
 		},
 		"DefaultVisibilityFunction":{
 			"active": "true",
 			"description": "lol",
-			"type": "Default function visibility "
+			"type": "Default function visibility"
 		},
 		"DefaultVisibilityStateVariable":{
 			"active": "true",

@@ -1,3 +1,10 @@
 .idea
 package-lock.json
-node_modules/*
+node_modules/
+coverage/
+.nyc_output/
+.vscode/
+bin/
+*.abi
+*.bin
+deps/solidity-parser-antlr
