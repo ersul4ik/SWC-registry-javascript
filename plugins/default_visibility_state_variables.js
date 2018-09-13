@@ -9,8 +9,9 @@ exports.DefaultVisibilityStateVariable = (ast) => {
       const variable = node.variables[0];
 
       if (AstUtility.isDefaultVisibility(variable) && variable.isDeclaredConst === false) {
-        const linenumber = AstUtility.getStartLine(variable);
-        const issuePointer = new IssuePointer(linenumber);
+        const linenumber_start = AstUtility.getStartLine(variable);
+        const linenumber_end = AstUtility.getEndLine(variable);
+        const issuePointer = new IssuePointer('EIPXXXX-SOL-VISIBILITY:VARIABLE', linenumber_start, linenumber_end, undefined, undefined);
         issuePointers.push(issuePointer);
       }
     },

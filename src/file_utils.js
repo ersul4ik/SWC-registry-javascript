@@ -22,9 +22,13 @@ class FileUtils {
     return results;
   }
 
-  static getCodeAtLine(filecontent, linenumber) {
+  static getCodeAtLine(filecontent, linenumber_start, linenumber_end) {
     const lines = filecontent.split('\n');
-    return lines[linenumber - 1];
+    var code = ''
+    for (var x = linenumber_start-1; x<=linenumber_end-1; x++){
+      code += lines[x];
+    }
+    return code;
   }
 }
 

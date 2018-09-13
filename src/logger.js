@@ -1,4 +1,4 @@
 const Logger = require('logplease');
 
-Logger.setLogLevel('INFO');
+Logger.setLogLevel('DEBUG');
 module.exports = Logger.create('utils');

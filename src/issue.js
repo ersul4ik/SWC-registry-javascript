@@ -1,28 +1,34 @@
 class IssueDetailed {
-  constructor(filename, contract, type, code, linenumber) {
+  constructor(filename, contract, code, ip) {
     this.filename = filename;
     this.contract = contract;
-    this.type = type;
     this.code = code;
-    this.linenumber = linenumber;
+    this.issuePointer = ip;
   }
 
   print() {
     console.log(`filename: ${this.filename}`);
     console.log(`contract: ${this.contract}`);
-    console.log(`type: ${this.type}`);
     console.log(`code: ${this.code}`);
-    console.log(`linenumber: ${this.linenumber}`);
+    this.issuePointer.print();
   }
 }
 
 class IssuePointer {
-  constructor(linenumber) {
-    this.linenumber = linenumber;
+  constructor(id, linenumber_start, linenumber_end, expr_start, expr_end) {
+    this.id = id;
+    this.linenumber_start = linenumber_start;
+    this.linenumber_end = linenumber_end;
+    this.expr_start = expr_start;
+    this.expr_end = expr_end;
   }
 
   print() {
-    console.log(`linenumber: ${this.linenumber}`);
+    console.log(`id: ${this.id}`);
+    console.log(`linenumber_start: ${this.linenumber_start}`);
+    console.log(`linenumber_end: ${this.linenumber_start}`);
+    console.log(`expr_start: ${this.expr_start}`);
+    console.log(`expr_end: ${this.expr_end}`);
   }
 }
 

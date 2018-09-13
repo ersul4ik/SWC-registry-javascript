@@ -4,13 +4,14 @@ const AstUtility = require('../src/ast_utility.js');
 
 exports.DefaultVisibilityFunction = (ast) => {
   const issuePointers = [];
-
   parser.visit(ast, {
     FunctionDefinition(node) {
       const func = node;
       if (AstUtility.isDefaultVisibility(func)) {
-        const linenumber = AstUtility.getStartLine(func);
-        const issuePointer = new IssuePointer(linenumber);
+        const linenumber_start = AstUtility.getStartLine(func);
+        const linenumber_end = AstUtility.getEndLine(func);
+
+        const issuePointer = new IssuePointer('EIPXXXX-SOL-VISIBILITY:FUNCTION', linenumber_start, linenumber_end, undefined, undefined);
         issuePointers.push(issuePointer);
       }
     },

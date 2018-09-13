@@ -26,7 +26,6 @@ class Analyzer {
         console.log(e);
       }
 
-
       const contractName = AstUtility.getContractName(ast);
 
       for (const configPluginName in config.plugins) {
@@ -47,13 +46,13 @@ class Analyzer {
                 Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
 
                 for (const issuePointer of issuePointers) {
-                  const code = FileUtils.getCodeAtLine(filecontent, issuePointer.linenumber);
-                  const issueDetailed = new IssueDetailed(filename, contractName, issueType,
-                    code, issuePointer.linenumber);
+                  const code = FileUtils.getCodeAtLine(filecontent, issuePointer.linenumber_start, issuePointer.linenumber_end);
+                  const issueDetailed = new IssueDetailed(filename, contractName, code, issuePointer);
                   issues.push(issueDetailed);
                 }
               } catch (error) {
                 Logger.debug(`Something went wrong in plugin: ${configPluginName}`);
+                Logger.debug(error);
               }
             }
           }

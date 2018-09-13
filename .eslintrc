@@ -5,7 +5,9 @@
     },
     "rules": {
         "no-restricted-syntax": 0,
-        "no-console": 0
+        "no-console": 0,
+        "comma-dangle": ["error", "never"]
     },
-    "extends": "airbnb-base"
+   "extends": ["airbnb-standard"]
+
 }

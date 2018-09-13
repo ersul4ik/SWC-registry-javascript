@@ -25,6 +25,7 @@ function executeAnalyzer(contractTestFile, plugins) {
   });
 }
 
+
 describe('Plugins', () => {
   describe('Default function visibility', () => {
     describe('in default_visibility.sol', () => {

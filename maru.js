@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable global-require */
-
+const fs = require('fs');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 
@@ -51,7 +51,17 @@ if (options.help || options.length < 1) {
   }
 
   const repo = new Repository();
-  repo.addFiles(options.run, '.sol');
+
+  try {
+    const stats = fs.statSync(options.run);
+    if (stats.isDirectory()) {
+      repo.addFiles(options.run, '.sol');
+    } else if (stats.isFile()) {
+      repo.addFile(options.run);
+    }
+  } catch (err) {
+    throw new Error('File or directory does not exist');
+  }
 
   const issues = Analyzer.runAllPlugins(repo, config);
   Reporter.toText(issues);

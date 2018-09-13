@@ -10,8 +10,9 @@ exports.UndeclaredStoragePointer = (ast) => {
       const variable = node;
       console.log(variable);
       if (variable.storageLocation == null && variable.isStateVar === false && variable.typeName.type === 'UserDefinedTypeName') {
-        const linenumber = AstUtility.getStartLine(variable);
-        const issuePointer = new IssuePointer(linenumber);
+        const linenumber_start = AstUtility.getStartLine(variable);
+        const linenumber_end = AstUtility.getEndLine(variable);
+        const issuePointer = new IssuePointer('EIPXXXX-SOL-STORAGE:UNINITIALISED', linenumber_start, linenumber_end, undefined, undefined);
         issuePointers.push(issuePointer);
       }
     },

@@ -8,8 +8,9 @@ exports.LockPragma = (ast) => {
   parser.visit(ast, {
     PragmaDirective(node) {
       if (!AstUtility.isVersionFixed(node.value)) {
-        const linenumber = AstUtility.getStartLine(node);
-        const issuePointer = new IssuePointer(linenumber);
+        const linenumber_start = AstUtility.getStartLine(node);
+        const linenumber_end = AstUtility.getEndLine(node);
+        const issuePointer = new IssuePointer('EIPXXXX-SOL-FLOATING_PRAGMA', linenumber_start, linenumber_end, undefined, undefined);
         issuePointers.push(issuePointer);
       }
     },
