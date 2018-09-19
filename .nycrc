@@ -1,0 +1,12 @@
+{
+  "exclude": [
+    "**/deps/**",
+    "**/bin/**",
+    "**/test/**",
+    "**/config/**"
+  ],
+  "reporter": [
+    "text",
+    "html"
+  ]
+}

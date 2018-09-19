@@ -1,0 +1,13 @@
+{
+    "env": {
+        "mocha": true,
+        "node": true
+    },
+    "rules": {
+        "no-restricted-syntax": 0,
+        "no-console": 0,
+        "comma-dangle": ["error", "never"]
+    },
+   "extends": ["airbnb-standard"]
+
+}

@@ -1,0 +1,4 @@
+
+[submodule "test/SWC-registry"]
+	path = test/SWC-registry
+	url = https://github.com/SmartContractSecurity/SWC-registry

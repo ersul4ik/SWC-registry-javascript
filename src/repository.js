@@ -1,43 +1,29 @@
-const FileUtils = require('../src/file_utils.js')
-const Analyzer  = require('../src/analyzer.js')
 const fs = require('fs');
+const FileUtils = require('../src/file_utils.js');
 
 class Repository {
-	constructor(){
-		this.files = {}
-		this.issues = []
-		this.commitHash = ""
-	}
+  constructor() {
+    this.files = {};
+  }
 
-	addIssue(issue){
-		this.issues.push(issue)
-	}
+  addIssue(issue) {
+    this.issues.push(issue);
+  }
 
-	addIssues(issues){
-		this.issues.concat(issues)
-	}
+  addIssues(issues) {
+    this.issues.concat(issues);
+  }
 
-	addFile(filename, filecontent){
-		this.files[filename] = filecontent
-	}
+  addFile(filename) {
+    this.files[filename] = fs.readFileSync(filename).toString();
+  }
 
-	addFiles(directory, pattern){
-	    var filenames = FileUtils.searchRecursive(directory,pattern)
-        for(var filename of filenames){
-            const contract_content = fs.readFileSync(filename).toString()
-            this.addFile(filename,contract_content)
-        }
-	}
-
-	scan(){
-		var issues = []
-		for (const [filename, filecontent] of Object.entries(this.files)) {
-		   issues += Analyzer.InsecureIntegerArithmetic(filename, filecontent)
-		}
-		return issues
-
+  addFiles(directory, pattern) {
+    const filenames = FileUtils.searchRecursive(directory, pattern);
+    for (const filename of filenames) {
+      this.addFile(filename);
     }
-
+  }
 }
 
-module.exports =  Repository
+module.exports = Repository;

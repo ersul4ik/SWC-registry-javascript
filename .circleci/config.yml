@@ -1,0 +1,50 @@
+defaults: &defaults
+  docker:
+    - image: circleci/node:8.11.2
+
+version: 2
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: "Pull Submodules"
+          command: |
+            git submodule init
+            git submodule update --remote
+      - restore_cache:
+          key: node-modules-{{ checksum "package.json" }}
+      - run: npm run build:prod
+      - save_cache:
+          key: node-modules-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run: npm test
+
+  release:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: npm publish
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /.*/
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              # Match tags of from v0.1.2
+              only: /^v(0\.1\.[2-9]|0\.1\.\d{2,}|0\.[2-9]\.\d+|0\.\d{2,}\.\d+|[1-9]\d*\.\d+.\d+).*/
+          requires:
+            - test

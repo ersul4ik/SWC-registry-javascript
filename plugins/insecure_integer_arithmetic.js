@@ -1,35 +1,34 @@
-
 const parser = require('solidity-parser-antlr');
-const { IssueDetailed, IssuePointer } = require('../src/issue.js')
-const AstUtility  = require('../src/ast_utility.js')
+const { IssuePointer } = require('../src/issue.js');
 
-exports.InsecureIntegerArithmetic = function (ast){
-	var issue_pointers = []
-	
-	parser.visit(ast, {
-	  ExpressionStatement: function(node) {
+exports.InsecureIntegerArithmetic = (ast) => {
+  const issuePointers = [];
 
-	    const expr = node.expression
-	    if (expr.type === 'BinaryOperation'){
-  			var code = ""
-	    	code += expr['left']['name']
-	    	code += expr['operator']
+  parser.visit(ast, {
+    ExpressionStatement(node) {
+      const expr = node.expression;
+      if (expr.type === 'BinaryOperation') {
+        /* eslint-disable-next-line no-unused-vars */
+        let code = '';
+        code += expr.left.name;
+        code += expr.operator;
 
-	    	if(expr['right']['left'] != undefined ){
-	    		code += expr['right']['left']['name']
-	    		code += expr['right']['operator']
-	    		code += expr['right']['right']['number']
-	    	} else {
-	    		//console.log(expr['right']['name'])	
-	    		code += expr['right']['name']
-	    	}
-	    	var linenumber = expr['loc']['start']['line']
-			var issue_pointer = new IssuePointer( code, linenumber)
+        if (expr.right.left !== undefined) {
+          // Binary operator case (e.g. A + B)
+          code += expr.right.left.name;
+          code += expr.right.operator;
+          code += expr.right.right.number;
+        } else {
+          // Unary operator (e.g. A += B)
+          code += expr.right.name;
+        }
+        const linenumber = expr.loc.start.line;
+        const issuePointer = new IssuePointer(linenumber);
 
-			issue_pointers.push(issue_pointer);
-			
-	    }
-	  }
-	})
-	return issue_pointers;    	
-}
+        issuePointers.push(issuePointer);
+      }
+    },
+  });
+
+  return issuePointers;
+};
