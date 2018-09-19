@@ -11,7 +11,7 @@ exports.DefaultVisibilityFunction = (ast) => {
         const linenumber_start = AstUtility.getStartLine(func);
         const linenumber_end = AstUtility.getEndLine(func);
 
-        const issuePointer = new IssuePointer('EIPXXXX-SOL-VISIBILITY:FUNCTION', linenumber_start, linenumber_end, undefined, undefined);
+        const issuePointer = new IssuePointer('SWC-100', linenumber_start, linenumber_end, undefined, undefined);
         issuePointers.push(issuePointer);
       }
     },

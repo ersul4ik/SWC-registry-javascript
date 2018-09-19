@@ -12,7 +12,7 @@ exports.UndeclaredStoragePointer = (ast) => {
       if (variable.storageLocation == null && variable.isStateVar === false && variable.typeName.type === 'UserDefinedTypeName') {
         const linenumber_start = AstUtility.getStartLine(variable);
         const linenumber_end = AstUtility.getEndLine(variable);
-        const issuePointer = new IssuePointer('EIPXXXX-SOL-STORAGE:UNINITIALISED', linenumber_start, linenumber_end, undefined, undefined);
+        const issuePointer = new IssuePointer('SWC-109', linenumber_start, linenumber_end, undefined, undefined);
         issuePointers.push(issuePointer);
       }
     },

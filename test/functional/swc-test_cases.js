@@ -66,13 +66,13 @@ function parseTextOutput(output) {
   });
 }
 
-describe('Running Omnibus Benchmarks', () => {
+describe('Running SWC test cases  for Maru', () => {
   for (const [yamlFile, filecontent] of Object.entries(yamlFiles.files)) {
     const benchmarkConfig = yaml.safeLoad(fs.readFileSync(yamlFile));
     // benchmark has to have solidity file wit the same name as the yaml file
     const testFile = yamlFile.replace('.yaml', '.sol');
     
-    it(`Benchmark - ${benchmarkConfig.description}`, async () => {
+    it(`Test case - ${benchmarkConfig.description}`, async () => {
 
       const { stdout, stderr } = await exec(`node maru.js --run ${testFile}`);
       // Verify that there are no errors

@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+/* eslint-disable global-require */
+var fs = require('fs');
+var commandLineArgs = require('command-line-args');
+var commandLineUsage = require('command-line-usage');
+var Analyzer = require('./src/analyzer.js');
+var Reporter = require('./src/reporter');
+var Repository = require('./src/repository');
+var optionDefinitions = [
+    {
+        name: 'version', alias: 'v', type: Boolean, description: 'Print current version'
+    },
+    {
+        name: 'run', alias: 'r', type: String, typeLabel: '{underline directory}', description: 'Analyse files in specified directory'
+    },
+    {
+        name: 'help', alias: 'h', type: Boolean, description: 'Print this help message'
+    },
+];
+var options = commandLineArgs(optionDefinitions);
+var sections = [
+    {
+        header: 'Solidity Static Analyzer',
+        content: 'Looks for vulnerabilities in Solidity code.'
+    },
+    {
+        header: 'Options',
+        optionList: optionDefinitions
+    },
+];
+if (options.help || options.length < 1) {
+    var usage = commandLineUsage(sections);
+    console.log('usage');
+    console.log(usage);
+}
+else if (options.version) {
+    /* eslint-disable-next-line prefer-destructuring */
+    var version = require('./package.json').version;
+    console.log("This is version " + version);
+}
+else if (options.run) {
+    var config = {};
+    try {
+        config = require('./config/config.json');
+    }
+    catch (e) {
+        throw new Error('Missing config');
+    }
+    var repo = new Repository();
+    try {
+        var stats = fs.statSync(options.run);
+        if (stats.isDirectory()) {
+            repo.addFiles(options.run, '.sol');
+        }
+        else if (stats.isFile()) {
+            repo.addFile(options.run);
+        }
+    }
+    catch (err) {
+        throw new Error('File or directory does not exist');
+    }
+    var issues = Analyzer.runAllPlugins(repo, config);
+    Reporter.toText(issues);
+}

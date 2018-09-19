@@ -10,8 +10,6 @@
 
 ## Installation
 
-**NOTE:** After applying patch please add submodule manually - `rm -rf test/fixtures/Omnibus/ && git submodule add https://github.com/EthereumAnalysisBenchmarks/Omnibus.git 'test/fixtures/Omnibus/'`, so that it will update git config. <i>Remove this text after</i>
-
 * Checkout submodule
   - `git submodule init`
   - `git submodule update --remote`
@@ -48,9 +46,7 @@ Example:
   ├── plugins/        Analyser plugins location
   ├── src/            Analyser main modules location
   ├── test/
-      ├── fixtures/
-          ├── contracts/  Solidity files used by unittest
-          ├── Omnibus/    Omnibus submodule location    
+      ├── SWC-registry/   SWC registry submodule location    
 ```
 
 ## Continuous Integration

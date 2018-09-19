@@ -1,3 +1,4 @@
-[submodule "test/fixtures/Omnibus"]
-	path = test/fixtures/Omnibus
-	url = https://github.com/EthereumAnalysisBenchmarks/Omnibus.git
+
+[submodule "test/SWC-registry"]
+	path = test/SWC-registry
+	url = https://github.com/SmartContractSecurity/SWC-registry
