@@ -1,6 +1,6 @@
 {
   "name": "maru",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A lightweight, fast and extensible static code analyzer for smart contracts",
   "bin": "./maru",
   "dependencies": {
