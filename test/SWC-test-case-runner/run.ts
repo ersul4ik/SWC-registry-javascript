@@ -25,7 +25,8 @@ describe("Running SWC test cases for Maru", () => {
     yamlContent
       .issues
       .forEach((issueShouldReport: any) => {
-        it(`Test case - ${solFile} should report ${issueShouldReport.id}`, () => {
+        let solFileRel = solFile.split('/').slice(-2)[0] + '/' + path.basename(solFile)
+        it(`Test case - ${solFileRel} should report ${issueShouldReport.id}`, () => {
           let issuesReportedCorrectly = 0;
           issueShouldReport.locations.forEach((locations: any) => {
 
@@ -37,9 +38,8 @@ describe("Running SWC test cases for Maru", () => {
             });
 
           });
-          ok.equal(issuesReportedCorrectly, issueShouldReport.count, `should report issue: ${issueShouldReport.id}`);
-         
-          
+
+          ok.equal(issuesReportedCorrectly, issueShouldReport.count, `should find ${issueShouldReport.count} of ${issueShouldReport.id}`);
         });
       });
 

@@ -17,21 +17,19 @@ class IssueDetailed {
     /**
      * compare report issue with test case data with line number, and determine if the issue was right reported
      *
-     * @param issueShouldReport issue data in test case
+     * @param issueShouldReportId issue data in test case
      */
-    isSameWithTestCase(issueShouldReport) {
-        if (this.issuePointer.id === issueShouldReport.id) {
-            const linenumber = issueShouldReport.location.line_number;
+    isSameWithTestCase(issueShouldReportId, line_numbers) {
+        if (this.issuePointer.id === issueShouldReportId) {
             const linenumber_start = this.issuePointer.linenumber_start;
             const linenumber_end = this.issuePointer.linenumber_end;
-            if (linenumber != null) {
+            if (line_numbers !== undefined || line_numbers.length != 0) {
                 if ((linenumber_start != null) && (linenumber_end != null)) {
-                    if ((linenumber_start <= linenumber) && (linenumber_end >= linenumber)) {
-                        return true;
+                    for (let x = 0; x < line_numbers.length; x++) {
+                        if ((linenumber_start <= line_numbers[x]) && (linenumber_end >= line_numbers[x])) {
+                            return true;
+                        }
                     }
-                }
-                else {
-                    return false;
                 }
             }
             else {
@@ -72,13 +70,17 @@ class IssuePointer {
         this.expr_end = expr_end;
     }
     print() {
-        console.log(`id: ${this.id}`);
-        console.log(`linenumber_start: ${this.linenumber_start}`);
-        console.log(`linenumber_end: ${this.linenumber_start}`);
-        console.log(`expr_start: ${this.expr_start}`);
-        console.log(`expr_end: ${this.expr_end}`);
-        IssuePointer.swc
-            .printForId(this.id);
+        console.log(`SWC ID: ${this.id}`);
+        if (this.linenumber_start != this.linenumber_end) {
+            console.log(`linenumber: ${this.linenumber_start} - ${this.linenumber_end}`);
+        }
+        else {
+            console.log(`linenumber: ${this.linenumber_start}`);
+        }
+        // console.log(`expr_start: ${this.expr_start}`);
+        //console.log(`expr_end: ${this.expr_end}`);
+        //IssuePointer.swc.printForId(this.id);
+        //   console.log(IssuePointer.swc.getTitle(this.id));
     }
     jsonValue() {
         return {

@@ -80,13 +80,17 @@ class IssuePointer {
   }
 
   print() {
-    console.log(`id: ${this.id}`);
-    console.log(`linenumber_start: ${this.linenumber_start}`);
-    console.log(`linenumber_end: ${this.linenumber_start}`);
-    console.log(`expr_start: ${this.expr_start}`);
-    console.log(`expr_end: ${this.expr_end}`);
-    IssuePointer.swc
-      .printForId(this.id);
+    console.log(`SWC ID: ${this.id}`);
+    if(this.linenumber_start != this.linenumber_end){
+      console.log(`linenumber: ${this.linenumber_start} - ${this.linenumber_end}`);
+    }  
+    else {  
+      console.log(`linenumber: ${this.linenumber_start}`);
+    }
+   // console.log(`expr_start: ${this.expr_start}`);
+    //console.log(`expr_end: ${this.expr_end}`);
+    //IssuePointer.swc.printForId(this.id);
+ //   console.log(IssuePointer.swc.getTitle(this.id));
   }
 
   jsonValue() {

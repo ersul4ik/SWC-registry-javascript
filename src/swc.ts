@@ -7,10 +7,14 @@ class SWC {
   }
   printForId(swcId: string) {
     if (this.entries[swcId]) {
-      console.log("weekness detail:");
       console.log(this.entries[swcId].markdown);
     }
   }
+
+  getTitle(swcId: string) {
+      return this.entries[swcId]['content'];
+  }
+
 }
 
 export default SWC;

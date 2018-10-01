@@ -13,9 +13,11 @@ class SWC {
     }
     printForId(swcId) {
         if (this.entries[swcId]) {
-            console.log("weekness detail:");
             console.log(this.entries[swcId].markdown);
         }
+    }
+    getTitle(swcId) {
+        return this.entries[swcId]['content'];
     }
 }
 exports.default = SWC;
