@@ -5,6 +5,9 @@
     "**/test/**",
     "**/config/**"
   ],
+  "extensions": [
+      ".ts"
+  ],
   "reporter": [
     "text",
     "html"

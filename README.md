@@ -19,12 +19,14 @@
 
 ## NPM commands
 
+* `npm run dev` Run tsc in watch mode.
 * `npm run build:prod` Production build. Uses latest version of [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)
 * `npm run build:dev` Development build. Builds [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr) from source (`master` branch)
 * `npm run test:unit` Run unittests and print coverage
 * `npm run test:functional` Run functional tests and print coverage
 * `npm test` Run both unit and functional tests
 * `npm run lint` Linter check
+* `npm run updateswc` will rum update_swc.ts and generate the swc entries json, and will run `tsc` to update dist code.
 
 ## Usage
 <i>If package is installed globally `maru` executable is available globally as well</i>
@@ -36,7 +38,7 @@
 ```
 
 Example:
-`node maru.js --run test/fixtures/contracts` Check all solidity files in `test/fixtures/contracts` directory
+`node dist/maru.js --run test/fixtures/contracts` Check all solidity files in `test/fixtures/contracts` directory
 
 ## Project structure
 ```
@@ -46,7 +48,7 @@ Example:
   ├── plugins/        Analyser plugins location
   ├── src/            Analyser main modules location
   ├── test/
-      ├── SWC-registry/   SWC registry submodule location    
+      └── SWC-registry  SWC registry submodule location    
 ```
 
 ## Continuous Integration

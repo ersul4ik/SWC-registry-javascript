@@ -1,0 +1,39 @@
+{
+    "plugins": {
+        "InsecureIntegerArithmetic": {
+            "active": "false",
+            "description": "",
+            "type": "Insecure Integer Arithmetic"
+        },
+        "LockPragma": {
+            "active": "true",
+            "description": "Pragma is not locked",
+            "type": "Pragma is not locked"
+        },
+        "OutdatedCompilerVersion": {
+            "active": "true",
+            "description": "The compiler version that is used contains bugs that are worth upgrading to a newer version >=0.4.23. ",
+            "type": "Outdated compiler version"
+        },
+        "DefaultVisibilityFunction": {
+            "active": "true",
+            "description": "lol",
+            "type": "Default function visibility"
+        },
+        "DefaultVisibilityStateVariable": {
+            "active": "true",
+            "description": "",
+            "type": "Default visibility state variables"
+        },
+        "UndeclaredStoragePointer": {
+            "active": "true",
+            "description": "",
+            "type": "Uninitialised storage pointer"
+        },
+        "DeprecatedFunctions": {
+            "active": "true",
+            "description": "",
+            "type": "Uninitialised storage pointer"
+        }
+    }
+}
