@@ -1,4 +1,8 @@
-# Lightweight, fast and extensible static code analyzer for smart contracts
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/b9e80431029c41302ed88254bb7b9633.svg?columns=all)](https://waffle.io/thec00n/maru)
+
+# Maru 
+
+A simple static code analyzer for Solidity smart contracts. 
 
 ### Table of Contents
 
