@@ -6,30 +6,45 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const parser = require("solidity-parser-antlr");
 const util = require("util");
 const ast_utility_1 = __importDefault(require("../src/ast_utility"));
-const issue_1 = require("../src/issue");
 let DeprecatedFunctions;
+const id = "SWC-111";
 DeprecatedFunctions = function (ast) {
     const issuePointers = [];
     parser.visit(ast, {
-        FunctionCall(node) {
-            //console.log("-")
-            // console.log(util.inspect(node1, false, null))
-            //parser.visit(node1, {
-            // FunctionCall: function(node) {
-            //Identifier(node2: any) {
-            // console.log(util.inspect(node2, false, null))
-            //},
-            // });
-            // console.log(util.inspect(node2, false, null))
-            // exp = node.expression;
-            console.log(node.name);
-            if (node.name != undefined) {
-                if (node.name.match(/sha3/) || node.name.match(/suicide/)) {
-                    const linenumber_start = ast_utility_1.default.getStartLine(node);
-                    const linenumber_end = ast_utility_1.default.getEndLine(node);
-                    const issuePointer = new issue_1.IssuePointer("SWC-111", linenumber_start, linenumber_end, undefined, undefined);
-                    issuePointers.push(issuePointer);
+        FunctionCall(f_call) {
+            parser.visit(f_call, {
+                Identifier(identifier) {
+                    if (ast_utility_1.default.matchRegex(identifier.name, new RegExp("sha3")) || ast_utility_1.default.matchRegex(identifier.name, new RegExp("suicide"))) {
+                        issuePointers.push(ast_utility_1.default.createIssuePointerFromNode(id, identifier));
+                    }
                 }
+            });
+            parser.visit(f_call, {
+                MemberAccess(member) {
+                    if (ast_utility_1.default.matchRegex(member.memberName, new RegExp("callcode"))) {
+                        issuePointers.push(ast_utility_1.default.createIssuePointerFromNode(id, member));
+                    }
+                }
+            });
+        },
+        MemberAccess(member) {
+            parser.visit(member, {
+                Identifier(identifier) {
+                    if (ast_utility_1.default.matchRegex(identifier.name, new RegExp("msg")) && ast_utility_1.default.matchRegex(member.memberName, new RegExp("gas"))) {
+                        issuePointers.push(ast_utility_1.default.createIssuePointerFromNode(id, member));
+                    }
+                    if (ast_utility_1.default.matchRegex(identifier.name, new RegExp("block")) && ast_utility_1.default.matchRegex(member.memberName, new RegExp("blockhash"))) {
+                        issuePointers.push(ast_utility_1.default.createIssuePointerFromNode(id, member));
+                    }
+                }
+            });
+        },
+        ThrowStatement(throw_statement) {
+            issuePointers.push(ast_utility_1.default.createIssuePointerFromNode(id, throw_statement));
+        },
+        FunctionDefinition(func) {
+            if (ast_utility_1.default.matchRegex(func.stateMutability, new RegExp("constant"))) {
+                issuePointers.push(ast_utility_1.default.createIssuePointerFromNode(id, func));
             }
         }
     });

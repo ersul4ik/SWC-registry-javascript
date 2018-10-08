@@ -1,4 +1,7 @@
 const parser = require("solidity-parser-antlr");
+const util = require("util");
+
+import { IssuePointer } from "../src/issue";
 
 class AstUtility {
   static getContractName(ast: any) {
@@ -28,6 +31,27 @@ class AstUtility {
       .visibility
       .match(/default/);
   }
+
+  static createIssuePointerFromNode(id:string, node:any){
+    const linenumber_start = AstUtility.getStartLine(node);
+    const linenumber_end = AstUtility.getEndLine(node);
+    const issuePointer = new IssuePointer(id, linenumber_start, linenumber_end, undefined, undefined);
+    return issuePointer;
+  }
+
+  static matchRegex(node:any, match:RegExp){
+    if(node !== null && node !== undefined ){
+      if(node.match(match)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static printNode(node: any){
+    console.log(JSON.stringify(node, null, 4));
+  }
+
 }
 
 export default AstUtility;

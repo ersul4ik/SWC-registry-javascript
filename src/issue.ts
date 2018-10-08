@@ -79,6 +79,7 @@ class IssuePointer {
     this.expr_end = expr_end;
   }
 
+
   print() {
     console.log(`SWC ID: ${this.id}`);
     if(this.linenumber_start != this.linenumber_end){

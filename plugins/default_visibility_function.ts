@@ -4,6 +4,7 @@ import { IssuePointer } from "../src/issue";
 import { Plugin } from '../src/plugin';
 
 let DefaultVisibilityFunction: Plugin;
+const id = "SWC-100";
 
 DefaultVisibilityFunction = function (ast: any){
   const issuePointers: IssuePointer[] = [];
@@ -11,11 +12,7 @@ DefaultVisibilityFunction = function (ast: any){
     FunctionDefinition(node: any) {
       const func = node;
       if (AstUtility.isDefaultVisibility(func)) {
-        const linenumber_start = AstUtility.getStartLine(func);
-        const linenumber_end = AstUtility.getEndLine(func);
-
-        const issuePointer = new IssuePointer("SWC-100", linenumber_start, linenumber_end, undefined, undefined);
-        issuePointers.push(issuePointer);
+        issuePointers.push(AstUtility.createIssuePointerFromNode(id,func));
       }
     },
   });
