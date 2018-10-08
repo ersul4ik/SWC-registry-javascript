@@ -1,7 +1,7 @@
 {
   "name": "maru",
   "version": "0.1.0",
-  "description": "A lightweight, fast and extensible static code analyzer for smart contracts",
+  "description": "A simple, rule based static code analyzer for Solidity smart contracts. ",
   "bin": "./maru",
   "dependencies": {
     "command-line-args": "5.0.2",
@@ -36,5 +36,5 @@
     "mocha": "5.2.0"
   },
   "author": "Gerhard Wagner",
-  "license": "MIT"
+  "license": ""
 }

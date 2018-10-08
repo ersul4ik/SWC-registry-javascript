@@ -1,8 +1,11 @@
 const parser = require("solidity-parser-antlr");
 import AstUtility from "../src/ast_utility";
 import { IssuePointer } from "../src/issue";
+import { Plugin } from '../src/plugin';
 
-exports.DefaultVisibilityStateVariable = (ast: any) => {
+let DefaultVisibilityStateVariable: Plugin;
+
+DefaultVisibilityStateVariable = function (ast: any){
   const issuePointers: IssuePointer[] = [];
   parser.visit(ast, {
     StateVariableDeclaration(node: any) {
@@ -18,3 +21,5 @@ exports.DefaultVisibilityStateVariable = (ast: any) => {
   });
   return issuePointers;
 };
+
+exports.DefaultVisibilityStateVariable = DefaultVisibilityStateVariable;

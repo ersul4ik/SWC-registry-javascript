@@ -47,8 +47,8 @@ const options = commandLineArgs(optionDefinitions);
 
 const sections = [
   {
-    header: "Solidity Static Analyzer",
-    content: "Looks for vulnerabilities in Solidity code.",
+    header: "Maru",
+    content: "A simple, rule based static code analyzer for Solidity smart contracts..",
   }, {
     header: "Options",
     optionList: optionDefinitions,
@@ -57,7 +57,6 @@ const sections = [
 
 if (options.help || options.length < 1) {
   const usage = commandLineUsage(sections);
-  console.log("usage");
   console.log(usage);
 } else if (options.version) {
   const version = require("./package.json").version;
@@ -68,10 +67,10 @@ if (options.help || options.length < 1) {
   if (options.plugin != null) {
     const usingPlugins: { [plugins: string]: any } = {};
     options.plugin.split(",").forEach((plugin: string) => {
-      if ((config.plugins[plugin] != null) && (config.plugins[plugin].type != null)) {
+      if ((config.plugins[plugin] != null) && (config.plugins[plugin].SWC != null)) {
         usingPlugins[plugin] = config.plugins[plugin];
       } else {
-        console.log(`${plugin} is not exist.`)
+        console.log(`${plugin} does not exist.`)
         return;
       }
     });

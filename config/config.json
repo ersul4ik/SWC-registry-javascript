@@ -2,38 +2,31 @@
 	"plugins":{
 		"InsecureIntegerArithmetic":{
 			"active": "false",
-			"description": "",
-			"type": "Insecure Integer Arithmetic"
+			"SWC": "101"
 		},
 		"LockPragma":{
 			"active": "true",
-			"description": "Pragma is not locked",
-			"type": "Pragma is not locked"
+			"SWC": "103"
 		},
 		"OutdatedCompilerVersion":{
 			"active": "true",
-			"description": "The compiler version that is used contains bugs that are worth upgrading to a newer version >=0.4.23. ",
-			"type": "Outdated compiler version"
+			"SWC": "102"
 		},
 		"DefaultVisibilityFunction":{
 			"active": "true",
-			"description": "lol",
-			"type": "Default function visibility"
+			"SWC": "100"
 		},
 		"DefaultVisibilityStateVariable":{
 			"active": "true",
-			"description": "",
-			"type": "Default visibility state variables"
+			"SWC": "108"
 		},
 		"UndeclaredStoragePointer":{
 			"active": "true",
-			"description": "",
-			"type": "Uninitialised storage pointer"
+			"SWC": "109"
 		},
 		"DeprecatedFunctions":{
 			"active": "true",
-			"description": "",
-			"type": "Uninitialised storage pointer"
+			"SWC": "111"
 		}
 	}
 }

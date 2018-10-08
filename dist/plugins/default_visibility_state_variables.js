@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const parser = require("solidity-parser-antlr");
 const ast_utility_1 = __importDefault(require("../src/ast_utility"));
 const issue_1 = require("../src/issue");
-exports.DefaultVisibilityStateVariable = (ast) => {
+let DefaultVisibilityStateVariable;
+DefaultVisibilityStateVariable = function (ast) {
     const issuePointers = [];
     parser.visit(ast, {
         StateVariableDeclaration(node) {
@@ -21,3 +22,4 @@ exports.DefaultVisibilityStateVariable = (ast) => {
     });
     return issuePointers;
 };
+exports.DefaultVisibilityStateVariable = DefaultVisibilityStateVariable;

@@ -3,31 +3,43 @@ const util = require("util");
 
 import AstUtility from "../src/ast_utility";
 import { IssueDetailed, IssuePointer } from "../src/issue";
+import { Plugin } from '../src/plugin';
 
-exports.DeprecatedFunctions = (ast: any) => {
-  const issue_pointers: IssuePointer[] = [];
+let DeprecatedFunctions: Plugin;
+
+DeprecatedFunctions = function (ast: any){
+  const issuePointers: IssuePointer[] = [];
 
   parser.visit(ast, {
-    // FunctionCall: function(node) {
-    Block(node1: any) {
+    FunctionCall(node: any) {
+      //console.log("-")
+  
       // console.log(util.inspect(node1, false, null))
-      parser.visit(node1, {
+      //parser.visit(node1, {
         // FunctionCall: function(node) {
-        Identifier(node2: any) {
+        //Identifier(node2: any) {
           // console.log(util.inspect(node2, false, null))
-        },
-      });
+        //},
+     // });
 
       // console.log(util.inspect(node2, false, null))
       // exp = node.expression;
+      console.log(node.name)
+      
 
-      /*
-	    	if(node.name.match(/sha3/) || node.name.match(/suicide/)){
-	  			var linenumber = AstUtility.getStartLine(exp)
-				var issue_pointer = new IssuePointer(linenumber)
-				issue_pointers.push(issue_pointer);
-	  		} */
-    },
+      if (node.name != undefined){
+
+        if(node.name.match(/sha3/) || node.name.match(/suicide/)){
+          const linenumber_start = AstUtility.getStartLine(node);
+          const linenumber_end = AstUtility.getEndLine(node);
+          const issuePointer = new IssuePointer("SWC-111", linenumber_start, linenumber_end, undefined, undefined);
+          issuePointers.push(issuePointer);
+        }
+      }
+    }  
   });
-  return issue_pointers;
+  return issuePointers;
 };
+
+
+exports.DeprecatedFunctions = DeprecatedFunctions;
