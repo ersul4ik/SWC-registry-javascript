@@ -19,7 +19,7 @@ class Analyzer {
     for (const [filename, filecontent] of Object.entries(repo.files)) {
       let ast;
       try {
-        ast = parser.parse(filecontent, { loc: true });
+        ast = parser.parse(filecontent, { loc: true, range: true });
       } catch (e) {
         Logger.error("Exception during AST parsing for " + filename);
         console.log(e);

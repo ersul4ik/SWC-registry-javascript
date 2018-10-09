@@ -27,6 +27,10 @@
 		"DeprecatedFunctions":{
 			"active": "true",
 			"SWC": "111"
+		},
+		"UncheckedCallReturnValue":{
+			"active": "true",
+			"SWC": "104"
 		}
 	}
 }
