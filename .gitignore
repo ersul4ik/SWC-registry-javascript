@@ -10,3 +10,4 @@ bin/
 deps/solidity-parser-antlr
 .DS_Store
 ast_dump/
+dist/
