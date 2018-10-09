@@ -3,6 +3,7 @@
 const fs = require("fs");
 const commandLineArgs = require("command-line-args");
 const commandLineUsage = require("command-line-usage");
+const pkg = require("./package.json");
 
 import Config from "./config/config.json";
 import Analyzer from "./src/analyzer";
@@ -59,7 +60,7 @@ if (options.help || options.length < 1) {
   const usage = commandLineUsage(sections);
   console.log(usage);
 } else if (options.version) {
-  const version = require("./package.json").version;
+  const { version } = pkg;
   console.log(`This is version ${version}`);
 } else if (options.run) {
   let config: { [plugins: string]: any } = {};
