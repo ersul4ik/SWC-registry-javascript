@@ -7,11 +7,14 @@ const parser = require("solidity-parser-antlr");
 const ast_utility_1 = __importDefault(require("../src/ast_utility"));
 let UncheckedCallReturnValue;
 const id = "SWC-104";
+/*
+ * Find the outer left function of an ExpressionStatement. If that is a call or delegate call then raise an issue
+ */
 UncheckedCallReturnValue = function (ast) {
     const issuePointers = [];
     let functions = [];
     let expression_nr = 0;
-    // find the outer left function of an ExpressionStatement. If that is not a require, assert or if then it is an unchecked return value 
+    ast_utility_1.default.printNode(ast);
     parser.visit(ast, {
         ExpressionStatement(expr) {
             expression_nr += 1;
@@ -19,7 +22,10 @@ UncheckedCallReturnValue = function (ast) {
                 FunctionCall(f_call) {
                     parser.visit(f_call, {
                         MemberAccess(mb) {
-                            if (ast_utility_1.default.matchRegex(mb.memberName, new RegExp("^call$")) || ast_utility_1.default.matchRegex(mb.memberName, new RegExp("^delegatecall$"))) {
+                            if (ast_utility_1.default.matchRegex(mb.memberName, new RegExp("^call$")) ||
+                                ast_utility_1.default.matchRegex(mb.memberName, new RegExp("^delegatecall$")) ||
+                                ast_utility_1.default.matchRegex(mb.memberName, new RegExp("^send$")) ||
+                                ast_utility_1.default.matchRegex(mb.memberName, new RegExp("^callcode$"))) {
                                 let entry = {};
                                 entry['expr_nr'] = expression_nr;
                                 entry['expr_range'] = expr.range;
@@ -27,12 +33,14 @@ UncheckedCallReturnValue = function (ast) {
                                 entry['type_range'] = mb.range;
                                 entry['node'] = f_call;
                                 functions.push(entry);
+                                console.log(entry);
                             }
                         }
                     });
                     parser.visit(f_call, {
                         Identifier(identifier) {
-                            if (ast_utility_1.default.matchRegex(identifier.name, new RegExp("^require$")) || ast_utility_1.default.matchRegex(identifier.name, new RegExp("^assert$"))) {
+                            if (ast_utility_1.default.matchRegex(identifier.name, new RegExp("^require$")) ||
+                                ast_utility_1.default.matchRegex(identifier.name, new RegExp("^assert$"))) {
                                 let entry = {};
                                 entry['expr_nr'] = expression_nr;
                                 entry['expr_range'] = expr.range;
@@ -61,7 +69,10 @@ UncheckedCallReturnValue = function (ast) {
                 }
             }
         }
-        if (ast_utility_1.default.matchRegex(outer_caller['type'], new RegExp("^call$")) || ast_utility_1.default.matchRegex(outer_caller['type'], new RegExp("^delegatecall$"))) {
+        if (ast_utility_1.default.matchRegex(outer_caller['type'], new RegExp("^call$")) ||
+            ast_utility_1.default.matchRegex(outer_caller['type'], new RegExp("^delegatecall$")) ||
+            ast_utility_1.default.matchRegex(outer_caller['type'], new RegExp("^send$")) ||
+            ast_utility_1.default.matchRegex(outer_caller['type'], new RegExp("^callcode$"))) {
             issuePointers.push(ast_utility_1.default.createIssuePointerFromNode(id, outer_caller['node']));
         }
     }

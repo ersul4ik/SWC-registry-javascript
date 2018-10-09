@@ -31,6 +31,14 @@
 		"UncheckedCallReturnValue":{
 			"active": "true",
 			"SWC": "104"
+		},
+		"IncorrectConstructorName":{
+			"active": "true",
+			"SWC": "118"
+		},
+		"AuthorizationTXOrigin":{
+			"active": "true",
+			"SWC": "118"
 		}
 	}
 }

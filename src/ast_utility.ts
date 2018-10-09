@@ -48,6 +48,16 @@ class AstUtility {
     return false;
   }
 
+
+  static matchString(node:any, match:string){
+    if(node !== null && node !== undefined ){
+      if(node.match(match)){
+        return true;
+      }
+    }
+    return false;
+  }
+
   static printNode(node: any){
     console.log(JSON.stringify(node, null, 4));
   }

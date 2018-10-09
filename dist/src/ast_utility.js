@@ -41,6 +41,14 @@ class AstUtility {
         }
         return false;
     }
+    static matchString(node, match) {
+        if (node !== null && node !== undefined) {
+            if (node.match(match)) {
+                return true;
+            }
+        }
+        return false;
+    }
     static printNode(node) {
         console.log(JSON.stringify(node, null, 4));
     }

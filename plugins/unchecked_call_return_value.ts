@@ -8,23 +8,26 @@ const id = "SWC-104";
 
 /*
  * Find the outer left function of an ExpressionStatement. If that is a call or delegate call then raise an issue
- * Todo: include callcode and send 
  */
 
 UncheckedCallReturnValue = function (ast: any){
   const issuePointers: IssuePointer[] = [];
   let functions:any = [];
   let expression_nr:number = 0;
+  AstUtility.printNode(ast)
 
   parser.visit(ast, {
- 
     ExpressionStatement(expr: any) {
       expression_nr += 1;
       parser.visit(expr, {
         FunctionCall(f_call: any) {
           parser.visit(f_call, {
             MemberAccess(mb: any) {
-              if(AstUtility.matchRegex(mb.memberName, new RegExp("^call$")) || AstUtility.matchRegex(mb.memberName, new RegExp("^delegatecall$"))){
+              if(AstUtility.matchRegex(mb.memberName, new RegExp("^call$")) || 
+                 AstUtility.matchRegex(mb.memberName, new RegExp("^delegatecall$")) ||
+                 AstUtility.matchRegex(mb.memberName, new RegExp("^send$")) ||
+                 AstUtility.matchRegex(mb.memberName, new RegExp("^callcode$"))
+               ){
                let entry:any =  {};
                entry['expr_nr'] = expression_nr;
                entry['expr_range'] = expr.range;
@@ -32,13 +35,15 @@ UncheckedCallReturnValue = function (ast: any){
                entry['type_range'] = mb.range;
                entry['node'] = f_call;
               functions.push(entry);
+              console.log(entry)
               }  
             }
           });
 
           parser.visit(f_call, {
             Identifier(identifier: any) {
-              if(AstUtility.matchRegex(identifier.name, new RegExp("^require$")) || AstUtility.matchRegex(identifier.name, new RegExp("^assert$"))){
+              if(AstUtility.matchRegex(identifier.name, new RegExp("^require$")) || 
+                 AstUtility.matchRegex(identifier.name, new RegExp("^assert$"))){
                 let entry:any =  {};
                 entry['expr_nr'] = expression_nr;
                 entry['expr_range'] = expr.range;
@@ -74,8 +79,11 @@ UncheckedCallReturnValue = function (ast: any){
       }
     }
 
-    if(AstUtility.matchRegex(outer_caller['type'],new RegExp("^call$")) || AstUtility.matchRegex(outer_caller['type'],new RegExp("^delegatecall$")) ){
-
+    if(AstUtility.matchRegex(outer_caller['type'], new RegExp("^call$")) || 
+       AstUtility.matchRegex(outer_caller['type'], new RegExp("^delegatecall$")) ||
+       AstUtility.matchRegex(outer_caller['type'], new RegExp("^send$")) ||
+       AstUtility.matchRegex(outer_caller['type'], new RegExp("^callcode$"))
+    ){
       issuePointers.push(AstUtility.createIssuePointerFromNode(id,outer_caller['node']));
     }  
   }
