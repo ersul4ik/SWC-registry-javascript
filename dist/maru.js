@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const commandLineArgs = require("command-line-args");
 const commandLineUsage = require("command-line-usage");
+const pkg = require("./package.json");
 const config_json_1 = __importDefault(require("./config/config.json"));
 const analyzer_1 = __importDefault(require("./src/analyzer"));
 const reporter_1 = __importDefault(require("./src/reporter"));
@@ -59,7 +60,7 @@ if (options.help || options.length < 1) {
     console.log(usage);
 }
 else if (options.version) {
-    const version = require("./package.json").version;
+    const { version } = pkg;
     console.log(`This is version ${version}`);
 }
 else if (options.run) {
