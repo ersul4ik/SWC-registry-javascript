@@ -31,7 +31,6 @@ IncorrectConstructorName = function (ast: any){
             else if(AstUtility.matchRegex(func.name, new RegExp("^constructor$",'i'))){
               issuePointers.push(AstUtility.createIssuePointerFromNode(id,func));
             }
-            console.log(func.name);
           },
         });
       }
