@@ -4,11 +4,17 @@ const fs = require("fs");
 const commandLineArgs = require("command-line-args");
 const commandLineUsage = require("command-line-usage");
 const pkg = require("./package.json");
+const Logger = require("logplease");
 
 import Config from "./config/config.json";
 import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
+
+const DEFAULT_DEBUG_LEVEL = 'INFO'
+const DEBUG_OPTIONS = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE']
+
+Logger.setLogLevel(DEFAULT_DEBUG_LEVEL);
 
 const optionDefinitions = [
   {
@@ -42,9 +48,23 @@ const optionDefinitions = [
     type: Boolean,
     description: "Print this help message",
   },
+  {
+    name: "debug",
+    alias: "d",
+    type: String,
+    description: "Set debug level: DEBUG, INFO, WARN, ERROR, NONE",
+  },
 ];
 
 const options = commandLineArgs(optionDefinitions);
+
+const debugLevel = options.debug && options.debug.toUpperCase();
+
+if (DEBUG_OPTIONS.indexOf(debugLevel) > -1) {
+  Logger.setLogLevel(debugLevel);
+}
+
+export const logger = Logger.create("utils");
 
 const sections = [
   {
@@ -60,7 +80,7 @@ if (options.help || options.length < 1) {
   const usage = commandLineUsage(sections);
   console.log(usage);
 } else if (options.version) {
-  const { version } = pkg;
+  const version = require("./package.json").version;
   console.log(`This is version ${version}`);
 } else if (options.run) {
   let config: { [plugins: string]: any } = {};

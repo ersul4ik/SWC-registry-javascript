@@ -6,10 +6,10 @@ const plugins = require("require-all")({
   recursive: true,
 });
 
+import { logger } from "../maru";
 import AstUtility from "./ast_utility";
 import FileUtils from "./file_utils";
 import { IssueDetailed } from "./issue";
-import Logger from "./logger";
 import Repository from "./repository";
 
 class Analyzer {
@@ -21,7 +21,7 @@ class Analyzer {
       try {
         ast = parser.parse(filecontent, { loc: true, range: true });
       } catch (e) {
-        Logger.error("Exception during AST parsing for " + filename);
+        logger.error("Exception during AST parsing for " + filename);
         console.log(e);
       }
       const contractName = AstUtility.getContractName(ast);
@@ -35,11 +35,11 @@ class Analyzer {
               pluginFound = true;
               let issuePointers = [];
 
-              Logger.info(`Executing Plugin: ${configPluginName}`);
+              logger.info(`Executing Plugin: ${configPluginName}`);
 
               try {
                 issuePointers = plugins[plugin][configPluginName](ast);
-                Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
+                logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
                 for (const issuePointer of issuePointers) {
                   const code = FileUtils.getCodeAtLine(filecontent, issuePointer.linenumber_start,
                     issuePointer.linenumber_end);
@@ -47,14 +47,14 @@ class Analyzer {
                   issues.push(issueDetailed);
                 }
               } catch (error) {
-                Logger.debug(`Something went wrong in plugin: ${configPluginName}`);
-                Logger.debug(error);
+                logger.debug(`Something went wrong in plugin: ${configPluginName}`);
+                logger.debug(error);
               }
             }
           }
 
           if (!pluginFound) {
-            Logger.warn(`Implementation missing for ${configPluginName}`);
+            logger.warn(`Implementation missing for ${configPluginName}`);
           }
         }
       }
