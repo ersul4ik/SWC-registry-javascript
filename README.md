@@ -1,9 +1,12 @@
 [![CircleCI](https://circleci.com/gh/thec00n/maru/tree/master.svg?style=svg&circle-token=842b09eb6f78f1b2c42b18e3e7d354d2264de3ae)](https://circleci.com/gh/thec00n/maru/tree/master)
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/b9e80431029c41302ed88254bb7b9633.svg?columns=all)](https://waffle.io/thec00n/maru)
 
+<img height="160px" Hspace="0" Vspace="0" align="right" src="static/maru.png"/> 
+
 # Maru 
 
 A simple static code analyzer for Solidity smart contracts. 
+
 
 ## Installation
 
