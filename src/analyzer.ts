@@ -41,8 +41,9 @@ class Analyzer {
                 issuePointers = plugins[plugin][configPluginName](ast);
                 logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
                 for (const issuePointer of issuePointers) {
-                  const code = FileUtils.getCodeAtLine(filecontent, issuePointer.linenumber_start,
-                    issuePointer.linenumber_end);
+                  const { linenumber_start, linenumber_end } = issuePointer;
+                  const code = FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
+
                   const issueDetailed = new IssueDetailed(filename, contractName, code, issuePointer);
                   issues.push(issueDetailed);
                 }
