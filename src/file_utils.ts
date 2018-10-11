@@ -23,11 +23,11 @@ class FileUtils {
 
   static getCodeAtLine(filecontent: string, linenumber_start: number, linenumber_end: number) {
     const lines = filecontent.split("\n");
-    let code = "";
+    const code = [];
     for (let x = linenumber_start - 1; x <= linenumber_end - 1; x++) {
-      code += lines[x];
+      code.push(`${x}: ${lines[x]}`);
     }
-    return code;
+    return code.join("\n");
   }
 }
 

@@ -20,16 +20,15 @@ class IssueDetailed {
    */
   isSameWithTestCase(issueShouldReportId: string, line_numbers: any): boolean {
     if (this.issuePointer.id === issueShouldReportId) {
-      const linenumber_start = this.issuePointer.linenumber_start;
-      const linenumber_end = this.issuePointer.linenumber_end;
-      if (line_numbers !== undefined || line_numbers.length != 0) {
+      const {linenumber_start, linenumber_end } = this.issuePointer;
+      if (line_numbers !== undefined || line_numbers.length !== 0) {
         if ((linenumber_start != null) && (linenumber_end != null)) {
-          for(let x=0;x<line_numbers.length;x++){
-            if ((linenumber_start <= line_numbers[x]) && (linenumber_end >= line_numbers[x])) {
+          for (const line_number of line_numbers) {
+            if ((linenumber_start <= line_number) && (linenumber_end >= line_number)) {
               return true;
             }
           }
-        } 
+        }
       } else {
         return true;
       }
@@ -38,22 +37,41 @@ class IssueDetailed {
   }
 
   print() {
-    console.log(`filename: ${this.filename}`);
-    console.log(`contract: ${this.contract}`);
-    console.log(`code: ${this.code}`);
-    this
-      .issuePointer
-      .print();
+    const { id } = this.issuePointer;
+    const title = IssuePointer.swc.getTitle(id);
+    const SWCUrl = `https://smartcontractsecurity.github.io/SWC-registry/docs/${id}`;
+
+    console.log(`Filename: ${this.filename}`);
+    console.log(`Title: ${title}`);
+    console.log(`SWC-Link: ${SWCUrl}`);
+    console.log(`Contract: ${this.contract}`);
+    console.log(`Code: \n${this.code}`);
   }
 
   jsonValue() {
+    const { id } = this.issuePointer;
+    const { linenumber_start, linenumber_end } = this.issuePointer;
+    const title = IssuePointer.swc.getTitle(id);
+    const relationships = IssuePointer.swc.getRelationships(id);
+    const description = IssuePointer.swc.getDescription(id);
+    const remediation = IssuePointer.swc.getRemediation(id);
+    const references = IssuePointer.swc.getReferences(id);
+    // TODO: IssuePointer.swc.getSeverity(id);
+    const severity = "Critical";
+    const SWCUrl = `https://smartcontractsecurity.github.io/SWC-registry/docs/${id}`;
     return {
-      filename: this.filename,
-      contract: this.contract,
-      code: this.code,
-      issuePointer: this
-        .issuePointer
-        .jsonValue(),
+      "contractName": this.contract,
+      "swc-id": id,
+      "lineNumberStart": linenumber_start,
+      "lineNumberEnd": linenumber_end,
+      "filename": this.filename,
+      "swc-link": SWCUrl,
+      "swc-title": title,
+      "swc-relationships": relationships,
+      "swc-description": description,
+      "swc-remediation": remediation,
+      "swc-references": references,
+      "severity": severity,
     };
   }
 
@@ -79,19 +97,13 @@ class IssuePointer {
     this.expr_end = expr_end;
   }
 
-
   print() {
     console.log(`SWC ID: ${this.id}`);
-    if(this.linenumber_start != this.linenumber_end){
+    if(this.linenumber_start !== this.linenumber_end) {
       console.log(`linenumber: ${this.linenumber_start} - ${this.linenumber_end}`);
-    }  
-    else {  
+    } else {
       console.log(`linenumber: ${this.linenumber_start}`);
     }
-   // console.log(`expr_start: ${this.expr_start}`);
-    //console.log(`expr_end: ${this.expr_end}`);
-    //IssuePointer.swc.printForId(this.id);
- //   console.log(IssuePointer.swc.getTitle(this.id));
   }
 
   jsonValue() {
