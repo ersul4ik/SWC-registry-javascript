@@ -56,12 +56,6 @@ const optionDefinitions = [
     type: String,
     description: "Set debug level: DEBUG, INFO, ERROR, NONE",
   },
-  {
-    name: "ast",
-    alias: "a",
-    type: Boolean,
-    description: "Dump the entire ast of the contract",
-  },
 ];
 
 const options = commandLineArgs(optionDefinitions);
@@ -121,11 +115,5 @@ if (options.help || options.length < 1) {
     Reporter.toJSON(issues);
   } else {
     Reporter.toText(issues);
-  }
-  if (options.ast) {
-    const output = Dump.getContractAST(repo, config); /* get AST content */
-    const contract_name = options.run.split("/").slice(-1)[0].split(".sol")[0]; /* get contract name without format */
-    fse.outputFile("ast_dump/" + contract_name + ".json", output); /* create dump file. I use fse 
-                                                                because standart fs does`t have mkdir functionality */
   }
 }
