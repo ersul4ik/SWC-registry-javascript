@@ -3,7 +3,7 @@
 
 # Maru 
 
-<img height="160px" Hspace="0" Vspace="0" align="right" src="static/maru.png"/> 
+<img height="160px" Hspace="0" Vspace="0" align="right" src="static/maru.jpg"/> 
 
 A simple static code analyzer for Solidity smart contracts. 
 
