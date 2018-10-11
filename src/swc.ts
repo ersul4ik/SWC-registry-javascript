@@ -1,43 +1,37 @@
 import swcDefinition from "./swc-definition.json";
 
 class SWC {
+  entry: any;
+  content: any;
   entries = swcDefinition as any;
 
-  jsonValueForId(swcId: string) {
-    return this.entries[swcId] || {};
+  constructor(id: string) {
+    this.entry = this.entries[id] || {};
+    this.content = this.entry.content || {};
   }
 
-  printForId(swcId: string) {
-    if (this.entries[swcId]) {
-      console.log(this.entries[swcId].markdown);
-    }
-  }
+  getEntry = () => this.entry;
 
-  getTitle(swcId: string) {
-    const { content } = this.entries[swcId];
-    return content && content.Title;
-  }
+  getTitle = () => this.content && this.content.Title;
 
-  getRelationships(swcId: string) {
-    const { content } = this.entries[swcId];
-    return content && content.Relationships;
-  }
-  getDescription(swcId: string) {
-    const { content } = this.entries[swcId];
-    return content && content.Description;
-  }
-  getRemediation(swcId: string) {
-    const { content } = this.entries[swcId];
-    return content && content.Remediation;
-  }
-  getReferences(swcId: string) {
-    const { content } = this.entries[swcId];
-    return content && content.References;
-  }
-  getSeverity(swcId: string) {
-    const { content } = this.entries[swcId];
-    return content && content.Severity;
-  }
+  getRelationships = () => this.content && this.content.Relationships;
+
+  getDescription = () => this.content && this.content.Description;
+
+  getRemediation = () => this.content && this.content.Remediation;
+
+  getReferences = () => this.content && this.content.References;
+
+  getSeverity = () => "Critical"; // this.content && this.content.Severity;
+
+  displaySWC = () => ({
+    "swc-title": this.getTitle(),
+    "swc-relationships": this.getRelationships(),
+    "swc-description": this.getDescription(),
+    "swc-remediation": this.getRemediation(),
+    "swc-references": this.getReferences(),
+    "severity": this.getSeverity(),
+  })
 
 }
 
