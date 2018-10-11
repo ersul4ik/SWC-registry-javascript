@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+const fse = require('fs-extra');
 const commandLineArgs = require("command-line-args");
 const commandLineUsage = require("command-line-usage");
 const pkg = require("./package.json");
@@ -10,6 +11,7 @@ import Config from "./config/config.json";
 import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
+import Dump from "./src/parse-file";
 
 const DEFAULT_DEBUG_LEVEL = 'ERROR'
 const DEBUG_OPTIONS = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE']
@@ -53,6 +55,12 @@ const optionDefinitions = [
     alias: "d",
     type: String,
     description: "Set debug level: DEBUG, INFO, ERROR, NONE",
+  },
+  {
+    name: "ast",
+    alias: "a",
+    type: Boolean,
+    description: "Dump the entire ast of the contract",
   },
 ];
 
@@ -113,5 +121,11 @@ if (options.help || options.length < 1) {
     Reporter.toJSON(issues);
   } else {
     Reporter.toText(issues);
+  }
+  if (options.ast) {
+    const output = Dump.getContractAST(repo, config); /* get AST content */
+    const contract_name = options.run.split("/").slice(-1)[0].split(".sol")[0]; /* get contract name without format */
+    fse.outputFile("ast_dump/" + contract_name + ".json", output); /* create dump file. I use fse 
+                                                                because standart fs does`t have mkdir functionality */
   }
 }
