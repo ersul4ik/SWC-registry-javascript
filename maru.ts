@@ -11,7 +11,7 @@ import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
 
-const DEFAULT_DEBUG_LEVEL = 'INFO'
+const DEFAULT_DEBUG_LEVEL = 'ERROR'
 const DEBUG_OPTIONS = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE']
 
 Logger.setLogLevel(DEFAULT_DEBUG_LEVEL);
@@ -52,7 +52,7 @@ const optionDefinitions = [
     name: "debug",
     alias: "d",
     type: String,
-    description: "Set debug level: DEBUG, INFO, WARN, ERROR, NONE",
+    description: "Set debug level: DEBUG, INFO, ERROR, NONE",
   },
 ];
 
@@ -69,7 +69,7 @@ export const logger = Logger.create("utils");
 const sections = [
   {
     header: "Maru",
-    content: "A simple, rule based static code analyzer for Solidity smart contracts..",
+    content: "A static code analysis tool for Solidity smart contracts.",
   }, {
     header: "Options",
     optionList: optionDefinitions,

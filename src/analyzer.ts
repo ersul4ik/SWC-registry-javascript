@@ -55,7 +55,7 @@ class Analyzer {
           }
 
           if (!pluginFound) {
-            logger.warn(`Implementation missing for ${configPluginName}`);
+            logger.debug(`Implementation missing for ${configPluginName}`);
           }
         }
       }
