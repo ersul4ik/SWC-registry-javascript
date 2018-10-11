@@ -1,15 +1,14 @@
-const parser = require('solidity-parser-antlr');
-const { IssuePointer } = require('../src/issue.js');
+const parser = require("solidity-parser-antlr");
+import { IssuePointer } from "../src/issue";
 
-exports.InsecureIntegerArithmetic = (ast) => {
-  const issuePointers = [];
+exports.InsecureIntegerArithmetic = (ast: any) => {
+  const issuePointers: IssuePointer[] = [];
 
   parser.visit(ast, {
-    ExpressionStatement(node) {
+    ExpressionStatement(node: any) {
       const expr = node.expression;
-      if (expr.type === 'BinaryOperation') {
-        /* eslint-disable-next-line no-unused-vars */
-        let code = '';
+      if (expr.type === "BinaryOperation") {
+        let code = "";
         code += expr.left.name;
         code += expr.operator;
 
@@ -23,8 +22,7 @@ exports.InsecureIntegerArithmetic = (ast) => {
           code += expr.right.name;
         }
         const linenumber = expr.loc.start.line;
-        const issuePointer = new IssuePointer(linenumber);
-
+        const issuePointer = new IssuePointer("SWC-101", linenumber, linenumber, undefined, undefined);
         issuePointers.push(issuePointer);
       }
     },
