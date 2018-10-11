@@ -8,7 +8,7 @@
 A simple static code analyzer for Solidity smart contracts. 
 
 
-**Installation**
+## Installation
 
 * Checkout submodule
   - `git submodule init`
