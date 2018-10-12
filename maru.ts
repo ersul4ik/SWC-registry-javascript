@@ -11,7 +11,7 @@ import Config from "./config/config.json";
 import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
-import Dump from "./src/parse-file";
+import AstTool from "./src/tools";
 
 const DEFAULT_DEBUG_LEVEL = 'ERROR'
 const DEBUG_OPTIONS = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE']
@@ -59,8 +59,8 @@ const optionDefinitions = [
   {
     name: "ast",
     alias: "a",
-    type: Boolean,
-    description: "Dump the entire ast of the contract",
+    type: String,
+    description: "Dump the entire ast of the contract. Input a directory name (ex. -a ast_dump)",
   },
 ];
 
@@ -122,9 +122,16 @@ if (options.help || options.length < 1) {
   } else {
     Reporter.toText(issues);
   }
+
   if (options.ast) {
-    const output = Dump.getContractAST(repo, config); /* get AST content */
-    const contract_name = options.run.split("/").slice(-1)[0].split(".sol")[0]; /* get contract name without format */
-    fse.outputFile("ast_dump/" + contract_name + ".json", output); /* create dump file. I use fse because standart fs does`t have mkdir functionality */
+    var dir = options.ast + "/"
+    const output = AstTool.getContractAST(repo, config);
+    const response = JSON.stringify(output, null, 4);
+
+    const filename = options.run.split("/").slice(-1)[0]
+    const filename_without_format = filename.split(".sol")[0];
+
+    const file_json = filename_without_format + ".json"
+    fse.outputFile(dir + file_json, response);
   }
 }
