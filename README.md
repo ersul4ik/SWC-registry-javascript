@@ -14,8 +14,8 @@ A static code analyzer for Solidity smart contracts.
   - `git submodule init`
   - `git submodule update --remote`
 * Install dependencies. Select one of the commands below based on required build type
-  - `npm run build:prod` Production build
-  - `npm run build:dev` Development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)) 
+  - `yarn build:prod` Production build
+  - `yarn build:dev` Development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)) 
     
 ## Usage
 
@@ -50,4 +50,4 @@ Run Maru with `--plugin` to run specific plugins (find the list [here](https://g
 
 ## Run maru with SWC test cases 
 
-Run the following the command `npm run test:swc` to see which test samples Maru detects. 
+Run the following the command `yarn test:swc` to see which test samples Maru detects. 
