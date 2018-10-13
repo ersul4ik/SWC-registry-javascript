@@ -1,9 +1,6 @@
-const fs = require("fs");
 const path = require("path");
-const yaml = require("js-yaml");
 const { ok, fail } = require("assert");
 import { strictEqual } from "assert";
-import config from "../../config/config.json";
 
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);

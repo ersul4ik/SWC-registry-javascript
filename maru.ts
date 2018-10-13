@@ -11,8 +11,8 @@ import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
 
-const DEFAULT_DEBUG_LEVEL = 'ERROR'
-const DEBUG_OPTIONS = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE']
+const DEFAULT_DEBUG_LEVEL = "ERROR"
+const DEBUG_OPTIONS = ["DEBUG", "INFO", "WARN", "ERROR", "NONE"]
 
 Logger.setLogLevel(DEFAULT_DEBUG_LEVEL);
 
