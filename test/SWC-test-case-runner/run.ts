@@ -32,7 +32,6 @@ describe("Running SWC test cases for Maru", () => {
 
             issues.forEach((issue: IssueDetailed) => {
               if(issue.isSameWithTestCase(issueShouldReport.id,locations.line_numbers)){
-        
                 issuesReportedCorrectly++;
               }
             });

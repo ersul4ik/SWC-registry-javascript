@@ -41,7 +41,9 @@ class IssueDetailed {
   }
 
   print() {
+    const { id } = this.issuePointer;
     console.log(`Filename: ${this.filename}`);
+    console.log(`SWC-ID: ${id}`);
     console.log(`Title: ${this.issuePointer.swc.getTitle()}`);
     console.log(`SWC-Link: ${this.docURL}`);
     console.log(`Contract: ${this.contract}`);
