@@ -3,8 +3,6 @@
 
 # Maru 
 
-
-
 A static code analyzer for Solidity smart contracts. 
 
 
@@ -69,4 +67,4 @@ DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage
 
 ## Run maru with SWC test cases 
 
-Run the following the command `npm run test:swc` to see which test samples Maru detects. 
+Run the following the command `npm run test:swc` to see which test samples Maru detects. This requires a dev build. 
