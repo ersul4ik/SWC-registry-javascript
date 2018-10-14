@@ -9,9 +9,8 @@
 A static code analyzer for Solidity smart contracts. 
 <br><br><br><br>
 
-## Installation
+## Installation - Prod
 
-### Prod
 * Install dependencies 
   - `npm install` 
 * Create a production build 
@@ -19,15 +18,6 @@ A static code analyzer for Solidity smart contracts.
 * Link or install Maru globally 
   - `npm -g install`
   - `npm link`
-
-### Dev
-* Install dependencies 
-  - `npm install` 
-* Checkout submodule
-  - `git submodule init`
-  - `git submodule update --remote`
-* Create a development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)) 
-  - `npm run build:dev` 
     
 ## Usage
 
@@ -50,6 +40,15 @@ Define logging level for maru:
 DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol
 
 ```
+
+### Installation - Dev
+* Install dependencies 
+  - `npm install` 
+* Checkout submodule
+  - `git submodule init`
+  - `git submodule update --remote`
+* Create a development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)) 
+  - `npm run build:dev` 
 
 ## Run maru with SWC test cases 
 
