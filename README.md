@@ -11,13 +11,10 @@ A static code analyzer for Solidity smart contracts.
 
 ## Installation - Prod
 
-* Install dependencies 
-  - `npm install` 
-* Create a production build 
-  - `npm run build:prod` 
-* Link or install Maru globally 
-  - `npm -g install`
-  - `npm link`
+* Install dependencies: `npm install` 
+* Create a production build: `npm run build:prod` 
+* Link `npm link` or install Maru globally `npm -g install`
+
     
 ## Usage
 
