@@ -30,20 +30,9 @@ A static code analyzer for Solidity smart contracts.
     
 ## Usage
 
-The following command line parameters are available:
-
-```console
-  -v, --version         Print current version                                                         
-  -r, --run directory   Analyse files in specified directory                                          
-  -o, --output string   output format, txt or json, default ouput format is txt                       
-  -p, --plugin string   option to execute individual plugin, specified by plugin names given as       
-                        comma-separated value of this argument, run all plugins if not given          
-  -h, --help            Print this help message  
-```
-
 Running Maru on a file or directory with `--run` will run all active plugins:
 
-```console
+```
 
 ./maru --run test/SWC-registry/test_cases/
 
@@ -53,14 +42,14 @@ Running Maru on a file or directory with `--run` will run all active plugins:
 
 Run Maru with `--plugin` to run specific plugins (find the list [here](https://github.com/thec00n/maru/blob/master/config/config.json)). 
 
-```console
+```
 
 ./maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol --plugin OutdatedCompilerVersion
 
 ```
 
 Define logging level for maru:
-```console
+```
 DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol
 
 ```
