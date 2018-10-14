@@ -7,10 +7,8 @@
 <img height="150px" Hspace="0" Vspace="0" align="right" src="static/maru.png"/> 
 
 A static code analyzer for Solidity smart contracts. 
-<br><br><br><br>
 
-## Installation - Prod
-
+Installation:
 * Install dependencies: `npm install` 
 * Create a production build: `npm run build:prod` 
 * Link `npm link` or install Maru globally `npm -g install`
