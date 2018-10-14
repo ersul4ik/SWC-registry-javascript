@@ -6,13 +6,13 @@ import { Plugin } from '../src/plugin';
 let LockPragma: Plugin;
 const id = "SWC-103";
 
-LockPragma = function (ast: any){
+LockPragma = (ast: any) => {
   const issuePointers: IssuePointer[] = [];
 
   parser.visit(ast, {
     PragmaDirective(node: any) {
       if (!AstUtility.isVersionFixed(node.value)) {
-        issuePointers.push(AstUtility.createIssuePointerFromNode(id,node));
+        issuePointers.push(AstUtility.createIssuePointerFromNode(id, node));
       }
     },
   });

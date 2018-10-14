@@ -1,6 +1,7 @@
 const parser = require("solidity-parser-antlr");
 const util = require("util");
 
+import logger from "../src/logger";
 import { IssuePointer } from "../src/issue";
 
 class AstUtility {
@@ -59,7 +60,7 @@ class AstUtility {
   }
 
   static printNode(node: any){
-    console.log(JSON.stringify(node, null, 4));
+    logger.info(JSON.stringify(node, null, 4));
   }
 
 }

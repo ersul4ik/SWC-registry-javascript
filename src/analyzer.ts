@@ -6,7 +6,7 @@ const plugins = require("require-all")({
   recursive: true,
 });
 
-import { logger } from "../maru";
+import logger from "../src/logger";
 import AstUtility from "./ast_utility";
 import FileUtils from "./file_utils";
 import { IssueDetailed } from "./issue";

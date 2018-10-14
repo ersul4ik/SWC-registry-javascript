@@ -1,4 +1,5 @@
 const parser = require("solidity-parser-antlr");
+import logger from "../src/logger";
 import AstUtility from "../src/ast_utility";
 import { IssuePointer } from "../src/issue";
 import { Plugin } from '../src/plugin';
@@ -28,15 +29,15 @@ UncheckedCallReturnValue = function (ast: any){
                  AstUtility.matchRegex(mb.memberName, new RegExp("^send$")) ||
                  AstUtility.matchRegex(mb.memberName, new RegExp("^callcode$"))
                ){
-               let entry:any =  {};
-               entry['expr_nr'] = expression_nr;
-               entry['expr_range'] = expr.range;
-               entry['type'] = mb.memberName;
-               entry['type_range'] = mb.range;
-               entry['node'] = f_call;
-              functions.push(entry);
-              console.log(entry)
-              }  
+                let entry:any =  {};
+                entry.expr_nr = expression_nr;
+                entry.expr_range = expr.range;
+                entry.type = mb.memberName;
+                entry.type_range = mb.range;
+                entry.node = f_call;
+                functions.push(entry);
+                logger.info(entry);
+              }
             }
           });
 
