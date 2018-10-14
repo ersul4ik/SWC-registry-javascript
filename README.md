@@ -48,6 +48,12 @@ Run Maru with `--plugin` to run specific plugins (find the list [here](https://g
 
 ```
 
+Define logging level for maru:
+```console
+DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol
+
+```
+
 ## Run maru with SWC test cases 
 
 Run the following the command `npm run test:swc` to see which test samples Maru detects. 
