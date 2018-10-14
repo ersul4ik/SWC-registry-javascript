@@ -3,12 +3,13 @@
 
 # Maru 
 
-A static code analyzer for Solidity smart contracts. 
-
-
-## Installation
 
 <img height="150px" Hspace="0" Vspace="0" align="right" src="static/maru.png"/> 
+
+A static code analyzer for Solidity smart contracts. 
+<br><br><br><br><br><br>
+
+## Installation
 
 ### Prod
 * Install dependencies 
