@@ -39,13 +39,11 @@ DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage
 ```
 
 ### Installation - Dev
-* Install dependencies 
-  - `npm install` 
+* Install dependencies: `npm install` 
 * Checkout submodule
   - `git submodule init`
   - `git submodule update --remote`
-* Create a development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)) 
-  - `npm run build:dev` 
+* Create a development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)): `npm run build:dev` 
 
 ## Run maru with SWC test cases 
 
