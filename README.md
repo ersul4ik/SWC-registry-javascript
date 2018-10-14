@@ -33,19 +33,15 @@ A static code analyzer for Solidity smart contracts.
 Running Maru on a file or directory with `--run` will run all active plugins:
 
 ```
-
 ./maru --run test/SWC-registry/test_cases/
 
 ./maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol 
-
 ```
 
 Run Maru with `--plugin` to run specific plugins (find the list [here](https://github.com/thec00n/maru/blob/master/config/config.json)). 
 
 ```
-
 ./maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol --plugin OutdatedCompilerVersion
-
 ```
 
 Define logging level for maru:
