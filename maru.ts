@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
-const fse = require('fs-extra');
 const commandLineArgs = require("command-line-args");
 const commandLineUsage = require("command-line-usage");
 const pkg = require("./package.json");
@@ -58,7 +57,7 @@ const optionDefinitions = [
   },
   {
     name: "ast",
-    alias: "a",
+    alias: "ast",
     type: Boolean,
     description: "Dump the entire ast of the contract. Input a directory name (ex. -a ast_dump)",
   },
