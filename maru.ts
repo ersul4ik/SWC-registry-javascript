@@ -11,7 +11,7 @@ import Config from "./config/config.json";
 import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
-import AstTool from "./src/tools";
+import ContractAst from "./src/contract_ast";
 
 const DEFAULT_DEBUG_LEVEL = 'ERROR'
 const DEBUG_OPTIONS = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE']
@@ -125,7 +125,7 @@ if (options.help || options.length < 1) {
 
   if (options.ast) {
     var dir = options.ast + "/"
-    const output = AstTool.getContractAST(repo, config);
+    const output = ContractAst.getContractAST(repo, config);
     const response = JSON.stringify(output, null, 4);
 
     const filename = options.run.split("/").slice(-1)[0]
