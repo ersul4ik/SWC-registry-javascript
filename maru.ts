@@ -56,47 +56,51 @@ const sections = [
   },
 ];
 
-switch (options) {
-  case (options.help || options.length < 1):
-    const usage = commandLineUsage(sections);
-    console.log(usage);
-    break;
-  case (options.version):
-    console.log(`This is version ${pkg.version}`);
-    break;
-  case (options.run): {
-    let config: { [plugins: string]: any } = {};
-    config = Config;
-    if (options.plugin != null) {
-      const usingPlugins: { [plugins: string]: any } = {};
-      options.plugin.split(",").forEach((plugin: string) => {
-        if ((config.plugins[plugin] != null) && (config.plugins[plugin].SWC != null)) {
-          usingPlugins[plugin] = config.plugins[plugin];
-        } else {
-          console.log(`${plugin} does not exist.`)
-          return;
-        }
-      });
-      config = {
-        plugins: usingPlugins,
-      };
-    }
-    const repo = new Repository();
 
-    const stats = fs.statSync(options.run);
-    if (stats.isDirectory()) {
-      repo.addFiles(options.run, ".sol");
-    } else if (stats.isFile()) {
-      repo.addFile(options.run);
-    }
 
-    const issues = Analyzer.runAllPlugins(repo, config);
-    if (options.output === "json") {
-      Reporter.toJSON(issues);
-    } else {
-      Reporter.toText(issues);
-    }
+
+
+if (options.help || options.length < 1){
+  const usage = commandLineUsage(sections);
+  console.log(usage);
+} else if (options.version){
+  console.log(`This is version ${pkg.version}`);
+} else if (options.run) {
+  let config: { [plugins: string]: any } = {};
+  config = Config;
+  if (options.plugin != null) {
+    const usingPlugins: { [plugins: string]: any } = {};
+    options.plugin.split(",").forEach((plugin: string) => {
+      if ((config.plugins[plugin] != null) && (config.plugins[plugin].SWC != null)) {
+        usingPlugins[plugin] = config.plugins[plugin];
+      } else {
+        console.log(`${plugin} does not exist.`)
+        return;
+      }
+    });
+    config = {
+      plugins: usingPlugins,
+    };
   }
-  default:
-    console.log(`Maru v.${pkg.version}`);
+  const repo = new Repository();
+
+  const stats = fs.statSync(options.run);
+  if (stats.isDirectory()) {
+    repo.addFiles(options.run, ".sol");
+  } else if (stats.isFile()) {
+    repo.addFile(options.run);
+  }
+
+  const issues = Analyzer.runAllPlugins(repo, config);
+  if (options.output === "json") {
+    Reporter.toJSON(issues);
+  } else {
+    Reporter.toText(issues);
+  }
 }
+else {
+  console.log(`Maru v.${pkg.version}`);
+}
+
+
+
