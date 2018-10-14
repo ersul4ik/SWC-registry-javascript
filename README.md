@@ -38,7 +38,7 @@ DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage
 
 ```
 
-### Installation - Dev
+## Installation - Dev
 * Install dependencies: `npm install` 
 * Checkout submodule
   - `git submodule init`
