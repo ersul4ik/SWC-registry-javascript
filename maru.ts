@@ -59,7 +59,7 @@ const optionDefinitions = [
   {
     name: "ast",
     alias: "a",
-    type: String,
+    type: Boolean,
     description: "Dump the entire ast of the contract. Input a directory name (ex. -a ast_dump)",
   },
 ];
@@ -124,14 +124,8 @@ if (options.help || options.length < 1) {
   }
 
   if (options.ast) {
-    var dir = options.ast + "/"
     const output = ContractAst.getContractAST(repo, config);
-    const response = JSON.stringify(output, null, 4);
-
-    const filename = options.run.split("/").slice(-1)[0]
-    const filename_without_format = filename.split(".sol")[0];
-
-    const file_json = filename_without_format + ".json"
-    fse.outputFile(dir + file_json, response);
+    const response = JSON.stringify(output, null, 2);
+    console.log(response)
   }
 }
