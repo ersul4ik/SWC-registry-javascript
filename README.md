@@ -10,12 +10,25 @@ A static code analyzer for Solidity smart contracts.
 
 ## Installation
 
+
+
+### Prod
+* Install dependencies 
+  - `npm install` 
+* Create a production build 
+  - `npm run build:prod` 
+* Link or install Maru globally 
+  - `npm -g install`
+  - `npm link`
+
+### Dev
+* Install dependencies 
+  - `npm install` 
 * Checkout submodule
   - `git submodule init`
   - `git submodule update --remote`
-* Install dependencies. Select one of the commands below based on required build type
-  - `npm run build:prod` Production build
-  - `npm run build:dev` Development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)) 
+* Create a development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)) 
+  - `npm run build:dev` 
     
 ## Usage
 
