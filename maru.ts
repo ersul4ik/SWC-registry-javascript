@@ -98,5 +98,5 @@ switch (options) {
     }
   }
   default:
-    console.log(`Maru ${pkg.version}`);
+    console.log(`Maru v.${pkg.version}`);
 }
