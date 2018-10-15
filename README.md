@@ -46,3 +46,6 @@ DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage
 ## Run maru with SWC test cases 
 
 Run the following the command `npm run test:swc` to see which test samples Maru detects. This requires a dev build. 
+
+## Credits 
+Maru uses the excellent 3rd party Solidity grammar in [solidity-antlr4](https://github.com/solidityj/solidity-antlr4) and AST abstraction in [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr) from @federicobond. 
