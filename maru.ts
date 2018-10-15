@@ -9,6 +9,7 @@ import Config from "./config/config.json";
 import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
+import ContractAst from "./src/contract_ast";
 
 const optionDefinitions = [
   {
@@ -41,6 +42,12 @@ const optionDefinitions = [
     alias: "h",
     type: Boolean,
     description: "Print this help message",
+  },
+  {
+    name: "ast",
+    alias: "ast",
+    type: Boolean,
+    description: "Dump the entire ast of the contract. Input a directory name (ex. -a ast_dump)",
   }
 ];
 
@@ -96,6 +103,12 @@ if (options.help || options.length < 1){
     Reporter.toJSON(issues);
   } else {
     Reporter.toText(issues);
+  }
+
+  if (options.ast) {
+    const output = ContractAst.getContractAST(repo, config);
+    const response = JSON.stringify(output, null, 2);
+    console.log(response)
   }
 }
 else {
