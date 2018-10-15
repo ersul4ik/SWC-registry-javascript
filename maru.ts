@@ -9,7 +9,7 @@ import Config from "./config/config.json";
 import Analyzer from "./src/analyzer";
 import Reporter from "./src/reporter";
 import Repository from "./src/repository";
-import ContractAst from "./src/contract_ast";
+import AstUtility from "./src/ast_utility";
 
 const optionDefinitions = [
   {
@@ -45,9 +45,9 @@ const optionDefinitions = [
   },
   {
     name: "ast",
-    alias: "ast",
+    alias: "a",
     type: Boolean,
-    description: "Dump the entire ast of the contract. Input a directory name (ex. -a ast_dump)",
+    description: "Dump the entire ast of the contract. e.g. --run contract.sol --ast",
   }
 ];
 
@@ -62,9 +62,6 @@ const sections = [
     optionList: optionDefinitions,
   },
 ];
-
-
-
 
 
 if (options.help || options.length < 1){
@@ -89,27 +86,30 @@ if (options.help || options.length < 1){
       plugins: usingPlugins,
     };
   }
-  const repo = new Repository();
 
+  const repo = new Repository();
   const stats = fs.statSync(options.run);
+
   if (stats.isDirectory()) {
     repo.addFiles(options.run, ".sol");
   } else if (stats.isFile()) {
     repo.addFile(options.run);
   }
 
-  const issues = Analyzer.runAllPlugins(repo, config);
-  if (options.output === "json") {
-    Reporter.toJSON(issues);
-  } else {
-    Reporter.toText(issues);
-  }
 
   if (options.ast) {
-    const output = ContractAst.getContractAST(repo, config);
+    const output = AstUtility.getContractAST(repo);
     const response = JSON.stringify(output, null, 2);
     console.log(response)
+  } else {
+    const issues = Analyzer.runAllPlugins(repo, config);
+    if (options.output === "json") {
+      Reporter.toJSON(issues);
+    } else {
+      Reporter.toText(issues);
+    }
   }
+
 }
 else {
   console.log(`Maru v.${pkg.version}`);

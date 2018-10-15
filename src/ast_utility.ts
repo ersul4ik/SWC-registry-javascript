@@ -3,6 +3,8 @@ const util = require("util");
 
 import logger from "../src/logger";
 import { IssuePointer } from "../src/issue";
+import Repository from "./repository";
+
 
 class AstUtility {
   static getContractName(ast: any) {
@@ -62,6 +64,19 @@ class AstUtility {
   static printNode(node: any){
     logger.info(JSON.stringify(node, null, 4));
   }
+
+  static getContractAST(repo: Repository) {
+    for (const [filename, filecontent] of Object.entries(repo.files)) {
+        var ast;
+        try {
+            ast = parser.parse(filecontent, { loc: true, range: true });
+        } catch (e) {
+            logger.error("Exception during AST parsing for " + filename);
+            console.log(e);
+        }
+    }
+    return ast;
+}
 
 }
 
