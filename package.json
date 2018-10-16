@@ -16,7 +16,7 @@
     "dev": "tsc -w",
     "clean": "rm -rf node_modules/ && rm -rf package-lock.json && rm -rf dist/*",
     "build:prod": "npm run clean && npm install && npm run updateswc && npm run tsc && chmod +x dist/maru.js && cp package.json dist/",
-    "build:dev": "npm run clean && npm run install:solidity-parser-antlr && npm install && npm run updateswc && npm run tsc && chmod +x dist/maru.js",
+    "build:dev": "npm run clean && npm run install:solidity-parser-antlr && npm install && npm run updateswc && npm run tsc && chmod +x dist/maru.js && cp package.json dist/",
     "install:solidity-parser-antlr": "deps/solidity-parser-antlr.sh",
     "test": "./node_modules/.bin/nyc mocha test/**/*.ts -r ts-node/register || exit 0",
     "test:unit": "./node_modules/.bin/nyc mocha test/* -r ts-node/register || exit 0",
