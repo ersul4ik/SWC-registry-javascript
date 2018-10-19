@@ -1,16 +1,19 @@
 import SWC from "./swc";
 
-const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs/";
+const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs";
 
 class IssueDetailed {
-  filename = "";
-  contract = "";
-  code = "";
+  path: string;
+  filename: string;
+  contract: string;
+  code: string;
   issuePointer: IssuePointer;
   docURL: string;
 
   constructor(filename: string, contract: string, code: string, ip: IssuePointer) {
-    this.filename = filename;
+    this.path = filename;
+    const splitedPath = filename.split('/');
+    this.filename = splitedPath[splitedPath.length - 1]
     this.contract = contract;
     this.code = code;
     this.issuePointer = ip;
@@ -54,11 +57,11 @@ class IssueDetailed {
     const { id } = this.issuePointer;
     const { linenumber_start, linenumber_end } = this.issuePointer;
     return {
-      "contractName": this.contract,
       "swc-id": id,
+      "filename": this.filename,
       "lineNumberStart": linenumber_start,
       "lineNumberEnd": linenumber_end,
-      "filename": this.filename,
+      "contractName": this.contract,
       "swc-link": this.docURL,
       ...this.issuePointer.swc.displaySWC(),
     };

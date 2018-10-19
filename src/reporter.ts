@@ -8,10 +8,8 @@ class Reporter {
     }
   }
   static toJSON(issues: IssueDetailed[]) {
-    for (const issue of issues) {
-      console.log("----------------------------------");
-      issue.jsonPrint();
-    }
+    const response = issues.map(item => item.jsonValue());
+    console.log(JSON.stringify({ issues: response }, null, 4));
   }
 }
 
