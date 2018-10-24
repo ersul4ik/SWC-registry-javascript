@@ -22,7 +22,7 @@ class SWC {
 
   getReferences = () => this.content && this.content.References;
 
-  getSeverity = () => "Critical"; // this.content && this.content.Severity;
+  getSeverity = () => ""; // this.content && this.content.Severity;
 
   displaySWC = () => ({
     "swc-title": this.getTitle(),
