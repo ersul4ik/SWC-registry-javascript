@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+import logger from "../src/logger";
 
 class FileUtils {
   static searchRecursive(dir: string, pattern: string): string[] {
@@ -28,6 +29,17 @@ class FileUtils {
       code.push(`${x}: ${lines[x]}`);
     }
     return code.join("\n");
+  }
+
+  static getFileContent(filepath:string) {
+    const stats = fs.statSync(path);
+
+    if (stats.isFile()) {
+        return stats.readFileSync(path).toString();
+    } else {
+      
+    }
+
   }
 }
 

@@ -39,6 +39,10 @@
 		"AuthorizationTXOrigin":{
 			"active": "true",
 			"SWC": "118"
+		},
+		"Test":{
+			"active": "true",
+			"SWC": "118"
 		}
 	}
 }
