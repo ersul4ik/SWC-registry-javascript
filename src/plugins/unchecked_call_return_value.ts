@@ -1,8 +1,10 @@
 const parser = require("solidity-parser-antlr");
-import logger from "../src/logger";
-import AstUtility from "../src/ast_utility";
-import { IssuePointer } from "../src/issue";
-import { Plugin } from '../src/plugin';
+
+import AstUtility from "../utils/ast";
+import { IssuePointer } from "../maru/issue";
+import { Plugin } from '../maru/plugin';
+import Logger from "../logger/logger";
+
 
 let UncheckedCallReturnValue: Plugin;
 const id = "SWC-104";
@@ -36,7 +38,7 @@ UncheckedCallReturnValue = function (ast: any){
                 entry.type_range = mb.range;
                 entry.node = f_call;
                 functions.push(entry);
-                logger.info(entry);
+                Logger.info(entry);
               }
             }
           });

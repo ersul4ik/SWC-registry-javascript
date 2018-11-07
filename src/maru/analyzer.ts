@@ -6,24 +6,19 @@ const plugins = require("require-all")({
   recursive: true,
 });
 
-import logger from "../src/logger";
-import AstUtility from "./ast_utility";
-import FileUtils from "./file_utils";
+import Logger from "../logger/logger";
+import AstUtility from "../utils/ast";
+import FileUtils from "../utils/file";
 import { IssueDetailed } from "./issue";
-import Repository from "./repository";
+import Repository from "../declarations/repository";
 
 class Analyzer {
   static runAllPlugins(repo: Repository, config: { [plugins: string]: any }) {
     const issues = [];
 
     for (const [filename, filecontent] of Object.entries(repo.files)) {
-      let ast;
-      try {
-        ast = parser.parse(filecontent, { loc: true, range: true });
-      } catch (e) {
-        logger.error("Exception during AST parsing for " + filename);
-        console.log(e);
-      }
+ 
+      const ast = this.generateAST(filename,filecontent);
       const contractName = AstUtility.getContractName(ast);
 
       for (const configPluginName in config.plugins) {
@@ -35,11 +30,11 @@ class Analyzer {
               pluginFound = true;
               let issuePointers = [];
 
-              logger.info(`Executing Plugin: ${configPluginName}`);
+              Logger.info(`Executing Plugin: ${configPluginName}`);
 
               try {
                 issuePointers = plugins[plugin][configPluginName](ast);
-                logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
+                Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
                 for (const issuePointer of issuePointers) {
                   const { linenumber_start, linenumber_end } = issuePointer;
                   const code = FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
@@ -48,21 +43,34 @@ class Analyzer {
                   issues.push(issueDetailed);
                 }
               } catch (error) {
-                logger.debug(`Something went wrong in plugin: ${configPluginName}`);
-                logger.debug(error);
+                Logger.debug(`Something went wrong in plugin: ${configPluginName}`);
+                Logger.debug(error);
               }
             }
           }
 
           if (!pluginFound) {
-            logger.debug(`Implementation missing for ${configPluginName}`);
+            Logger.debug(`Implementation missing for ${configPluginName}`);
           }
         }
       }
     }
-
     return issues;
   }
+
+  static generateAST(filename:string, filecontent:string){
+    let ast;
+    try {
+      ast = parser.parse(filecontent, { loc: true, range: true });
+    } catch (e) {
+      Logger.error("Exception during AST parsing for " + filename);
+      console.log(e);
+    }
+
+    return ast;
+  }
+
+
 }
 
 export default Analyzer;

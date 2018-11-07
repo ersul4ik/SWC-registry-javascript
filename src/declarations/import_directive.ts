@@ -1,5 +1,5 @@
 const fs = require("fs");
-import logger from "../../src/logger";
+import logger from "../logger/logger";
 
 class ImportDirective{
     path:string;
@@ -20,3 +20,4 @@ class ImportDirective{
         }
     }
 }
+

@@ -1,12 +1,13 @@
 const parser = require("solidity-parser-antlr");
 const util = require("util");
 
-import logger from "../src/logger";
-import { IssuePointer } from "../src/issue";
-import Repository from "./repository";
+import logger from "../logger/logger";
+import { IssuePointer } from "../maru/issue";
+import Repository from "../declarations/repository";
 
 
 class AstUtility {
+  
   static getContractName(ast: any) {
     let contractName = "";
     parser.visit(ast, {
@@ -35,14 +36,14 @@ class AstUtility {
       .match(/default/);
   }
 
-  static createIssuePointerFromNode(id:string, node:any){
+  static createIssuePointerFromNode(id:string, node:any): IssuePointer {
     const linenumber_start = AstUtility.getStartLine(node);
     const linenumber_end = AstUtility.getEndLine(node);
     const issuePointer = new IssuePointer(id, linenumber_start, linenumber_end, undefined, undefined);
     return issuePointer;
   }
 
-  static matchRegex(node:any, match:RegExp){
+  static matchRegex(node:any, match:RegExp): boolean {
     if(node !== null && node !== undefined ){
       if(node.match(match)){
         return true;
@@ -52,7 +53,7 @@ class AstUtility {
   }
 
 
-  static matchString(node:any, match:string){
+  static matchString(node:any, match:string):boolean{
     if(node !== null && node !== undefined ){
       if(node.match(match)){
         return true;
@@ -61,13 +62,17 @@ class AstUtility {
     return false;
   }
 
-  static printNode(node: any){
+  static logNode(node: any):void {
     logger.info(JSON.stringify(node, null, 4));
   }
 
+  static printNode(node: any):void {
+    console.log(JSON.stringify(node, null, 4));
+  }
+
   static getContractAST(repo: Repository) {
+    let ast;
     for (const [filename, filecontent] of Object.entries(repo.files)) {
-        var ast;
         try {
             ast = parser.parse(filecontent, { loc: true, range: true });
         } catch (e) {

@@ -6,10 +6,10 @@ const commandLineUsage = require("command-line-usage");
 const pkg = require("./package.json");
 
 import Config from "./config/config.json";
-import Analyzer from "./src/analyzer";
-import Reporter from "./src/reporter";
-import Repository from "./src/repository";
-import AstUtility from "./src/ast_utility";
+import Analyzer from "./src/maru/analyzer";
+import Reporter from "./src/maru/reporter";
+import Repository from "./src/declarations/repository";
+import AstUtility from "./src/utils/ast";
 
 const optionDefinitions = [
   {

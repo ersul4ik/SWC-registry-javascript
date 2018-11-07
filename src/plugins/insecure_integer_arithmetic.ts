@@ -1,5 +1,10 @@
 const parser = require("solidity-parser-antlr");
-import { IssuePointer } from "../src/issue";
+
+import AstUtility from "../utils/ast";
+import { IssuePointer } from "../maru/issue";
+import { Plugin } from '../maru/plugin';
+import Logger from "../logger/logger";
+
 
 exports.InsecureIntegerArithmetic = (ast: any) => {
   const issuePointers: IssuePointer[] = [];

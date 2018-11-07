@@ -1,5 +1,5 @@
-import FileUtils from "./file_utils";
-import { IssueDetailed } from "./issue";
+import FileUtils from "../utils/file";
+import { IssueDetailed } from "../maru/issue";
 const fs = require("fs");
 
 class Repository {

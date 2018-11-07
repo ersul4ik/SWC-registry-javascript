@@ -1,5 +1,5 @@
 const assert = require("assert");
-import Repository from "../src/repository";
+import Repository from "../../src/declarations/repository";
 
 describe("Repository", () => {
   describe("#addFiles recursively to a Repository", () => {

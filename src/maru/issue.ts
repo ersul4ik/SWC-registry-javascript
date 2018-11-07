@@ -1,4 +1,4 @@
-import SWC from "./swc";
+import SWC from "./../swc/swc";
 
 const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs";
 

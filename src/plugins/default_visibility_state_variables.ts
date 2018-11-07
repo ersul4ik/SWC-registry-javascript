@@ -1,7 +1,9 @@
 const parser = require("solidity-parser-antlr");
-import AstUtility from "../src/ast_utility";
-import { IssuePointer } from "../src/issue";
-import { Plugin } from '../src/plugin';
+
+import AstUtility from "../utils/ast";
+import { IssuePointer } from "../maru/issue";
+import { Plugin } from '../maru/plugin';
+import Logger from "../logger/logger";
 
 let DefaultVisibilityStateVariable: Plugin;
 const id = "SWC-108";

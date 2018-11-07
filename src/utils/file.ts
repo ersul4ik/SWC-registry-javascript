@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-import logger from "../src/logger";
+
+import logger from "../logger/logger";
 
 class FileUtils {
   static searchRecursive(dir: string, pattern: string): string[] {
@@ -22,7 +23,7 @@ class FileUtils {
     return results;
   }
 
-  static getCodeAtLine(filecontent: string, linenumber_start: number, linenumber_end: number) {
+  static getCodeAtLine(filecontent: string, linenumber_start: number, linenumber_end: number): string {
     const lines = filecontent.split("\n");
     const code = [];
     for (let x = linenumber_start - 1; x <= linenumber_end - 1; x++) {
@@ -31,13 +32,13 @@ class FileUtils {
     return code.join("\n");
   }
 
-  static getFileContent(filepath:string) {
-    const stats = fs.statSync(path);
-
+  static getFileContent(filepath:string): string {
+    const stats = fs.statSync(filepath);
     if (stats.isFile()) {
-        return stats.readFileSync(path).toString();
+        return fs.readFileSync(filepath).toString();
     } else {
-      
+      logger.error("File not found " + filepath);
+      return ""
     }
 
   }

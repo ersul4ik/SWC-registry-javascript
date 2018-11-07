@@ -19,7 +19,7 @@
     "build:dev": "npm run clean && npm run install:solidity-parser-antlr && npm install && npm run updateswc && npm run tsc && chmod +x dist/maru.js && cp package.json dist/",
     "install:solidity-parser-antlr": "deps/solidity-parser-antlr.sh",
     "test": "./node_modules/.bin/nyc mocha test/**/*.ts -r ts-node/register || exit 0",
-    "test:unit": "./node_modules/.bin/nyc mocha test/* -r ts-node/register || exit 0",
+    "test:unit": "./node_modules/.bin/nyc mocha test/unit/* -r ts-node/register || exit 0",
     "test:swc": "./node_modules/.bin/nyc mocha test/SWC-test-case-runner/run.ts -r ts-node/register || exit 0",
     "test:functional": "nyc mocha test/functional/* -r ts-node/register || exit 0",
     "lint": "tslint -c tslint.json  -p .",
@@ -29,12 +29,14 @@
   "devDependencies": {
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.10.3",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.0.3",
+    "expect": "^23.6.0",
     "istanbul": "^0.4.5",
+    "mocha": "5.2.0",
     "nyc": "^13.1.0",
+    "should": "^13.2.3",
+    "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "mocha": "5.2.0"
+    "typescript": "^3.0.3"
   },
   "author": "Gerhard Wagner",
   "license": ""
