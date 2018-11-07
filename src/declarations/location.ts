@@ -1,4 +1,4 @@
-class ASTElement {
+class Location {
     loc:any 
     range:any 
     
@@ -8,4 +8,4 @@ class ASTElement {
     }
 }
 
-export default ASTElement;
+export default Location;

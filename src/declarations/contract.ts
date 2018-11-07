@@ -1,17 +1,18 @@
-import ASTElement from './ast_element';
+import Location from './location';
+import Node from './node';
 
-class Contract extends ASTElement {
+class Contract extends Location {
     name:string;
-    subNodes:any;
+    subNodes:Node; 
     kind:string;
-    baseContracts:any;
+    baseContracts:string[];
 
-    constructor(name:string, subNodes:any, kind:string, baseContracts:any, loc:any, range:any){
+    constructor(name:string,  kind:string, baseContracts:string[], subNodes:Node, loc:any, range:any){
         super(loc,range);
         this.name = name;
-        this.subNodes = subNodes;
         this.kind = kind;
         this.baseContracts = baseContracts;
+        this.subNodes = subNodes;
     }
     
 }

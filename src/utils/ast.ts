@@ -2,8 +2,10 @@ const parser = require("solidity-parser-antlr");
 const util = require("util");
 
 import logger from "../logger/logger";
+import Analyzer from "../maru/analyzer";
 import { IssuePointer } from "../maru/issue";
-import Repository from "../declarations/repository";
+import FileUtils from "./file";
+
 
 
 class AstUtility {
@@ -70,18 +72,13 @@ class AstUtility {
     console.log(JSON.stringify(node, null, 4));
   }
 
-  static getContractAST(repo: Repository) {
-    let ast;
-    for (const [filename, filecontent] of Object.entries(repo.files)) {
-        try {
-            ast = parser.parse(filecontent, { loc: true, range: true });
-        } catch (e) {
-            logger.error("Exception during AST parsing for " + filename);
-            console.log(e);
-        }
-    }
+  static getContractAST(file_name: string): any {
+
+    const file_content = FileUtils.getFileContent(file_name);
+    const ast = Analyzer.generateAST(file_name, file_content);
+    
     return ast;
-}
+  }
 
 }
 

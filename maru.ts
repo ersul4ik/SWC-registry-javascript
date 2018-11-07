@@ -96,9 +96,8 @@ if (options.help || options.length < 1){
     repo.addFile(options.run);
   }
 
-
-  if (options.ast) {
-    const output = AstUtility.getContractAST(repo);
+  if (options.ast && stats.isFile()) {
+    const output = AstUtility.getContractAST(options.run);
     const response = JSON.stringify(output, null, 2);
     console.log(response)
   } else {
@@ -109,9 +108,7 @@ if (options.help || options.length < 1){
       Reporter.toText(issues);
     }
   }
-
-}
-else {
+} else {
   console.log(`Maru v.${pkg.version}`);
 }
 
