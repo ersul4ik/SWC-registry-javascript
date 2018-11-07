@@ -17,7 +17,6 @@ UncheckedCallReturnValue = function (ast: any){
   const issuePointers: IssuePointer[] = [];
   let functions:any = [];
   let expression_nr:number = 0;
-  AstUtility.printNode(ast)
 
   parser.visit(ast, {
     ExpressionStatement(expr: any) {
