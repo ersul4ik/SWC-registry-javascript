@@ -1,10 +1,16 @@
 class Location {
-    loc:any 
-    range:any 
+    lineNumberStart:number; 
+    lineNumberEnd:number;
+    columnStart:number;
+    columnEnd:number;
+    src:string
     
-    constructor(loc:any, range:any){
-        this.loc = loc;
-        this.range = range;
+    constructor(lineNumberStart:number, lineNumberEnd:number, columnStart:number, columnEnd:number, src:string){
+        this.lineNumberStart = lineNumberStart;
+        this.lineNumberEnd = lineNumberEnd;
+        this.columnStart = columnStart;
+        this.columnEnd = columnEnd;
+        this.src = src;
     }
 }
 

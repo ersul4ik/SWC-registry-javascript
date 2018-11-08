@@ -72,8 +72,7 @@ class AstUtility {
     console.log(JSON.stringify(node, null, 4));
   }
 
-  static getContractAST(file_name: string): any {
-
+  static getSolAntlrAST(file_name: string): any {
     const file_content = FileUtils.getFileContent(file_name);
     const ast = Analyzer.generateAST(file_name, file_content);
     

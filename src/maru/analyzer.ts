@@ -10,7 +10,7 @@ import Logger from "../logger/logger";
 import AstUtility from "../utils/ast";
 import FileUtils from "../utils/file";
 import { IssueDetailed } from "./issue";
-import Repository from "../declarations/repository";
+import Repository from "./repository";
 
 class Analyzer {
   static runAllPlugins(repo: Repository, config: { [plugins: string]: any }) {
@@ -18,7 +18,7 @@ class Analyzer {
 
     for (const [filename, filecontent] of Object.entries(repo.files)) {
  
-      const ast = this.generateAST(filename,filecontent);
+      const ast = null; // this.generateAST(filename,filecontent);
       const contractName = AstUtility.getContractName(ast);
 
       for (const configPluginName in config.plugins) {
@@ -37,7 +37,7 @@ class Analyzer {
                 Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
                 for (const issuePointer of issuePointers) {
                   const { linenumber_start, linenumber_end } = issuePointer;
-                  const code = FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
+                  const code =  null; // FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
 
                   const issueDetailed = new IssueDetailed(filename, contractName, code, issuePointer);
                   issues.push(issueDetailed);
@@ -57,19 +57,6 @@ class Analyzer {
     }
     return issues;
   }
-
-  static generateAST(filename:string, filecontent:string){
-    let ast;
-    try {
-      ast = parser.parse(filecontent, { loc: true, range: true });
-    } catch (e) {
-      Logger.error("Exception during AST parsing for " + filename);
-      console.log(e);
-    }
-
-    return ast;
-  }
-
 
 }
 

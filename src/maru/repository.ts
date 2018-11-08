@@ -1,11 +1,17 @@
 import FileUtils from "../utils/file";
-import { IssueDetailed } from "../maru/issue";
+import { IssueDetailed } from "./issue";
+import SolFile from './sol_file'
 const fs = require("fs");
 
-class Repository {
-  issues: IssueDetailed[] = [];
-  files: { [key: string]: string } = {};
+// A Repository is a list of SolFiles 
 
+class Repository {
+
+  files: SolFile[] = [];
+
+  constructor(){}
+
+  /*
   addIssue(issue: IssueDetailed) {
     this.issues.push(issue);
   }
@@ -13,7 +19,8 @@ class Repository {
   addIssues(issues: IssueDetailed[]) {
     this.issues.concat(issues);
   }
-
+  */ 
+  /*
   addFile(filename: string) {
     this.files[filename] = fs
       .readFileSync(filename)
@@ -26,6 +33,7 @@ class Repository {
       this.addFile(filename);
     }
   }
+  */
 }
 
 export default Repository;

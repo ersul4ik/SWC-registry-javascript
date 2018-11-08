@@ -8,7 +8,7 @@ const pkg = require("./package.json");
 import Config from "./config/config.json";
 import Analyzer from "./src/maru/analyzer";
 import Reporter from "./src/maru/reporter";
-import Repository from "./src/declarations/repository";
+import Repository from "./src/maru/repository";
 import AstUtility from "./src/utils/ast";
 
 const optionDefinitions = [
@@ -97,7 +97,7 @@ if (options.help || options.length < 1){
   }
 
   if (options.ast && stats.isFile()) {
-    const output = AstUtility.getContractAST(options.run);
+    const output = AstUtility.getSolAntlrAST(options.run);
     const response = JSON.stringify(output, null, 2);
     console.log(response)
   } else {
