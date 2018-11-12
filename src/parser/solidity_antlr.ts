@@ -6,7 +6,6 @@ import Import from '../declarations/import'
 import Node from '../declarations/node'
 import Location from '../declarations/location'
 import CFunction from '../declarations/cfunction'
-import SolFile from '../maru/sol_file';
 import Logger from '../logger/logger'
 import Pragma from '../declarations/pragma';
 import AstUtility from '../utils/ast';
@@ -15,17 +14,7 @@ import StateVariable from '../declarations/state_variable';
 
 class SolidityAntlr {
 
-    static parseSolFile(file_name: string) {
-        const ast = SolidityAntlr.generateAST(file_name);
-
-        const pragma: Pragma = SolidityAntlr.parsePragma(ast);
-        const constracts_current: Contract[] = SolidityAntlr.parseContracts(ast);
-        const imports: Import[] = SolidityAntlr.parseImports(file_name, ast);
-
-
-    }
-
-    static parseContracts(ast: any): Contract[] {
+    static parseContracts(ast: Node): Contract[] {
         let contracts: Contract[] = [];
         parser.visit(ast, {
             ContractDefinition(node: any) {
@@ -33,7 +22,6 @@ class SolidityAntlr {
                 const kind: string = node.kind;
                 const baseContracts: string[] = SolidityAntlr.parseInheritance(node.baseContracts);
                 const subNodes: Node = new Node(node.subNodes);
-
                 const location = SolidityAntlr.parseLocation(node.loc, node.range)
 
                 contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
@@ -43,17 +31,26 @@ class SolidityAntlr {
         return contracts;
     }
 
-    static parseAllImports(file_name: string, ast: any) {
+    static parseImportedContracts(file_name: string, subNodes: Node): Contract[] {
+        let imports: Import[] = SolidityAntlr.parseAllImports(file_name, subNodes);
+        let imported_contracts: Contract[] = [];
+
+        for (const i of imports) {
+            const subNodes = SolidityAntlr.generateAST(i.path);
+            imported_contracts.concat(SolidityAntlr.parseContracts(subNodes));
+        }
+        return imported_contracts;
+    }
+
+    static parseAllImports(file_name: string, ast: any): Import[] {
         file_name = path.normalize(file_name)
         let imports_all: Import[] = [];
         let imports_work: Import[] = SolidityAntlr.parseImports(file_name, ast)
 
         while (imports_work.length != 0) {
             let imp: any = imports_work.pop();
-
             let _ast = SolidityAntlr.generateAST(imp.path);
             let _imports: Import[] = SolidityAntlr.parseImports(imp.path, _ast);
-
 
             for (let i = imports_all.length - 1; i >= 0; i--) {
                 for (let j = _imports.length - 1; j >= 0; j--) {
@@ -194,7 +191,7 @@ class SolidityAntlr {
         return variables;
     }
 
-    static generateAST(file_name: string) {
+    static generateAST(file_name: string): Node {
         const file_content = FileUtils.getFileContent(file_name);
         let ast;
         try {
@@ -205,7 +202,6 @@ class SolidityAntlr {
         }
         return ast;
     }
-
 
 }
 

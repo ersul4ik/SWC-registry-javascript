@@ -9,7 +9,7 @@ class Repository {
 
   files: SolFile[] = [];
 
-  constructor(){}
+  constructor() { }
 
   /*
   addIssue(issue: IssueDetailed) {
@@ -19,7 +19,7 @@ class Repository {
   addIssues(issues: IssueDetailed[]) {
     this.issues.concat(issues);
   }
-  */ 
+  */
   /*
   addFile(filename: string) {
     this.files[filename] = fs
