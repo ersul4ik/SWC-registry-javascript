@@ -18,6 +18,7 @@ class IssueDetailed {
     this.code = code;
     this.issuePointer = ip;
     this.swcURL = `${SWC_REGISTRY_DOC}/${ip.id}`;
+
   }
 
   /**
@@ -54,14 +55,18 @@ class IssueDetailed {
 
   jsonValue() {
     const { id } = this.issuePointer;
-    const { lineNumberStart, lineNumberEnd } = this.issuePointer;
+    const { lineNumberStart, lineNumberEnd, columnStart, columnEnd, src } = this.issuePointer;
     return {
       "swc-id": id,
+      "swc-title": this.issuePointer.swc.getTitle(),
       "filename": this.filename,
       "lineNumberStart": lineNumberStart,
       "lineNumberEnd": lineNumberEnd,
+      "columnStart": columnStart,
+      "columnEnd": columnEnd,
+      "src": src,
       "swc-link": this.swcURL,
-      ...this.issuePointer.swc.displaySWC(),
+
     };
   }
 
@@ -86,7 +91,7 @@ class IssuePointer {
     this.lineNumberStart = location.lineNumberStart;
     this.lineNumberEnd = location.lineNumberEnd;
     this.columnStart = location.columnStart;
-    this.columnEnd = location.lineNumberEnd;
+    this.columnEnd = location.columnEnd;
     this.src = location.src;
   }
 

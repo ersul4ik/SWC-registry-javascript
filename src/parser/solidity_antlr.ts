@@ -124,7 +124,6 @@ class SolidityAntlr {
         let functions: CFunction[] = [];
         parser.visit(ast, {
             FunctionDefinition(node: any) {
-
                 let name: string = node.name;
                 const parameters: any = node.parameters;
                 const subNodes: Node = node.body;

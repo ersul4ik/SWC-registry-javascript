@@ -11,6 +11,7 @@ import AstUtility from "../utils/ast";
 import FileUtils from "../utils/file";
 import { IssueDetailed, IssuePointer } from "./issue";
 import Repository from "./repository";
+import PluginConfig from "./plugin_config"
 
 class Analyzer {
   static runAllPlugins(repo: Repository, config: { [plugins: string]: any }): IssueDetailed[] {
@@ -25,18 +26,25 @@ class Analyzer {
           for (const plugin in plugins) {
             if (typeof plugins[plugin][configPluginName] === "function") {
               pluginFound = true;
+              let issuePointers;
+
+              let pc = new PluginConfig(
+                config.plugins[configPluginName].active,
+                config.plugins[configPluginName].swcID,
+                config.plugins[configPluginName].shortDescription
+              );
 
               Logger.info(`Executing Plugin: ${configPluginName}`);
 
               try {
-                plugins[plugin][configPluginName](sol_file);
+                issuePointers = plugins[plugin][configPluginName](sol_file, pc);
                 Logger.info(`Plugin ${configPluginName} discovered ${sol_file.issuePointers.length} issue(s) in ${sol_file.file_name}`);
               } catch (error) {
                 Logger.debug(`Something went during plugin execution for: ${configPluginName}`);
                 Logger.debug(error);
               }
 
-              for (const issuePointer of sol_file.issuePointers) {
+              for (const issuePointer of issuePointers) {
                 const { lineNumberStart, lineNumberEnd } = issuePointer;
                 const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberEnd);
 

@@ -27,7 +27,7 @@ class Contract {
         this.baseContractsNormalized = [];
         this.subNodes = subNodes;
         this.location = location;
-        this.functions = SolidityAntlr.parseCFunction(subNodes);
+        this.functions = SolidityAntlr.parseCFunction(subNodes.branch);
     }
 
     normalizeBaseContracts(contracts: Contract[]): void {

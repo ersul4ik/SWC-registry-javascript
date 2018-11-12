@@ -4,6 +4,7 @@ import Pragma from "../declarations/pragma";
 import Contract from '../declarations/contract';
 import { IssueDetailed, IssuePointer } from "./issue";
 import CFunction from "../declarations/cfunction";
+import logger from "../logger/logger";
 
 class SolFile {
     file_name: string;
@@ -25,8 +26,9 @@ class SolFile {
     getContractFunctions(): CFunction[] {
         let f: CFunction[] = [];
         for (const c of this.contracts_current) {
-            f.concat(c.functions);
+            f = f.concat(c.functions);
         }
+        logger.debug(f.length)
         return f;
     }
 

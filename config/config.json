@@ -1,48 +1,59 @@
 {
-	"plugins":{
-		"InsecureIntegerArithmetic":{
+	"plugins": {
+		"InsecureIntegerArithmetic": {
 			"active": "false",
-			"SWC": "101"
+			"swcID": "101",
+			"shortDescription": ""
 		},
-		"LockPragma":{
+		"LockPragma": {
 			"active": "true",
-			"SWC": "103"
+			"swcID": "103",
+			"short-description": ""
 		},
-		"OutdatedCompilerVersion":{
+		"OutdatedCompilerVersion": {
 			"active": "true",
-			"SWC": "102"
+			"swcID": "102",
+			"short-description": ""
 		},
-		"DefaultVisibilityFunction":{
+		"DefaultVisibilityFunction": {
 			"active": "true",
-			"SWC": "100"
+			"swcID": "100",
+			"short-description": ""
 		},
-		"DefaultVisibilityStateVariable":{
+		"DefaultVisibilityStateVariable": {
 			"active": "true",
-			"SWC": "108"
+			"swcID": "108",
+			"short-description": ""
 		},
-		"UndeclaredStoragePointer":{
+		"UndeclaredStoragePointer": {
 			"active": "true",
-			"SWC": "109"
+			"swcID": "109",
+			"short-description": ""
 		},
-		"DeprecatedFunctions":{
+		"DeprecatedFunctions": {
 			"active": "true",
-			"SWC": "111"
+			"swcID": "111",
+			"short-description": ""
 		},
-		"UncheckedCallReturnValue":{
+		"UncheckedCallReturnValue": {
 			"active": "true",
-			"SWC": "104"
+			"swcID": "104",
+			"short-description": ""
 		},
-		"IncorrectConstructorName":{
+		"IncorrectConstructorName": {
 			"active": "true",
-			"SWC": "118"
+			"swcID": "118",
+			"short-description": ""
 		},
-		"AuthorizationTXOrigin":{
+		"AuthorizationTXOrigin": {
 			"active": "true",
-			"SWC": "118"
+			"swcID": "118",
+			"short-description": ""
 		},
-		"Test":{
+		"Test": {
 			"active": "true",
-			"SWC": "118"
+			"swcID": "118",
+			"short-description": ""
 		}
 	}
 }
