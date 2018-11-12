@@ -1,10 +1,10 @@
 const fs = require("fs");
 import logger from "../logger/logger";
 
-class Import{
-    path:string;
+class Import {
+    path: string;
 
-    constructor(path:string){
+    constructor(path: string) {
         this.path = path;
     }
 }

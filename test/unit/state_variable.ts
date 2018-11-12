@@ -1,5 +1,5 @@
-import {should} from 'should/should';
-const assert = require("assert") ;
+import { should } from 'should/should';
+const assert = require("assert");
 const expect = require("expect");
 
 import FileUtils from '../../src/utils/file'
@@ -17,7 +17,7 @@ describe("Function parsing simple", () => {
   const ast = SolidityAntlr.generateAST(file_name);
 
   it(`Test case - should have all expected variables for ${file_name}`, async () => {
-    let state_var:StateVariable []= SolidityAntlr.parseStateVariableDeclaration(ast);
+    let state_var: StateVariable[] = SolidityAntlr.parseStateVariableDeclaration(ast);
 
     /*
     expect(cfunctions.length).toEqual(8);
@@ -37,7 +37,7 @@ describe("Function parsing simple", () => {
     } 
     
 */
-    
+
 
   });
 

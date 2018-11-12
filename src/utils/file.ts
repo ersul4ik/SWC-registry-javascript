@@ -32,10 +32,10 @@ class FileUtils {
     return code.join("\n");
   }
 
-  static getFileContent(filepath:string): string {
+  static getFileContent(filepath: string): string {
     const stats = fs.statSync(filepath);
     if (stats.isFile()) {
-        return fs.readFileSync(filepath).toString();
+      return fs.readFileSync(filepath).toString();
     } else {
       logger.error("File not found " + filepath);
       return ""

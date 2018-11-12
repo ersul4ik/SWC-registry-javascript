@@ -27,7 +27,7 @@ class IssueDetailed {
    */
   isSameWithTestCase(issueShouldReportId: string, line_numbers: any): boolean {
     if (this.issuePointer.id === issueShouldReportId) {
-      const {linenumber_start, linenumber_end } = this.issuePointer;
+      const { linenumber_start, linenumber_end } = this.issuePointer;
       if (line_numbers !== undefined || line_numbers.length !== 0) {
         if ((linenumber_start != null) && (linenumber_end != null)) {
           for (const line_number of line_numbers) {
@@ -92,7 +92,7 @@ class IssuePointer {
 
   print() {
     console.log(`SWC ID: ${this.id}`);
-    if(this.linenumber_start !== this.linenumber_end) {
+    if (this.linenumber_start !== this.linenumber_end) {
       console.log(`linenumber: ${this.linenumber_start} - ${this.linenumber_end}`);
     } else {
       console.log(`linenumber: ${this.linenumber_start}`);

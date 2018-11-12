@@ -15,98 +15,105 @@ import StateVariable from '../declarations/state_variable';
 
 class SolidityAntlr {
 
-    static parseSolFile(file_name:string){
+    static parseSolFile(file_name: string) {
         const ast = SolidityAntlr.generateAST(file_name);
 
-        const pragma:Pragma = SolidityAntlr.parsePragma(ast);
-        const constracts_current:Contract[] = SolidityAntlr.parseContracts(ast);
-        const imports:Import[] = SolidityAntlr.parseImports(ast);
+        const pragma: Pragma = SolidityAntlr.parsePragma(ast);
+        const constracts_current: Contract[] = SolidityAntlr.parseContracts(ast);
+        const imports: Import[] = SolidityAntlr.parseImports(file_name, ast);
 
-          
+
     }
 
-    static parseContracts(ast:any): Contract[]{
-        let contracts:Contract [] = [];
+    static parseContracts(ast: any): Contract[] {
+        let contracts: Contract[] = [];
         parser.visit(ast, {
-            ContractDefinition(node: any) { 
-                const name:string = node.name;
-                const kind:string = node.kind;
-                const baseContracts:string[] = SolidityAntlr.parseInheritance(node.baseContracts);
-                const subNodes:Node = new Node(node.subNodes);
-                const location = SolidityAntlr.parseLocation(node.loc,node.range)
+            ContractDefinition(node: any) {
+                const name: string = node.name;
+                const kind: string = node.kind;
+                const baseContracts: string[] = SolidityAntlr.parseInheritance(node.baseContracts);
+                const subNodes: Node = new Node(node.subNodes);
 
-                contracts.push(new Contract(name,kind,baseContracts,subNodes,location));
-             
+                const location = SolidityAntlr.parseLocation(node.loc, node.range)
+
+                contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
+
             }
-        });   
-        return contracts; 
+        });
+        return contracts;
     }
 
-    // TODO: FIX me, I am going into an endless loop 
-    static parseAllImports(ast:any, file_name:string){
-        let imports_all:Import[] = [];
-        let imports_work:Import [] = SolidityAntlr.parseImports(ast)
-        let dir:string = path.dirname(file_name);
+    static parseAllImports(file_name: string, ast: any) {
+        file_name = path.normalize(file_name)
+        let imports_all: Import[] = [];
+        let imports_work: Import[] = SolidityAntlr.parseImports(file_name, ast)
 
-        while (imports_work.length != 0){
-            let imp:any = imports_work.pop();
-            file_name = path.resolve(dir, imp.path)
-            dir = path.dirname(file_name);
+        while (imports_work.length != 0) {
+            let imp: any = imports_work.pop();
 
-            let _ast = SolidityAntlr.generateAST(file_name);
-            let _imports:Import [] = SolidityAntlr.parseImports(_ast)
-        
+            let _ast = SolidityAntlr.generateAST(imp.path);
+            let _imports: Import[] = SolidityAntlr.parseImports(imp.path, _ast);
+
+
+            for (let i = imports_all.length - 1; i >= 0; i--) {
+                for (let j = _imports.length - 1; j >= 0; j--) {
+                    if (imports_all[i].path === _imports[j].path || file_name === _imports[j].path) {
+                        _imports.splice(j, 1)
+                    }
+                }
+            }
+
             imports_work = imports_work.concat(_imports);
-            imports_all.push(new Import(file_name));
+            imports_all.push(new Import(imp.path));
         }
-        console.log(imports_all)
+        return imports_all;
     }
 
     // TODO: handle URLs 
-    // TODO: Imports in Imports
-    static parseImports(ast:any): Import[] {
-        let imports:Import [] = [];
+    static parseImports(file_name: string, ast: any): Import[] {
+        let imports: Import[] = [];
         parser.visit(ast, {
-            ImportDirective(node: any) { 
-                const path:string = node.path;
-                imports.push(new Import(path));  
+            ImportDirective(node: any) {
+                let dir: string = path.dirname(file_name) + path.sep;
+                let new_file_name = path.normalize(dir + node.path);
+                imports.push(new Import(new_file_name));
             }
-        }); 
+        });
         return imports;
-    }    
+    }
 
-    static parsePragma(ast:any):Pragma {
-        let pragma:any;
+    static parsePragma(ast: any): Pragma {
+        let pragma: any;
         parser.visit(ast, {
-            PragmaDirective(node: any) { 
+            PragmaDirective(node: any) {
                 pragma = new Pragma(
                     node.name,
                     node.value
-                );  
+                );
             }
         });
         return pragma;
 
     }
 
-    static parseInheritance(ast:any): string[] {
-        let baseContracts:string [] = [];
+    static parseInheritance(ast: any): string[] {
+        let baseContracts: string[] = [];
         parser.visit(ast, {
-            InheritanceSpecifier(node: any) { 
-                const name:string = node.baseName.namePath;
-                baseContracts.push(name);  
+            InheritanceSpecifier(node: any) {
+                const name: string = node.baseName.namePath;
+                baseContracts.push(name);
             }
-        }); 
+        });
         return baseContracts;
-    }  
+    }
 
-    static parseLocation(loc:any, range:any): Location {
-        const r_start:number = range[0];
-        const r_end:number = range[1];
-        let src_2:number = r_end - r_start + 1;
+    static parseLocation(loc: any, range: any): Location {
+        const r_start: number = range[0];
+        const r_end: number = range[1];
+        let src_2: number = r_end - r_start + 1;
         let src = `${r_start}:${src_2}:0`
 
-        return new Location (
+        return new Location(
             loc.start.line,
             loc.end.line,
             loc.start.column,
@@ -115,29 +122,29 @@ class SolidityAntlr {
         );
     }
 
-    static parseCFunction(ast:any): CFunction[] {
+    static parseCFunction(ast: any): CFunction[] {
 
-        let functions:CFunction [] = [];
+        let functions: CFunction[] = [];
         parser.visit(ast, {
-            FunctionDefinition(node: any) { 
+            FunctionDefinition(node: any) {
 
-                let name:string  = node.name;
-                const parameters:any = node.parameters;
-                const subNodes:Node = node.body;
-                const visibility:string = node.visibility;
-                const modifiers:any  = node.modifiers;
-                const isConstructor:boolean = node.isConstructor;
-                let stateMutability:string  = node.stateMutability
-                const location:Location = SolidityAntlr.parseLocation(node.loc, node.range)
+                let name: string = node.name;
+                const parameters: any = node.parameters;
+                const subNodes: Node = node.body;
+                const visibility: string = node.visibility;
+                const modifiers: any = node.modifiers;
+                const isConstructor: boolean = node.isConstructor;
+                let stateMutability: string = node.stateMutability
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
 
                 // rename constructor consistenly 
-                if (isConstructor) {name = "constructor";}
+                if (isConstructor) { name = "constructor"; }
 
                 // stateMutability is null if it is not set specifically 
-                if (stateMutability === null) {stateMutability = "nonpayable"}
+                if (stateMutability === null) { stateMutability = "nonpayable" }
 
                 functions.push(
-                    new CFunction (
+                    new CFunction(
                         name,
                         parameters,
                         subNodes,
@@ -147,29 +154,29 @@ class SolidityAntlr {
                         stateMutability,
                         location
                     )
-                ) ;
+                );
             }
-        });    
+        });
 
         return functions;
     }
 
-    static parseStateVariableDeclaration(ast:any){
-        let vars:Node[] = [];
+    static parseStateVariableDeclaration(ast: any) {
+        let vars: Node[] = [];
 
         parser.visit(ast, {
-            StateVariableDeclaration(node: any) { 
+            StateVariableDeclaration(node: any) {
                 vars.push(node)
             }
         });
-        return SolidityAntlr.parseVariableDeclaration(vars) ;
+        return SolidityAntlr.parseVariableDeclaration(vars);
     }
 
-    static parseVariableDeclaration(ast:any){
-        let variables:StateVariable[] = [];
+    static parseVariableDeclaration(ast: any) {
+        let variables: StateVariable[] = [];
         parser.visit(ast, {
-            VariableDeclaration(node: any) { 
-                const location:Location = SolidityAntlr.parseLocation(node.loc, node.range)
+            VariableDeclaration(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
 
                 variables.push(
                     new StateVariable(
@@ -187,19 +194,19 @@ class SolidityAntlr {
         return variables;
     }
 
-    static generateAST(file_name:string){
+    static generateAST(file_name: string) {
         const file_content = FileUtils.getFileContent(file_name);
         let ast;
         try {
-          ast = parser.parse(file_content, { loc: true, range: true });
+            ast = parser.parse(file_content, { loc: true, range: true });
         } catch (e) {
-          Logger.error("Exception during AST parsing for " + file_name);
-          console.log(e);
+            Logger.error("Exception during AST parsing for " + file_name);
+            console.log(e);
         }
         return ast;
     }
 
-    
+
 }
 
 export default SolidityAntlr;

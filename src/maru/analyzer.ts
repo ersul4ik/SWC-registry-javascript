@@ -17,7 +17,7 @@ class Analyzer {
     const issues = [];
 
     for (const [filename, filecontent] of Object.entries(repo.files)) {
- 
+
       const ast = null; // this.generateAST(filename,filecontent);
       const contractName = AstUtility.getContractName(ast);
 
@@ -37,7 +37,7 @@ class Analyzer {
                 Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
                 for (const issuePointer of issuePointers) {
                   const { linenumber_start, linenumber_end } = issuePointer;
-                  const code =  null; // FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
+                  const code = null; // FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
 
                   const issueDetailed = new IssueDetailed(filename, contractName, "code", issuePointer);
                   issues.push(issueDetailed);
