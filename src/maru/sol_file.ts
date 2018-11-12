@@ -6,7 +6,6 @@ class SolFile {
     contracts:Contract[];
 
     constructor(imports: Import[], contracts: Contract[], ){
-
         this.imports = imports;
         this.contracts = contracts;
     }

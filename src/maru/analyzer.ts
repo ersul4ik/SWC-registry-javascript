@@ -39,7 +39,7 @@ class Analyzer {
                   const { linenumber_start, linenumber_end } = issuePointer;
                   const code =  null; // FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
 
-                  const issueDetailed = new IssueDetailed(filename, contractName, code, issuePointer);
+                  const issueDetailed = new IssueDetailed(filename, contractName, "code", issuePointer);
                   issues.push(issueDetailed);
                 }
               } catch (error) {

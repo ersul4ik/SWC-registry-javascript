@@ -71,14 +71,7 @@ class AstUtility {
   static printNode(node: any):void {
     console.log(JSON.stringify(node, null, 4));
   }
-
-  static getSolAntlrAST(file_name: string): any {
-    const file_content = FileUtils.getFileContent(file_name);
-    const ast = Analyzer.generateAST(file_name, file_content);
-    
-    return ast;
-  }
-
+  
 }
 
 export default AstUtility;

@@ -1,11 +1,6 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
-contract TestSuper {
-    uint storeduint1 = 15;
-    uint constant constuint = 16;
-}
-
-contract TestStorage is TestSuper{
+contract TestStorage {
 
     uint storeduint1 = 15;
     uint constant constuint = 16;

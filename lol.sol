@@ -1,4 +1,6 @@
 
 contract  a {
-    uint256 x = 1;
+    constructor(uint x){
+    	uint y = x;
+    }
 }

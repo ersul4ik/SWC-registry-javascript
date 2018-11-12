@@ -11,6 +11,7 @@ import Logger from '../logger/logger'
 import Pragma from '../declarations/pragma';
 import AstUtility from '../utils/ast';
 import FileUtils from '../utils/file';
+import StateVariable from '../declarations/state_variable';
 
 class SolidityAntlr {
 
@@ -21,8 +22,7 @@ class SolidityAntlr {
         const constracts_current:Contract[] = SolidityAntlr.parseContracts(ast);
         const imports:Import[] = SolidityAntlr.parseImports(ast);
 
-        for (const i of imports){
-        }   
+          
     }
 
     static parseContracts(ast:any): Contract[]{
@@ -152,6 +152,39 @@ class SolidityAntlr {
         });    
 
         return functions;
+    }
+
+    static parseStateVariableDeclaration(ast:any){
+        let vars:Node[] = [];
+
+        parser.visit(ast, {
+            StateVariableDeclaration(node: any) { 
+                vars.push(node)
+            }
+        });
+        return SolidityAntlr.parseVariableDeclaration(vars) ;
+    }
+
+    static parseVariableDeclaration(ast:any){
+        let variables:StateVariable[] = [];
+        parser.visit(ast, {
+            VariableDeclaration(node: any) { 
+                const location:Location = SolidityAntlr.parseLocation(node.loc, node.range)
+
+                variables.push(
+                    new StateVariable(
+                        node.name,
+                        node.typeName.type,
+                        node.expression,
+                        node.visibility,
+                        node.isStateVar,
+                        node.isDeclaredConst,
+                        location
+                    )
+                );
+            }
+        })
+        return variables;
     }
 
     static generateAST(file_name:string){

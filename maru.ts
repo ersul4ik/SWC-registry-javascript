@@ -91,13 +91,13 @@ if (options.help || options.length < 1){
   const stats = fs.statSync(options.run);
 
   if (stats.isDirectory()) {
-    repo.addFiles(options.run, ".sol");
+  //  repo.addFiles(options.run, ".sol");
   } else if (stats.isFile()) {
-    repo.addFile(options.run);
+  //  repo.addFile(options.run);
   }
 
   if (options.ast && stats.isFile()) {
-    const output = AstUtility.getSolAntlrAST(options.run);
+    const output = ""; //AstUtility.getSolAntlrAST(options.run);
     const response = JSON.stringify(output, null, 2);
     console.log(response)
   } else {
