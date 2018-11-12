@@ -1,4 +1,5 @@
 const c3 = require("c3-linearization");
+
 import Location from './location';
 import Node from './node';
 

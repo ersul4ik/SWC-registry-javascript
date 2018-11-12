@@ -10,6 +10,7 @@ import Analyzer from "./src/maru/analyzer";
 import Reporter from "./src/maru/reporter";
 import Repository from "./src/maru/repository";
 import AstUtility from "./src/utils/ast";
+import SolidityAntlr from "./src/parser/solidity_antlr.js";
 
 const optionDefinitions = [
   {
@@ -63,11 +64,10 @@ const sections = [
   },
 ];
 
-
-if (options.help || options.length < 1){
+if (options.help || options.length < 1) {
   const usage = commandLineUsage(sections);
   console.log(usage);
-} else if (options.version){
+} else if (options.version) {
   console.log(`This is version ${pkg.version}`);
 } else if (options.run) {
   let config: { [plugins: string]: any } = {};
@@ -91,13 +91,13 @@ if (options.help || options.length < 1){
   const stats = fs.statSync(options.run);
 
   if (stats.isDirectory()) {
-  //  repo.addFiles(options.run, ".sol");
+    repo.addFiles(options.run, ".sol");
   } else if (stats.isFile()) {
-  //  repo.addFile(options.run);
+    repo.addFile(options.run);
   }
 
   if (options.ast && stats.isFile()) {
-    const output = ""; //AstUtility.getSolAntlrAST(options.run);
+    const output = SolidityAntlr.generateAST(options.run);
     const response = JSON.stringify(output, null, 2);
     console.log(response)
   } else {
@@ -111,6 +111,3 @@ if (options.help || options.length < 1){
 } else {
   console.log(`Maru v.${pkg.version}`);
 }
-
-
-

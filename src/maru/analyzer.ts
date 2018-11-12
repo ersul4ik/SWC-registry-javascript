@@ -9,17 +9,14 @@ const plugins = require("require-all")({
 import Logger from "../logger/logger";
 import AstUtility from "../utils/ast";
 import FileUtils from "../utils/file";
-import { IssueDetailed } from "./issue";
+import { IssueDetailed, IssuePointer } from "./issue";
 import Repository from "./repository";
 
 class Analyzer {
-  static runAllPlugins(repo: Repository, config: { [plugins: string]: any }) {
-    const issues = [];
+  static runAllPlugins(repo: Repository, config: { [plugins: string]: any }): IssueDetailed[] {
+    let issues: IssueDetailed[] = [];
 
-    for (const [filename, filecontent] of Object.entries(repo.files)) {
-
-      const ast = null; // this.generateAST(filename,filecontent);
-      const contractName = AstUtility.getContractName(ast);
+    for (const sol_file of repo.sol_files) {
 
       for (const configPluginName in config.plugins) {
         if (config.plugins[configPluginName].active === "true") {
@@ -28,36 +25,35 @@ class Analyzer {
           for (const plugin in plugins) {
             if (typeof plugins[plugin][configPluginName] === "function") {
               pluginFound = true;
-              let issuePointers = [];
 
               Logger.info(`Executing Plugin: ${configPluginName}`);
 
               try {
-                issuePointers = plugins[plugin][configPluginName](ast);
-                Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${filename}`);
-                for (const issuePointer of issuePointers) {
-                  const { linenumber_start, linenumber_end } = issuePointer;
-                  const code = null; // FileUtils.getCodeAtLine(filecontent, linenumber_start, linenumber_end);
-
-                  const issueDetailed = new IssueDetailed(filename, contractName, "code", issuePointer);
-                  issues.push(issueDetailed);
-                }
+                plugins[plugin][configPluginName](sol_file);
+                Logger.info(`Plugin ${configPluginName} discovered ${sol_file.issuePointers.length} issue(s) in ${sol_file.file_name}`);
               } catch (error) {
-                Logger.debug(`Something went wrong in plugin: ${configPluginName}`);
+                Logger.debug(`Something went during plugin execution for: ${configPluginName}`);
                 Logger.debug(error);
               }
-            }
-          }
 
-          if (!pluginFound) {
-            Logger.debug(`Implementation missing for ${configPluginName}`);
+              for (const issuePointer of sol_file.issuePointers) {
+                const { lineNumberStart, lineNumberEnd } = issuePointer;
+                const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberStart);
+
+                const issueDetailed = new IssueDetailed(sol_file.file_name, code, issuePointer);
+                issues.push(issueDetailed);
+              }
+
+            }
+
+            if (!pluginFound) {
+              Logger.debug(`Implementation missing for ${configPluginName}`);
+            }
           }
         }
       }
     }
     return issues;
   }
-
 }
-
 export default Analyzer;

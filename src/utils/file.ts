@@ -23,8 +23,9 @@ class FileUtils {
     return results;
   }
 
-  static getCodeAtLine(filecontent: string, linenumber_start: number, linenumber_end: number): string {
-    const lines = filecontent.split("\n");
+  static getCodeAtLine(file_name: string, linenumber_start: number, linenumber_end: number): string {
+    const file_content = FileUtils.getFileContent(file_name);
+    const lines = file_content.split("\n");
     const code = [];
     for (let x = linenumber_start - 1; x <= linenumber_end - 1; x++) {
       code.push(`${x}: ${lines[x]}`);

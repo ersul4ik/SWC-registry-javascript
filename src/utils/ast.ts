@@ -6,19 +6,7 @@ import Analyzer from "../maru/analyzer";
 import { IssuePointer } from "../maru/issue";
 import FileUtils from "./file";
 
-
-
 class AstUtility {
-
-  static getContractName(ast: any) {
-    let contractName = "";
-    parser.visit(ast, {
-      ContractDefinition(node: any) {
-        contractName = node.name;
-      },
-    });
-    return contractName;
-  }
 
   static getStartLine(node: any) {
     return node.loc.start.line;
@@ -38,7 +26,7 @@ class AstUtility {
       .match(/default/);
   }
 
-  static createIssuePointerFromNode(id: string, node: any): IssuePointer {
+  static createIssuePointerFromLocation(id: string, node: any): IssuePointer {
     const linenumber_start = AstUtility.getStartLine(node);
     const linenumber_end = AstUtility.getEndLine(node);
     const issuePointer = new IssuePointer(id, linenumber_start, linenumber_end, undefined, undefined);
@@ -53,7 +41,6 @@ class AstUtility {
     }
     return false;
   }
-
 
   static matchString(node: any, match: string): boolean {
     if (node !== null && node !== undefined) {

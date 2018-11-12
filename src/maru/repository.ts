@@ -7,33 +7,23 @@ const fs = require("fs");
 
 class Repository {
 
-  files: SolFile[] = [];
+  sol_files: SolFile[] = [];
 
   constructor() { }
 
-  /*
-  addIssue(issue: IssueDetailed) {
-    this.issues.push(issue);
-  }
-
-  addIssues(issues: IssueDetailed[]) {
-    this.issues.concat(issues);
-  }
-  */
-  /*
-  addFile(filename: string) {
-    this.files[filename] = fs
-      .readFileSync(filename)
-      .toString();
+  addFile(file_name: string) {
+    this.sol_files.push(
+      new SolFile(file_name)
+    );
   }
 
   addFiles(directory: string, pattern: string) {
-    const filenames = FileUtils.searchRecursive(directory, pattern);
-    for (const filename of filenames) {
-      this.addFile(filename);
+    const file_names = FileUtils.searchRecursive(directory, pattern);
+    for (const file_name of file_names) {
+      this.addFile(file_name);
     }
   }
-  */
+
 }
 
 export default Repository;

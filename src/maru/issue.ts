@@ -1,3 +1,5 @@
+const path = require("path");
+
 import SWC from "./../swc/swc";
 
 const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs";
@@ -5,19 +7,16 @@ const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/d
 class IssueDetailed {
   path: string;
   filename: string;
-  contract: string;
   code: string;
   issuePointer: IssuePointer;
-  docURL: string;
+  swcURL: string;
 
-  constructor(filename: string, contract: string, code: string, ip: IssuePointer) {
-    this.path = filename;
-    const splitedPath = filename.split('/');
-    this.filename = splitedPath[splitedPath.length - 1]
-    this.contract = contract;
+  constructor(file_name: string, code: string, ip: IssuePointer) {
+    this.path = file_name;
+    this.filename = path.parse(file_name).base;
     this.code = code;
     this.issuePointer = ip;
-    this.docURL = `${SWC_REGISTRY_DOC}/${ip.id}`;
+    this.swcURL = `${SWC_REGISTRY_DOC}/${ip.id}`;
   }
 
   /**
@@ -27,11 +26,11 @@ class IssueDetailed {
    */
   isSameWithTestCase(issueShouldReportId: string, line_numbers: any): boolean {
     if (this.issuePointer.id === issueShouldReportId) {
-      const { linenumber_start, linenumber_end } = this.issuePointer;
+      const { lineNumberStart, lineNumberEnd } = this.issuePointer;
       if (line_numbers !== undefined || line_numbers.length !== 0) {
-        if ((linenumber_start != null) && (linenumber_end != null)) {
+        if ((lineNumberStart != null) && (lineNumberEnd != null)) {
           for (const line_number of line_numbers) {
-            if ((linenumber_start <= line_number) && (linenumber_end >= line_number)) {
+            if ((lineNumberStart <= line_number) && (lineNumberEnd >= line_number)) {
               return true;
             }
           }
@@ -48,21 +47,19 @@ class IssueDetailed {
     console.log(`Filename: ${this.filename}`);
     console.log(`SWC-ID: ${id}`);
     console.log(`Title: ${this.issuePointer.swc.getTitle()}`);
-    console.log(`SWC-Link: ${this.docURL}`);
-    console.log(`Contract: ${this.contract}`);
+    console.log(`SWC-Link: ${this.swcURL}`);
     console.log(`Code: \n${this.code}`);
   }
 
   jsonValue() {
     const { id } = this.issuePointer;
-    const { linenumber_start, linenumber_end } = this.issuePointer;
+    const { lineNumberStart, lineNumberEnd } = this.issuePointer;
     return {
       "swc-id": id,
       "filename": this.filename,
-      "lineNumberStart": linenumber_start,
-      "lineNumberEnd": linenumber_end,
-      "contractName": this.contract,
-      "swc-link": this.docURL,
+      "lineNumberStart": lineNumberStart,
+      "lineNumberEnd": lineNumberEnd,
+      "swc-link": this.swcURL,
       ...this.issuePointer.swc.displaySWC(),
     };
   }
@@ -76,36 +73,39 @@ class IssueDetailed {
 class IssuePointer {
   swc: any;
   id: string;
-  linenumber_start?: number;
-  linenumber_end?: number;
-  expr_start?: number;
-  expr_end?: number;
+  lineNumberStart: number;
+  lineNumberEnd: number;
+  columnStart: number;
+  columnEnd: number;
+  src: string;
 
-  constructor(id: string, linenumber_start?: number, linenumber_end?: number, expr_start?: number, expr_end?: number) {
+  constructor(id: string, lineNumberStart: number, lineNumberEnd: number, columnStart: number, columnEnd: number, src: string) {
     this.swc = new SWC(id);
     this.id = id;
-    this.linenumber_start = linenumber_start;
-    this.linenumber_end = linenumber_end;
-    this.expr_start = expr_start;
-    this.expr_end = expr_end;
+    this.lineNumberStart = lineNumberStart;
+    this.lineNumberEnd = lineNumberEnd;
+    this.columnStart = columnStart;
+    this.columnEnd = columnEnd;
+    this.src = src;
   }
 
   print() {
     console.log(`SWC ID: ${this.id}`);
-    if (this.linenumber_start !== this.linenumber_end) {
-      console.log(`linenumber: ${this.linenumber_start} - ${this.linenumber_end}`);
+    if (this.lineNumberStart !== this.lineNumberEnd) {
+      console.log(`linenumber: ${this.lineNumberStart} - ${this.lineNumberEnd}`);
     } else {
-      console.log(`linenumber: ${this.linenumber_start}`);
+      console.log(`linenumber: ${this.lineNumberStart}`);
     }
   }
 
   jsonValue() {
     return {
       id: this.id,
-      linenumber_start: this.linenumber_start,
-      linenumber_end: this.linenumber_end,
-      expr_start: this.expr_start,
-      expr_end: this.expr_end,
+      lineNumberStart: this.lineNumberStart,
+      lineNumberEnd: this.lineNumberEnd,
+      columnStart: this.columnStart,
+      columnEnd: this.columnEnd,
+      src: this.src,
       swc: this.swc.getEntry(),
     };
   }
