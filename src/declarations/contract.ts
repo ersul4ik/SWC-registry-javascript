@@ -2,6 +2,8 @@ const c3 = require("c3-linearization");
 
 import Location from './location';
 import Node from './node';
+import CFunction from './cfunction';
+import SolidityAntlr from '../parser/solidity_antlr';
 
 class Contract {
     name: string;
@@ -10,6 +12,7 @@ class Contract {
     baseContracts: string[];
     baseContractsNormalized: string[];
     location: Location;
+    functions: CFunction[];
 
     constructor(
         name: string,
@@ -24,6 +27,7 @@ class Contract {
         this.baseContractsNormalized = [];
         this.subNodes = subNodes;
         this.location = location;
+        this.functions = SolidityAntlr.parseCFunction(subNodes);
     }
 
     normalizeBaseContracts(contracts: Contract[]): void {

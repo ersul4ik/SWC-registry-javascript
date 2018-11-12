@@ -38,7 +38,7 @@ class Analyzer {
 
               for (const issuePointer of sol_file.issuePointers) {
                 const { lineNumberStart, lineNumberEnd } = issuePointer;
-                const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberStart);
+                const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberEnd);
 
                 const issueDetailed = new IssueDetailed(sol_file.file_name, code, issuePointer);
                 issues.push(issueDetailed);

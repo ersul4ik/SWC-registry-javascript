@@ -1,7 +1,7 @@
 import Contract from "../declarations/contract";
 import logger from "../logger/logger";
 
-class ContractHelper {
+class ContractUtils {
     static getBaseContracts(name: string, contracts: Contract[]) {
         let baseContracts: Contract[] = [];
         for (const c of contracts) {
@@ -16,4 +16,4 @@ class ContractHelper {
 
 }
 
-export default ContractHelper;
+export default ContractUtils;

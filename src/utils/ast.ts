@@ -20,19 +20,6 @@ class AstUtility {
     return !version.match(/\^/);
   }
 
-  static isDefaultVisibility(variable: any) {
-    return variable
-      .visibility
-      .match(/default/);
-  }
-
-  static createIssuePointerFromLocation(id: string, node: any): IssuePointer {
-    const linenumber_start = AstUtility.getStartLine(node);
-    const linenumber_end = AstUtility.getEndLine(node);
-    const issuePointer = new IssuePointer(id, linenumber_start, linenumber_end, undefined, undefined);
-    return issuePointer;
-  }
-
   static matchRegex(node: any, match: RegExp): boolean {
     if (node !== null && node !== undefined) {
       if (node.match(match)) {

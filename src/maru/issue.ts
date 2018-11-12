@@ -1,6 +1,7 @@
 const path = require("path");
 
 import SWC from "./../swc/swc";
+import Location from "../declarations/location";
 
 const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs";
 
@@ -79,14 +80,14 @@ class IssuePointer {
   columnEnd: number;
   src: string;
 
-  constructor(id: string, lineNumberStart: number, lineNumberEnd: number, columnStart: number, columnEnd: number, src: string) {
+  constructor(id: string, location: Location) {
     this.swc = new SWC(id);
     this.id = id;
-    this.lineNumberStart = lineNumberStart;
-    this.lineNumberEnd = lineNumberEnd;
-    this.columnStart = columnStart;
-    this.columnEnd = columnEnd;
-    this.src = src;
+    this.lineNumberStart = location.lineNumberStart;
+    this.lineNumberEnd = location.lineNumberEnd;
+    this.columnStart = location.columnStart;
+    this.columnEnd = location.lineNumberEnd;
+    this.src = location.src;
   }
 
   print() {

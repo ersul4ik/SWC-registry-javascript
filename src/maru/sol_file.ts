@@ -3,6 +3,7 @@ import SolidityAntlr from "../parser/solidity_antlr";
 import Pragma from "../declarations/pragma";
 import Contract from '../declarations/contract';
 import { IssueDetailed, IssuePointer } from "./issue";
+import CFunction from "../declarations/cfunction";
 
 class SolFile {
     file_name: string;
@@ -19,6 +20,14 @@ class SolFile {
         this.contracts_current = SolidityAntlr.parseContracts(this.subNodes);
         this.contracts_imported = SolidityAntlr.parseImportedContracts(file_name, this.subNodes);
         this.issuePointers = [];
+    }
+
+    getContractFunctions(): CFunction[] {
+        let f: CFunction[] = [];
+        for (const c of this.contracts_current) {
+            f.concat(c.functions);
+        }
+        return f;
     }
 
     addIssue(issue: IssuePointer) {
