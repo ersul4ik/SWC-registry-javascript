@@ -6,18 +6,18 @@ import Location from "../declarations/location";
 const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs";
 
 class IssueDetailed {
-  path: string;
-  filename: string;
+  file_name: string;
   code: string;
   issuePointer: IssuePointer;
   swcURL: string;
+  descriptionShort: string;
 
-  constructor(file_name: string, code: string, ip: IssuePointer) {
-    this.path = file_name;
-    this.filename = path.parse(file_name).base;
+  constructor(file_name: string, code: string, ip: IssuePointer, descriptionShort: string) {
+    this.file_name = file_name;
     this.code = code;
     this.issuePointer = ip;
     this.swcURL = `${SWC_REGISTRY_DOC}/${ip.id}`;
+    this.descriptionShort = descriptionShort;
 
   }
 
@@ -46,10 +46,10 @@ class IssueDetailed {
 
   print() {
     const { id } = this.issuePointer;
-    console.log(`Filename: ${this.filename}`);
-    console.log(`SWC-ID: ${id}`);
+    console.log(`Filename: ${this.file_name}`);
     console.log(`Title: ${this.issuePointer.swc.getTitle()}`);
     console.log(`SWC-Link: ${this.swcURL}`);
+    console.log(`Description-Short: ${this.descriptionShort}`);
     console.log(`Code: \n${this.code}`);
   }
 
@@ -59,14 +59,14 @@ class IssueDetailed {
     return {
       "swc-id": id,
       "swc-title": this.issuePointer.swc.getTitle(),
-      "filename": this.filename,
+      "description-short": this.descriptionShort,
+      "filename": this.file_name,
       "lineNumberStart": lineNumberStart,
       "lineNumberEnd": lineNumberEnd,
       "columnStart": columnStart,
       "columnEnd": columnEnd,
       "src": src,
       "swc-link": this.swcURL,
-
     };
   }
 
@@ -77,7 +77,7 @@ class IssueDetailed {
 }
 
 class IssuePointer {
-  swc: any;
+  swc: SWC;
   id: string;
   lineNumberStart: number;
   lineNumberEnd: number;

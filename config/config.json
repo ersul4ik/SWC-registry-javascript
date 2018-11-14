@@ -2,58 +2,58 @@
 	"plugins": {
 		"InsecureIntegerArithmetic": {
 			"active": "false",
-			"swcID": "101",
-			"shortDescription": ""
+			"swcID": "SWC-101",
+			"descriptionShort": ""
 		},
 		"LockPragma": {
 			"active": "true",
-			"swcID": "103",
-			"short-description": ""
+			"swcID": "SWC-103",
+			"descriptionShort": ""
 		},
 		"OutdatedCompilerVersion": {
 			"active": "true",
-			"swcID": "102",
-			"short-description": ""
+			"swcID": "SWC-102",
+			"descriptionShort": ""
 		},
 		"DefaultVisibilityFunction": {
 			"active": "true",
-			"swcID": "100",
-			"short-description": ""
+			"swcID": "SWC-100",
+			"descriptionShort": "The plugin detects functions that do not have an explicit visibility set. The default visibility is set to public."
 		},
 		"DefaultVisibilityStateVariable": {
 			"active": "true",
-			"swcID": "108",
-			"short-description": ""
+			"swcID": "SWC-108",
+			"descriptionShort": ""
 		},
 		"UndeclaredStoragePointer": {
 			"active": "true",
-			"swcID": "109",
-			"short-description": ""
+			"swcID": "SWC-109",
+			"descriptionShort": ""
 		},
 		"DeprecatedFunctions": {
 			"active": "true",
-			"swcID": "111",
-			"short-description": ""
+			"swcID": "SWC-111",
+			"descriptionShort": ""
 		},
 		"UncheckedCallReturnValue": {
 			"active": "true",
-			"swcID": "104",
-			"short-description": ""
+			"swcID": "SWC-104",
+			"descriptionShort": ""
 		},
 		"IncorrectConstructorName": {
 			"active": "true",
-			"swcID": "118",
-			"short-description": ""
+			"swcID": "SWC-118",
+			"descriptionShort": ""
 		},
 		"AuthorizationTXOrigin": {
 			"active": "true",
-			"swcID": "118",
-			"short-description": ""
+			"swcID": "SWC-118",
+			"descriptionShort": ""
 		},
 		"Test": {
 			"active": "true",
-			"swcID": "118",
-			"short-description": ""
+			"swcID": "SWC-118",
+			"descriptionShort": ""
 		}
 	}
 }

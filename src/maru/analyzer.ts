@@ -26,19 +26,19 @@ class Analyzer {
           for (const plugin in plugins) {
             if (typeof plugins[plugin][configPluginName] === "function") {
               pluginFound = true;
-              let issuePointers;
+              let issuePointers: IssuePointer[] = [];
 
               let pc = new PluginConfig(
                 config.plugins[configPluginName].active,
                 config.plugins[configPluginName].swcID,
-                config.plugins[configPluginName].shortDescription
+                config.plugins[configPluginName].descriptionShort
               );
 
               Logger.info(`Executing Plugin: ${configPluginName}`);
 
               try {
                 issuePointers = plugins[plugin][configPluginName](sol_file, pc);
-                Logger.info(`Plugin ${configPluginName} discovered ${sol_file.issuePointers.length} issue(s) in ${sol_file.file_name}`);
+                Logger.info(`Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${sol_file.file_name}`);
               } catch (error) {
                 Logger.debug(`Something went during plugin execution for: ${configPluginName}`);
                 Logger.debug(error);
@@ -48,7 +48,8 @@ class Analyzer {
                 const { lineNumberStart, lineNumberEnd } = issuePointer;
                 const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberEnd);
 
-                const issueDetailed = new IssueDetailed(sol_file.file_name, code, issuePointer);
+                const issueDetailed = new IssueDetailed(sol_file.file_name, code, issuePointer, pc.descriptionShort);
+
                 issues.push(issueDetailed);
               }
 

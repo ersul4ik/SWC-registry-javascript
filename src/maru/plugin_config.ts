@@ -1,12 +1,12 @@
 class PluginConfig {
     active: boolean;
     swcID: string;
-    shortDescription: string;
+    descriptionShort: string;
 
-    constructor(active: boolean, swcID: string, shortDescription: string) {
+    constructor(active: boolean, swcID: string, descriptionShort: string) {
         this.active = active;
         this.swcID = swcID;
-        this.shortDescription = shortDescription;
+        this.descriptionShort = descriptionShort;
     }
 
 }

@@ -12,7 +12,6 @@ class SolFile {
     pragma: Pragma;
     contracts_current: Contract[];
     contracts_imported: Contract[];
-    issuePointers: IssuePointer[];
 
     constructor(file_name: string) {
         this.file_name = file_name;
@@ -20,7 +19,6 @@ class SolFile {
         this.pragma = SolidityAntlr.parsePragma(this.subNodes);
         this.contracts_current = SolidityAntlr.parseContracts(this.subNodes);
         this.contracts_imported = SolidityAntlr.parseImportedContracts(file_name, this.subNodes);
-        this.issuePointers = [];
     }
 
     getContractFunctions(): CFunction[] {
@@ -30,14 +28,6 @@ class SolFile {
         }
         logger.debug(f.length)
         return f;
-    }
-
-    addIssue(issue: IssuePointer) {
-        this.issuePointers.push(issue);
-    }
-
-    addIssues(issues: IssuePointer[]) {
-        this.issuePointers.concat(issues);
     }
 
 }
