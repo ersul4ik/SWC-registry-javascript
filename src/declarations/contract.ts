@@ -5,6 +5,7 @@ import Node from '../misc/node';
 import CFunction from './cfunction';
 import SolidityAntlr from '../parser/solidity_antlr';
 import Delcaration from './declaration';
+import Variable from './variable';
 
 class Contract extends Delcaration {
     name: string;
@@ -13,6 +14,7 @@ class Contract extends Delcaration {
     baseContracts: string[];
     baseContractsNormalized: string[];
     functions: CFunction[];
+    variables: Variable[];
 
     constructor(
         name: string,
@@ -28,6 +30,7 @@ class Contract extends Delcaration {
         this.baseContractsNormalized = [];
         this.subNodes = subNodes;
         this.functions = SolidityAntlr.parseCFunction(subNodes.branch);
+        this.variables = SolidityAntlr.parseVariables(subNodes.branch)
     }
 
     normalizeBaseContracts(contracts: Contract[]): void {

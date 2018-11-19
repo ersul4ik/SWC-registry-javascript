@@ -5,7 +5,6 @@ contract TestStorage {
 	function lol(){
 		(uint x, uint m) = (1 ,2);
 		uint[20] storage i;
-		z += 1;
 		uint y = 1 + x + rofl();
 		if (1==1){
 			y = 1337;

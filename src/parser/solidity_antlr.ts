@@ -177,9 +177,9 @@ class SolidityAntlr {
         return functions;
     }
 
-    static parseVariableDeclarations(ast: any) {
-        let var_declarations: any[] = [];
+    static parseVariables(ast: any) {
 
+        let var_declarations: any[] = [];
         parser.visit(ast, {
             VariableDeclarationStatement(node: any) {
                 var_declarations.push(
@@ -191,10 +191,17 @@ class SolidityAntlr {
             }
         });
 
-        return SolidityAntlr.parseVariables(var_declarations);
-    }
+        parser.visit(ast, {
+            StateVariableDeclaration(node: any) {
+                var_declarations.push(
+                    {
+                        "variables": node.variables,
+                        "initial_value": node.initialValue
+                    }
+                );
+            }
+        });
 
-    static parseVariables(var_declarations: any[]) {
         let variables: Variable[] = [];
         for (const var_declaration of var_declarations) {
             parser.visit(var_declaration.variables, {
@@ -203,14 +210,14 @@ class SolidityAntlr {
 
                     variables.push(
                         new Variable(
+                            location,
                             node.name,
                             node.typeName,
                             node.expression,
                             node.visibility,
                             node.isStateVar,
                             node.isDeclaredConst,
-                            node.storageLocation,
-                            location
+                            node.storageLocation
                         )
                     );
                 }

@@ -16,7 +16,7 @@ describe("Variable parsing simple", () => {
   const ast = SolidityAntlr.generateAST(file_name);
 
   it(`Test case - should have all expected variables for ${file_name}`, async () => {
-    let state_var: Variable[] = SolidityAntlr.parseVariableDeclarations(ast);
+    let state_var: Variable[] = SolidityAntlr.parseVariables(ast);
 
     /*
     expect(cfunctions.length).toEqual(8);

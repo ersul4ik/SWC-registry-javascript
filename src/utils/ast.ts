@@ -20,8 +20,6 @@ class AstUtility {
     return !version.match(/\^/);
   }
 
-
-
   static matchRegex(node: any, match: RegExp): boolean {
     if (node !== null && node !== undefined) {
       if (node.match(match)) {

@@ -10,17 +10,16 @@ class Variable extends Delcaration {
     isStateVar: boolean;
     isConstant: boolean;
     storageLocation: string;
-    location: Location;
 
     constructor(
+        location: Location,
         name: string,
         type: Node,
         expression: Node,
         visibility: string,
         isStateVar: boolean,
         isConstant: boolean,
-        storageLocation: string,
-        location: Location
+        storageLocation: string
     ) {
         super(location);
         this.name = name;
@@ -30,7 +29,6 @@ class Variable extends Delcaration {
         this.isStateVar = isStateVar;
         this.isConstant = isConstant;
         this.storageLocation = storageLocation;
-        this.location = location;
     }
 
 }

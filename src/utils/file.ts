@@ -28,7 +28,7 @@ class FileUtils {
     const lines = file_content.split("\n");
     const code = [];
     for (let x = linenumber_start - 1; x <= linenumber_end - 1; x++) {
-      code.push(`${x}: ${lines[x]}`);
+      code.push(`${x + 1}: ${lines[x]}`);
     }
     return code.join("\n");
   }
