@@ -1,5 +1,6 @@
-import Contract from "../declarations/contract";
+
 import logger from "../logger/logger";
+import Contract from "../declarations/contract";
 
 class ContractUtils {
     static getBaseContracts(name: string, contracts: Contract[]) {

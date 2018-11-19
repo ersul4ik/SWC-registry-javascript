@@ -1,5 +1,5 @@
-import {should} from 'should/should';
-const assert = require("assert") ;
+import { should } from 'should/should';
+const assert = require("assert");
 const expect = require("expect");
 
 import FileUtils from '../../src/utils/file'
@@ -15,7 +15,7 @@ describe("Function parsing simple", () => {
   const ast = SolidityAntlr.generateAST(file_name);
 
   it(`Test case - should have all expected function elements for ${file_name}`, async () => {
-    const cfunctions:CFunction[] = SolidityAntlr.parseCFunction(ast);
+    const cfunctions: CFunction[] = SolidityAntlr.parseCFunction(ast);
 
     expect(cfunctions.length).toEqual(8);
 
@@ -29,13 +29,10 @@ describe("Function parsing simple", () => {
     expect(cfunctions[6].stateMutability).toEqual("view");
     expect(cfunctions[7].stateMutability).toEqual("payable");
 
-    
-    for (const f of cfunctions){
+    for (const f of cfunctions) {
       AstUtility.printNode(f.name)
-    } 
-    
+    }
+
   });
 
 });
-
-

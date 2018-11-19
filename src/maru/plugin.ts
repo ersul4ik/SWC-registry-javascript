@@ -1,5 +1,7 @@
 import { IssuePointer } from "./issue";
+import SolFile from "./sol_file";
+import PluginConfig from "./plugin_config";
 
 export interface Plugin {
-    (ast: any, plugin_config: any): IssuePointer[];
+    (sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[];
 }

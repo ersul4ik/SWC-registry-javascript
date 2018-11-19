@@ -1,7 +1,8 @@
-import Node from "./node";
-import Location from "./location";
+import Node from "../misc/node";
+import Location from "../misc/location";
+import Delcaration from "./declaration";
 
-class CFunction {
+class CFunction extends Delcaration {
     name: string;
     parameters: any;
     subNodes: Node;
@@ -9,7 +10,6 @@ class CFunction {
     modifiers: any;
     isConstructor: boolean;
     stateMutability: string;
-    location: Location;
 
     constructor(
         name: string,
@@ -21,6 +21,7 @@ class CFunction {
         stateMutability: string,
         location: Location
     ) {
+        super(location);
         this.name = name;
         this.parameters = parameters;
         this.subNodes = subNodes;

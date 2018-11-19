@@ -1,4 +1,4 @@
-import Node from "../declarations/node";
+import Node from "../misc/node";
 import SolidityAntlr from "../parser/solidity_antlr";
 import Pragma from "../declarations/pragma";
 import Contract from '../declarations/contract';

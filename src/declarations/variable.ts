@@ -1,33 +1,38 @@
-import Node from "./node";
-import Location from "./location";
+import Node from "../misc/node";
+import Location from "../misc/location";
+import Delcaration from "./declaration";
 
-class StateVariable {
+class Variable extends Delcaration {
     name: string;
-    type: string;
+    type: Node;
     expression: Node;
     visibility: string;
     isStateVar: boolean;
     isConstant: boolean;
+    storageLocation: string;
     location: Location;
 
     constructor(
         name: string,
-        type: string,
+        type: Node,
         expression: Node,
         visibility: string,
         isStateVar: boolean,
         isConstant: boolean,
+        storageLocation: string,
         location: Location
     ) {
+        super(location);
         this.name = name;
         this.type = type;
         this.expression = expression;
         this.visibility = visibility;
         this.isStateVar = isStateVar;
         this.isConstant = isConstant;
+        this.storageLocation = storageLocation;
         this.location = location;
     }
 
 }
 
-export default StateVariable;
+export default Variable;

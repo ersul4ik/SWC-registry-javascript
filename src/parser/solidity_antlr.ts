@@ -1,16 +1,16 @@
 const parser = require("solidity-parser-antlr");
 const path = require("path");
 
-import Contract from '../declarations/contract'
-import Import from '../declarations/import'
-import Node from '../declarations/node'
-import Location from '../declarations/location'
-import CFunction from '../declarations/cfunction'
-import Logger from '../logger/logger'
+import CFunction from '../declarations/cfunction';
+import Contract from '../declarations/contract';
+import Import from '../declarations/import';
+import Location from '../misc/location';
+import Node from '../misc/node';
 import Pragma from '../declarations/pragma';
-import AstUtility from '../utils/ast';
+import Variable from '../declarations/variable';
+import Identifier from '../expressions/identifier';
+import Logger from '../logger/logger';
 import FileUtils from '../utils/file';
-import StateVariable from '../declarations/state_variable';
 
 class SolidityAntlr {
 
@@ -61,7 +61,7 @@ class SolidityAntlr {
             }
 
             imports_work = imports_work.concat(_imports);
-            imports_all.push(new Import(imp.path));
+            imports_all.push(new Import(imp.location, imp.path));
         }
         return imports_all;
     }
@@ -71,9 +71,10 @@ class SolidityAntlr {
         let imports: Import[] = [];
         parser.visit(ast, {
             ImportDirective(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
                 let dir: string = path.dirname(file_name) + path.sep;
                 let new_file_name = path.normalize(dir + node.path);
-                imports.push(new Import(new_file_name));
+                imports.push(new Import(location, new_file_name));
             }
         });
         return imports;
@@ -83,7 +84,9 @@ class SolidityAntlr {
         let pragma: any;
         parser.visit(ast, {
             PragmaDirective(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
                 pragma = new Pragma(
+                    location,
                     node.name,
                     node.value
                 );
@@ -102,6 +105,23 @@ class SolidityAntlr {
             }
         });
         return baseContracts;
+    }
+
+    static parseIdentifier(ast: any): Identifier[] {
+        let identifiers: Identifier[] = [];
+        parser.visit(ast, {
+            Identifier(node: any) {
+                const name: string = node.type;
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                identifiers.push(
+                    new Identifier(
+                        node.name,
+                        location
+                    )
+                );
+            }
+        });
+        return identifiers;
     }
 
     static parseLocation(loc: any, range: any): Location {
@@ -157,36 +177,46 @@ class SolidityAntlr {
         return functions;
     }
 
-    static parseStateVariableDeclaration(ast: any) {
-        let vars: Node[] = [];
+    static parseVariableDeclarations(ast: any) {
+        let var_declarations: any[] = [];
 
         parser.visit(ast, {
-            StateVariableDeclaration(node: any) {
-                vars.push(node)
-            }
-        });
-        return SolidityAntlr.parseVariableDeclaration(vars);
-    }
-
-    static parseVariableDeclaration(ast: any) {
-        let variables: StateVariable[] = [];
-        parser.visit(ast, {
-            VariableDeclaration(node: any) {
-                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
-
-                variables.push(
-                    new StateVariable(
-                        node.name,
-                        node.typeName.type,
-                        node.expression,
-                        node.visibility,
-                        node.isStateVar,
-                        node.isDeclaredConst,
-                        location
-                    )
+            VariableDeclarationStatement(node: any) {
+                var_declarations.push(
+                    {
+                        "variables": node.variables,
+                        "initial_value": node.initialValue
+                    }
                 );
             }
-        })
+        });
+
+        return SolidityAntlr.parseVariables(var_declarations);
+    }
+
+    static parseVariables(var_declarations: any[]) {
+        let variables: Variable[] = [];
+        for (const var_declaration of var_declarations) {
+            parser.visit(var_declaration.variables, {
+                VariableDeclaration(node: any) {
+                    const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+
+                    variables.push(
+                        new Variable(
+                            node.name,
+                            node.typeName,
+                            node.expression,
+                            node.visibility,
+                            node.isStateVar,
+                            node.isDeclaredConst,
+                            node.storageLocation,
+                            location
+                        )
+                    );
+                }
+            })
+        }
+
         return variables;
     }
 

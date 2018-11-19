@@ -1,7 +1,7 @@
 const path = require("path");
 
 import SWC from "./../swc/swc";
-import Location from "../declarations/location";
+import Location from "../misc/location";
 
 const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs";
 

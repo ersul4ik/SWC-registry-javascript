@@ -8,16 +8,15 @@ import SolidityAntlr from '../../src/parser/solidity_antlr'
 import Contract from '../../src/declarations/contract'
 import Import from '../../src/declarations/import'
 import CFunction from '../../src/declarations/cfunction';
-import StateVariable from '../../src/declarations/state_variable';
+import Variable from '../../src/declarations/variable';
 import AstUtility from '../../src/utils/ast';
 
-
-describe("Function parsing simple", () => {
-  const file_name = "./test/sol_files/variable/storage.sol";
+describe("Variable parsing simple", () => {
+  const file_name = "./test/sol_files/variable/statements.sol";
   const ast = SolidityAntlr.generateAST(file_name);
 
   it(`Test case - should have all expected variables for ${file_name}`, async () => {
-    let state_var: StateVariable[] = SolidityAntlr.parseStateVariableDeclaration(ast);
+    let state_var: Variable[] = SolidityAntlr.parseVariableDeclarations(ast);
 
     /*
     expect(cfunctions.length).toEqual(8);
@@ -32,12 +31,14 @@ describe("Function parsing simple", () => {
     expect(cfunctions[6].stateMutability).toEqual("view");
     expect(cfunctions[7].stateMutability).toEqual("payable");
         console.log(state_var.length)
-    for (const v of state_var){
-      AstUtility.printNode(v)
-    } 
-    
-*/
-
+        */
+    for (const v of state_var) {
+      AstUtility.printNode(v.name)
+      AstUtility.printNode(v.visibility)
+      AstUtility.printNode(v.storageLocation)
+      AstUtility.printNode(v.isStateVar)
+      AstUtility.printNode(v.isConstant)
+    }
 
   });
 

@@ -30,9 +30,9 @@ describe("Contract parsing simple", () => {
     expect(contracts[0].location.columnEnd).toEqual(0);
     expect(contracts[0].location.src).toEqual("26:1014:0");
 
-    for (const contract of contracts) {
-      AstUtility.printNode(contract.functions)
-    }
+    /* for (const contract of contracts) {
+       AstUtility.printNode(contract.functions)
+     }*/
   });
 
 });

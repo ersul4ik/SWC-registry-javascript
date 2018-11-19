@@ -1,17 +1,17 @@
 const c3 = require("c3-linearization");
 
-import Location from './location';
-import Node from './node';
+import Location from '../misc/location';
+import Node from '../misc/node';
 import CFunction from './cfunction';
 import SolidityAntlr from '../parser/solidity_antlr';
+import Delcaration from './declaration';
 
-class Contract {
+class Contract extends Delcaration {
     name: string;
     subNodes: Node;
     kind: string;
     baseContracts: string[];
     baseContractsNormalized: string[];
-    location: Location;
     functions: CFunction[];
 
     constructor(
@@ -21,12 +21,12 @@ class Contract {
         subNodes: Node,
         location: Location
     ) {
+        super(location)
         this.name = name;
         this.kind = kind;
         this.baseContracts = baseContracts;
         this.baseContractsNormalized = [];
         this.subNodes = subNodes;
-        this.location = location;
         this.functions = SolidityAntlr.parseCFunction(subNodes.branch);
     }
 
