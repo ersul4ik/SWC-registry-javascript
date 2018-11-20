@@ -20,9 +20,9 @@ class ElementaryType extends Type {
 
         if (type === 'uint') {
             this.name = 'uint256'
-        } else if (type == 'int') {
+        } else if (type === 'int') {
             this.name = 'int256'
-        } else if (type == 'bytes1') {
+        } else if (type === 'bytes1') {
             this.name = 'bytes1'
         } else {
             this.name = type;

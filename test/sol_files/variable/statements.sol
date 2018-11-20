@@ -11,6 +11,7 @@ contract TestStorage {
 
 
 	function lol(uint8 r){
+		Game gamePlayed;
 		Game[] gamesPlayed;
 		(uint x, uint m) = (1 ,2);
 		uint[20] storage i;

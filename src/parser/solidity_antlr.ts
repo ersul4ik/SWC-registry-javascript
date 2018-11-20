@@ -15,6 +15,7 @@ import FileUtils from '../utils/file';
 import Type from '../types/type';
 import AstUtility from '../utils/ast';
 import ArrayType from '../types/array_type';
+import UserDefinedType from '../types/user_defined_type';
 
 class SolidityAntlr {
 
@@ -193,19 +194,36 @@ class SolidityAntlr {
         } else if (AstUtility.matchString(node.type, "ArrayTypeName")) {
             let length: string = "null"
 
-            if (node.length instanceof Object) {
-                if (node.length.hasOwnProperty("number")) {
-                    length = node.length.number;
-                }
+            if (AstUtility.hasProperty(node.length, "number")) {
+                length = node.length.number;
             }
 
-            return new ArrayType(
-                location,
-                new ElementaryType(
+            if (AstUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
+                return new ArrayType(
                     location,
-                    node.baseTypeName.name,
-                ),
-                length
+                    new ElementaryType(
+                        location,
+                        node.baseTypeName.name,
+                    ),
+                    length
+                )
+            } else if (AstUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
+                return new ArrayType(
+                    location,
+                    new UserDefinedType(
+                        location,
+                        node.baseTypeName.namePath,
+                    ),
+                    length
+                )
+            } else {
+                Logger.error("Array type not recognised at")
+            }
+
+        } else if (AstUtility.matchString(node.type, "UserDefinedTypeName")) {
+            return new UserDefinedType(
+                location,
+                node.namePath
             )
         }
         return type;
@@ -219,7 +237,7 @@ class SolidityAntlr {
                 var_declarations.push(
                     {
                         "variables": node.variables,
-                        "initial_value": node.initialValue
+                        "initialValue": node.initialValue
                     }
                 );
             }
@@ -230,7 +248,7 @@ class SolidityAntlr {
                 var_declarations.push(
                     {
                         "variables": node.variables,
-                        "initial_value": node.initialValue
+                        "initialValue": node.initialValue
                     }
                 );
             }

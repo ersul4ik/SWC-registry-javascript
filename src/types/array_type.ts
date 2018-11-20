@@ -4,12 +4,12 @@ import ElementaryType from "./elementary_type";
 
 class ArrayType extends Type {
 
-    elementaryType: ElementaryType;
+    type: Type;
     length: string;
 
-    constructor(location: Location, elementaryType: ElementaryType, length: string) {
+    constructor(location: Location, type: Type, length: string) {
         super(location);
-        this.elementaryType = elementaryType;
+        this.type = type;
         this.length = length;
     }
 }

@@ -38,6 +38,15 @@ class AstUtility {
     return false;
   }
 
+  static hasProperty(o: Object, property: string): boolean {
+    if (o instanceof Object) {
+      if (o.hasOwnProperty(property)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   static logNode(node: any): void {
     logger.info(JSON.stringify(node, null, 4));
   }
