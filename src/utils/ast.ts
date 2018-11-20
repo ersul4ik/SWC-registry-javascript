@@ -29,7 +29,7 @@ class AstUtility {
     return false;
   }
 
-  static matchString(node: any, match: string): boolean {
+  static matchString(node: string, match: string): boolean {
     if (node !== null && node !== undefined) {
       if (node.match(match)) {
         return true;

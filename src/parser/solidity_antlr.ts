@@ -9,8 +9,12 @@ import Node from '../misc/node';
 import Pragma from '../declarations/pragma';
 import Variable from '../declarations/variable';
 import Identifier from '../expressions/identifier';
+import ElementaryType from '../types/elementary_type';
 import Logger from '../logger/logger';
 import FileUtils from '../utils/file';
+import Type from '../types/type';
+import AstUtility from '../utils/ast';
+import ArrayType from '../types/array_type';
 
 class SolidityAntlr {
 
@@ -177,7 +181,37 @@ class SolidityAntlr {
         return functions;
     }
 
-    static parseVariables(ast: any) {
+    static parseType(node: any) {
+        let type: any;
+        const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+
+        if (AstUtility.matchString(node.type, "ElementaryTypeName")) {
+            return new ElementaryType(
+                location,
+                node.name
+            )
+        } else if (AstUtility.matchString(node.type, "ArrayTypeName")) {
+            let length: string = "null"
+
+            if (node.length instanceof Object) {
+                if (node.length.hasOwnProperty("number")) {
+                    length = node.length.number;
+                }
+            }
+
+            return new ArrayType(
+                location,
+                new ElementaryType(
+                    location,
+                    node.baseTypeName.name,
+                ),
+                length
+            )
+        }
+        return type;
+    }
+
+    static parseVariables(ast: any): Variable[] {
 
         let var_declarations: any[] = [];
         parser.visit(ast, {
@@ -207,13 +241,15 @@ class SolidityAntlr {
             parser.visit(var_declaration.variables, {
                 VariableDeclaration(node: any) {
                     const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+                    const type: Type = SolidityAntlr.parseType(node.typeName)
 
                     variables.push(
                         new Variable(
                             location,
                             node.name,
-                            node.typeName,
+                            type,
                             node.expression,
+                            var_declaration.initialValue,
                             node.visibility,
                             node.isStateVar,
                             node.isDeclaredConst,

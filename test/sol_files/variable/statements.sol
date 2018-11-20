@@ -2,7 +2,16 @@ pragma solidity ^0.4.24;
 
 contract TestStorage {
 	uint t =23;
-	function lol(){
+	uint[]  abc;
+
+   struct Game {
+        address player;
+        uint256 number;
+    }
+
+
+	function lol(uint8 r){
+		Game[] gamesPlayed;
 		(uint x, uint m) = (1 ,2);
 		uint[20] storage i;
 		uint y = 1 + x + rofl();
