@@ -5,7 +5,7 @@ import Delcaration from "./declaration";
 class CFunction extends Delcaration {
     name: string;
     parameters: any;
-    subNodes: Node;
+    block: Node;
     visibility: string;
     modifiers: any;
     isConstructor: boolean;
@@ -14,7 +14,7 @@ class CFunction extends Delcaration {
     constructor(
         name: string,
         parameters: any,
-        subNodes: Node,
+        block: Node,
         visibility: string,
         modifiers: any,
         isConstructor: boolean,
@@ -24,7 +24,7 @@ class CFunction extends Delcaration {
         super(location);
         this.name = name;
         this.parameters = parameters;
-        this.subNodes = subNodes;
+        this.block = block;
         this.visibility = visibility;
         this.modifiers = modifiers;
         this.isConstructor = isConstructor;

@@ -16,6 +16,7 @@ import Type from '../types/type';
 import AstUtility from '../utils/ast';
 import ArrayType from '../types/array_type';
 import UserDefinedType from '../types/user_defined_type';
+import FunctionCall from '../expressions/function_call';
 
 class SolidityAntlr {
 
@@ -26,10 +27,18 @@ class SolidityAntlr {
                 const name: string = node.name;
                 const kind: string = node.kind;
                 const baseContracts: string[] = SolidityAntlr.parseInheritance(node.baseContracts);
-                const subNodes: Node = new Node(node.subNodes);
+                const block: Node = new Node(node);
                 const location = SolidityAntlr.parseLocation(node.loc, node.range)
 
-                contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
+                contracts.push(
+                    new Contract(
+                        name,
+                        kind,
+                        baseContracts,
+                        block,
+                        location
+                    )
+                );
 
             }
         });
@@ -112,7 +121,17 @@ class SolidityAntlr {
         return baseContracts;
     }
 
-    static parseIdentifier(ast: any): Identifier[] {
+    static parseBlock(ast: any): Node {
+        let block: any;
+        parser.visit(ast, {
+            Block(node: any) {
+                block = new Node(node);
+            }
+        });
+        return block;
+    }
+
+    static parseIdentifiers(ast: any): Identifier[] {
         let identifiers: Identifier[] = [];
         parser.visit(ast, {
             Identifier(node: any) {
@@ -144,6 +163,29 @@ class SolidityAntlr {
         );
     }
 
+    static parseFunctionCalls(ast: any): FunctionCall[] {
+        let function_calls: FunctionCall[] = [];
+        parser.visit(ast, {
+            FunctionCall(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+                const identifier: Identifier[] = SolidityAntlr.parseIdentifiers(node.expression)
+
+                function_calls.push(
+                    new FunctionCall(
+                        location,
+                        identifier[0].name,
+                        node.expression,
+                        node.arguments,
+                        "lol"
+                    )
+                );
+            }
+        });
+
+        return function_calls;
+
+    }
+
     static parseCFunction(ast: any): CFunction[] {
 
         let functions: CFunction[] = [];
@@ -151,7 +193,7 @@ class SolidityAntlr {
             FunctionDefinition(node: any) {
                 let name: string = node.name;
                 const parameters: any = node.parameters;
-                const subNodes: Node = node.body;
+                const block: Node = new Node(node);
                 const visibility: string = node.visibility;
                 const modifiers: any = node.modifiers;
                 const isConstructor: boolean = node.isConstructor;
@@ -168,7 +210,7 @@ class SolidityAntlr {
                     new CFunction(
                         name,
                         parameters,
-                        subNodes,
+                        block,
                         visibility,
                         modifiers,
                         isConstructor,

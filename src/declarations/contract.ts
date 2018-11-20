@@ -9,7 +9,7 @@ import Variable from './variable';
 
 class Contract extends Delcaration {
     name: string;
-    subNodes: Node;
+    block: Node;
     kind: string;
     baseContracts: string[];
     baseContractsNormalized: string[];
@@ -20,7 +20,7 @@ class Contract extends Delcaration {
         name: string,
         kind: string,
         baseContracts: string[],
-        subNodes: Node,
+        block: Node,
         location: Location
     ) {
         super(location)
@@ -28,9 +28,9 @@ class Contract extends Delcaration {
         this.kind = kind;
         this.baseContracts = baseContracts;
         this.baseContractsNormalized = [];
-        this.subNodes = subNodes;
-        this.functions = SolidityAntlr.parseCFunction(subNodes.branch);
-        this.variables = SolidityAntlr.parseVariables(subNodes.branch)
+        this.block = block;
+        this.functions = SolidityAntlr.parseCFunction(block.branch);
+        this.variables = SolidityAntlr.parseVariables(block.branch)
     }
 
     normalizeBaseContracts(contracts: Contract[]): void {

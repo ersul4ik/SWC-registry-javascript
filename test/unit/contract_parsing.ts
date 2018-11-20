@@ -22,8 +22,6 @@ describe("Contract parsing simple", () => {
 
     expect(contracts[0].baseContracts.length).toEqual(0);
 
-    expect(contracts[0].subNodes.branch.length).toEqual(12);
-
     expect(contracts[0].location.lineNumberStart).toEqual(3);
     expect(contracts[0].location.lineNumberEnd).toEqual(41);
     expect(contracts[0].location.columnStart).toEqual(0);

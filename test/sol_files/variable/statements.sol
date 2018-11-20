@@ -15,13 +15,14 @@ contract TestStorage {
 		Game[] gamesPlayed;
 		(uint x, uint m) = (1 ,2);
 		uint[20] storage i;
-		uint y = 1 + x + rofl();
+		uint y = 1 + x + rofl(1 + x);
+		bytes32 hash = sha3(123);
 		if (1==1){
 			y = 1337;
 			if(1==2){ y = 1338; }
 		}
 	}
-	function rofl() returns (uint){
-		return 2;
+	function rofl(uint x) returns (uint){
+		return x+2;
 	} 
 }
