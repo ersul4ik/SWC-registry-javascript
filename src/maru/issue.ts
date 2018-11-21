@@ -10,15 +10,12 @@ class IssueDetailed {
   code: string;
   issuePointer: IssuePointer;
   swcURL: string;
-  descriptionShort: string;
 
-  constructor(file_name: string, code: string, ip: IssuePointer, descriptionShort: string) {
+  constructor(file_name: string, code: string, ip: IssuePointer) {
     this.file_name = file_name;
     this.code = code;
     this.issuePointer = ip;
     this.swcURL = `${SWC_REGISTRY_DOC}/${ip.id}`;
-    this.descriptionShort = descriptionShort;
-
   }
 
   /**
@@ -49,7 +46,7 @@ class IssueDetailed {
     console.log(`Filename: ${this.file_name}`);
     console.log(`Title: ${this.issuePointer.swc.getTitle()}`);
     console.log(`SWC-Link: ${this.swcURL}`);
-    console.log(`Description-Short: ${this.descriptionShort}`);
+    console.log(`Description-Short: ${this.issuePointer.descriptionShort}`);
     console.log(`Code: \n${this.code}`);
   }
 
@@ -59,7 +56,7 @@ class IssueDetailed {
     return {
       "swc-id": id,
       "swc-title": this.issuePointer.swc.getTitle(),
-      "description-short": this.descriptionShort,
+      "description-short": this.issuePointer.descriptionShort,
       "filename": this.file_name,
       "lineNumberStart": lineNumberStart,
       "lineNumberEnd": lineNumberEnd,
@@ -79,15 +76,17 @@ class IssueDetailed {
 class IssuePointer {
   swc: SWC;
   id: string;
+  descriptionShort: string;
   lineNumberStart: number;
   lineNumberEnd: number;
   columnStart: number;
   columnEnd: number;
   src: string;
 
-  constructor(id: string, location: Location) {
+  constructor(id: string, descriptionShort: string, location: Location) {
     this.swc = new SWC(id);
     this.id = id;
+    this.descriptionShort = descriptionShort;
     this.lineNumberStart = location.lineNumberStart;
     this.lineNumberEnd = location.lineNumberEnd;
     this.columnStart = location.columnStart;
@@ -107,6 +106,7 @@ class IssuePointer {
   jsonValue() {
     return {
       id: this.id,
+      descriptionShort: this.descriptionShort,
       lineNumberStart: this.lineNumberStart,
       lineNumberEnd: this.lineNumberEnd,
       columnStart: this.columnStart,

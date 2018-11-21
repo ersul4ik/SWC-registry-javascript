@@ -47,6 +47,15 @@ class Contract extends Delcaration {
         this.baseContractsNormalized = inheritance_lin[this.name];
     }
 
+    hasConstructor(): boolean {
+        for (const f of this.functions) {
+            if (f.isConstructor) {
+                return true;
+            }
+        }
+        return false
+    }
+
 }
 
 export default Contract;

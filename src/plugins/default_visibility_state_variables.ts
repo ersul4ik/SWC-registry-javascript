@@ -16,7 +16,7 @@ DefaultVisibilityStateVariable = function (sol_file: SolFile, plugin_config: Plu
   for (const c of sol_file.contracts_current) {
     for (const v of c.variables) {
       if (AstUtility.matchRegex(v.visibility, new RegExp("default")) && v.isConstant === false) {
-        issuePointers.push(new IssuePointer(plugin_config.swcID, v.location));
+        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], v.location));
       }
 
     }

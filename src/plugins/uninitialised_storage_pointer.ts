@@ -21,7 +21,7 @@ UndeclaredStoragePointer = function (sol_file: SolFile, plugin_config: PluginCon
         v.type instanceof UserDefinedType &&
         v.initialValue === null
       ) {
-        issuePointers.push(new IssuePointer(plugin_config.swcID, v.location));
+        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], sol_file.pragma.location));
       }
     }
   }

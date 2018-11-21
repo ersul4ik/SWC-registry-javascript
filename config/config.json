@@ -3,57 +3,73 @@
 		"InsecureIntegerArithmetic": {
 			"active": "false",
 			"swcID": "SWC-101",
-			"descriptionShort": ""
+			"descriptionShort": [
+				""
+			]
 		},
 		"LockPragma": {
 			"active": "true",
 			"swcID": "SWC-103",
-			"descriptionShort": ""
+			"descriptionShort": [
+				"It is recommended to make a conscious choice on what version of the Solidity is used for compilation"
+			]
 		},
 		"OutdatedCompilerVersion": {
 			"active": "true",
 			"swcID": "SWC-102",
-			"descriptionShort": ""
+			"descriptionShort": [
+				"The version of the compiler specified in the Pragma is outdated. It is recommended to use a more recent one (>=0.4.23)"
+			]
 		},
 		"DefaultVisibilityFunction": {
 			"active": "true",
 			"swcID": "SWC-100",
-			"descriptionShort": "The plugin detects functions that do not have an explicit visibility set. The default visibility is set to public."
+			"descriptionShort": [
+				"The function does not have an explicit visibility set. The default visibility is set to \"public\" and anyone call the function."
+			]
 		},
 		"DefaultVisibilityStateVariable": {
 			"active": "true",
 			"swcID": "SWC-108",
-			"descriptionShort": ""
+			"descriptionShort": [
+				"It is best best practice to set the visibility of state variables explicitly."
+			]
 		},
 		"UndeclaredStoragePointer": {
 			"active": "true",
 			"swcID": "SWC-109",
-			"descriptionShort": ""
+			"descriptionShort": [
+				"Uninitialised storage variables of user-defined type can point to unexpected storage locations."
+			]
 		},
 		"DeprecatedFunctions": {
 			"active": "true",
 			"swcID": "SWC-111",
-			"descriptionShort": ""
+			"descriptionShort": [
+				""
+			]
 		},
 		"UncheckedCallReturnValue": {
 			"active": "true",
 			"swcID": "SWC-104",
-			"descriptionShort": ""
+			"descriptionShort": [
+				"Always check the return value for low level calls like \"call()\",\"send()\" and \"delegatecall()\"."
+			]
 		},
 		"IncorrectConstructorName": {
 			"active": "true",
 			"swcID": "SWC-118",
-			"descriptionShort": ""
+			"descriptionShort": [
+				"Until Solidity version 0.4.23 a constructor can only be defined as a function that has the same name as the contract. It has been discovered that there is a function with a very similar name that only deviates based lower/upper case characters.",
+				"bla"
+			]
 		},
 		"AuthorizationTXOrigin": {
 			"active": "true",
 			"swcID": "SWC-118",
-			"descriptionShort": ""
-		},
-		"Test": {
-			"active": "true",
-			"swcID": "SWC-118",
-			"descriptionShort": ""
+			"descriptionShort": [
+				"Using \"tx.origin\" as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. "
+			]
 		}
 	}
 }

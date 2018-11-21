@@ -12,9 +12,8 @@ let LockPragma: Plugin;
 
 LockPragma = function (sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
   const issuePointers: IssuePointer[] = [];
-
   if (!AstUtility.isVersionFixed(sol_file.pragma.value)) {
-    issuePointers.push(new IssuePointer(plugin_config.swcID, sol_file.pragma.location));
+    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], sol_file.pragma.location));
   }
 
   return issuePointers;
