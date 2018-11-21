@@ -20,14 +20,15 @@ import FunctionCall from '../expressions/function_call';
 
 class SolidityAntlr {
 
-    static parseContracts(ast: Node): Contract[] {
+    static parseContracts(parent_node: Node): Contract[] {
         let contracts: Contract[] = [];
-        parser.visit(ast, {
+        parser.visit(parent_node.branch, {
             ContractDefinition(node: any) {
+
                 const name: string = node.name;
                 const kind: string = node.kind;
                 const baseContracts: string[] = SolidityAntlr.parseInheritance(node.baseContracts);
-                const block: Node = new Node(node);
+                const subNodes: Node = new Node(node.subNodes);
                 const location = SolidityAntlr.parseLocation(node.loc, node.range)
 
                 contracts.push(
@@ -35,7 +36,7 @@ class SolidityAntlr {
                         name,
                         kind,
                         baseContracts,
-                        block,
+                        subNodes,
                         location
                     )
                 );
@@ -94,9 +95,9 @@ class SolidityAntlr {
         return imports;
     }
 
-    static parsePragma(ast: any): Pragma {
+    static parsePragma(parent_node: Node): Pragma {
         let pragma: any;
-        parser.visit(ast, {
+        parser.visit(parent_node.branch, {
             PragmaDirective(node: any) {
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
                 pragma = new Pragma(
@@ -110,9 +111,9 @@ class SolidityAntlr {
 
     }
 
-    static parseInheritance(ast: any): string[] {
+    static parseInheritance(parent_node: any): string[] {
         let baseContracts: string[] = [];
-        parser.visit(ast, {
+        parser.visit(parent_node, {
             InheritanceSpecifier(node: any) {
                 const name: string = node.baseName.namePath;
                 baseContracts.push(name);
@@ -121,21 +122,10 @@ class SolidityAntlr {
         return baseContracts;
     }
 
-    static parseBlock(ast: any): Node {
-        let block: any;
-        parser.visit(ast, {
-            Block(node: any) {
-                block = new Node(node);
-            }
-        });
-        return block;
-    }
-
-    static parseIdentifiers(ast: any): Identifier[] {
+    static parseIdentifiers(parent_node: Node): Identifier[] {
         let identifiers: Identifier[] = [];
-        parser.visit(ast, {
+        parser.visit(parent_node.branch, {
             Identifier(node: any) {
-                const name: string = node.type;
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
                 identifiers.push(
                     new Identifier(
@@ -163,19 +153,22 @@ class SolidityAntlr {
         );
     }
 
-    static parseFunctionCalls(ast: any): FunctionCall[] {
+    static parseFunctionCalls(parent_node: Node): FunctionCall[] {
         let function_calls: FunctionCall[] = [];
-        parser.visit(ast, {
+        parser.visit(parent_node.branch, {
             FunctionCall(node: any) {
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
-                const identifier: Identifier[] = SolidityAntlr.parseIdentifiers(node.expression)
+                const expression: Node = new Node(node.expression);
+                const args: Node = new Node(node.arguments);
+
+                const identifier: Identifier[] = SolidityAntlr.parseIdentifiers(expression)
 
                 function_calls.push(
                     new FunctionCall(
                         location,
                         identifier[0].name,
-                        node.expression,
-                        node.arguments,
+                        expression,
+                        args,
                         "lol"
                     )
                 );
@@ -186,14 +179,14 @@ class SolidityAntlr {
 
     }
 
-    static parseCFunction(ast: any): CFunction[] {
+    static parseCFunction(parent_node: Node): CFunction[] {
 
         let functions: CFunction[] = [];
-        parser.visit(ast, {
+        parser.visit(parent_node.branch, {
             FunctionDefinition(node: any) {
                 let name: string = node.name;
                 const parameters: any = node.parameters;
-                const block: Node = new Node(node);
+                const block: Node = new Node(node.body);
                 const visibility: string = node.visibility;
                 const modifiers: any = node.modifiers;
                 const isConstructor: boolean = node.isConstructor;

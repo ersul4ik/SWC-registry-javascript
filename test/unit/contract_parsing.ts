@@ -1,4 +1,4 @@
-import { should } from 'should/should';
+
 const assert = require("assert");
 const expect = require("expect");
 
@@ -8,13 +8,14 @@ import SolidityAntlr from '../../src/parser/solidity_antlr'
 import Contract from '../../src/declarations/contract'
 import Import from '../../src/declarations/import'
 import AstUtility from '../../src/utils/ast'
+import SolFile from '../../src/maru/sol_file';
 
 describe("Contract parsing simple", () => {
   const file_name = "./test/sol_files/contracts/simple.sol";
-  const ast = SolidityAntlr.generateAST(file_name);
+  const sol_file = new SolFile(file_name);
 
   it(`Test case - should have all expected contract elements for ${file_name}`, async () => {
-    const contracts: Contract[] = SolidityAntlr.parseContracts(ast);
+    const contracts: Contract[] = sol_file.contracts_current;
 
     expect(contracts[0].name).toEqual("TestStorage");
 
@@ -22,15 +23,14 @@ describe("Contract parsing simple", () => {
 
     expect(contracts[0].baseContracts.length).toEqual(0);
 
+    expect(contracts[0].subNodes.branch.length).toEqual(12);
+
     expect(contracts[0].location.lineNumberStart).toEqual(3);
     expect(contracts[0].location.lineNumberEnd).toEqual(41);
     expect(contracts[0].location.columnStart).toEqual(0);
     expect(contracts[0].location.columnEnd).toEqual(0);
     expect(contracts[0].location.src).toEqual("26:1014:0");
 
-    /* for (const contract of contracts) {
-       AstUtility.printNode(contract.functions)
-     }*/
   });
 
 });

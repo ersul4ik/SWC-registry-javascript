@@ -1,4 +1,4 @@
-import { should } from 'should/should';
+
 const assert = require("assert");
 const expect = require("expect");
 
@@ -12,22 +12,23 @@ import Variable from '../../src/declarations/variable';
 import AstUtility from '../../src/utils/ast';
 import ArrayType from '../../src/types/array_type';
 import FunctionCall from '../../src/expressions/function_call';
+import SolFile from '../../src/maru/sol_file';
 
 describe("Function call parsing ", () => {
     const file_name = "./test/sol_files/variable/statements.sol";
-    const ast = SolidityAntlr.generateAST(file_name);
+    const sol_file = new SolFile(file_name);
 
     it(`Test case - should parse function calls in ${file_name}`, async () => {
 
-        const cfunctions: CFunction[] = SolidityAntlr.parseCFunction(ast);
+        const cfunctions: CFunction[] = SolidityAntlr.parseCFunction(sol_file.block);
 
+        let fcs: FunctionCall[] = []
         for (const f of cfunctions) {
-
-            let fcs: FunctionCall[] = SolidityAntlr.parseFunctionCalls(f.block.branch)
-            for (const fc of fcs) {
-                AstUtility.printNode(fc.name)
-            }
+            fcs = fcs.concat(SolidityAntlr.parseFunctionCalls(f.block))
         }
+
+        expect(fcs[0].name).toEqual("rofl");
+        expect(fcs[1].name).toEqual("sha3");
     });
 
 });

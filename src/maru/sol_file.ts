@@ -8,17 +8,17 @@ import logger from "../logger/logger";
 
 class SolFile {
     file_name: string;
-    subNodes: Node;
+    block: Node;
     pragma: Pragma;
     contracts_current: Contract[];
     contracts_imported: Contract[];
 
     constructor(file_name: string) {
         this.file_name = file_name;
-        this.subNodes = SolidityAntlr.generateAST(file_name);
-        this.pragma = SolidityAntlr.parsePragma(this.subNodes);
-        this.contracts_current = SolidityAntlr.parseContracts(this.subNodes);
-        this.contracts_imported = SolidityAntlr.parseImportedContracts(file_name, this.subNodes);
+        this.block = new Node(SolidityAntlr.generateAST(file_name));
+        this.pragma = SolidityAntlr.parsePragma(this.block);
+        this.contracts_current = SolidityAntlr.parseContracts(this.block);
+        this.contracts_imported = SolidityAntlr.parseImportedContracts(file_name, this.block);
     }
 
     getContractFunctions(): CFunction[] {
