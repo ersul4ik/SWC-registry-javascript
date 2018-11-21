@@ -10,14 +10,15 @@ import Import from '../../src/declarations/import'
 import CFunction from '../../src/declarations/cfunction';
 import Variable from '../../src/declarations/variable';
 import AstUtility from '../../src/utils/ast';
+import SolFile from '../../src/maru/sol_file';
 
 describe("Variable parsing simple", () => {
   const file_name = "./test/sol_files/variable/statements.sol";
-  const ast = SolidityAntlr.generateAST(file_name);
-  let vars: Variable[] = SolidityAntlr.parseVariables(ast);
+  const sol_file = new SolFile(file_name);
+  let vars: Variable[] = SolidityAntlr.parseVariables(sol_file.block);
 
   it(`Test case - should have the correct number of variables in ${file_name}`, async () => {
-    expect(vars.length).toEqual(9);
+    expect(vars.length).toEqual(10);
   });
 
   it(`Test case - should have the correct attributes for UserDefinedType variable in ${file_name}`, async () => {

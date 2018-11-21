@@ -29,8 +29,8 @@ class Contract extends Delcaration {
         this.baseContracts = baseContracts;
         this.baseContractsNormalized = [];
         this.subNodes = subNodes;
-        this.functions = SolidityAntlr.parseCFunction(subNodes.branch);
-        this.variables = SolidityAntlr.parseVariables(subNodes.branch)
+        this.functions = SolidityAntlr.parseCFunction(subNodes);
+        this.variables = SolidityAntlr.parseVariables(subNodes)
     }
 
     normalizeBaseContracts(contracts: Contract[]): void {

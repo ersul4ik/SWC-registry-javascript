@@ -23,6 +23,7 @@ contract TestStorage {
 		}
 	}
 	function rofl(uint x) returns (uint){
+		bytes32 blockhash = block.blockhash(0);
 		return x+2;
 	} 
 }

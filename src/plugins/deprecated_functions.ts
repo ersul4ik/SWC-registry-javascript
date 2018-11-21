@@ -11,6 +11,7 @@ import SolidityAntlr from "../parser/solidity_antlr";
 import Identifier from "../expressions/identifier";
 import logger from "../logger/logger";
 import FunctionCall from "../expressions/function_call";
+import MemberAccess from "../expressions/member_access";
 
 let DeprecatedFunctions: Plugin;
 
@@ -24,61 +25,41 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
   }
 
   for (const c of sol_file.contracts_current) {
-    const f_cs: FunctionCall[] = SolidityAntlr.parseFunctionCalls(c.subNodes.branch);
+    const f_cs: FunctionCall[] = SolidityAntlr.parseFunctionCalls(c.subNodes);
     for (const f_c of f_cs) {
-      if (AstUtility.matchRegex(f_c.name, new RegExp("sha3")) || AstUtility.matchRegex(f_c.name, new RegExp("suicide"))) {
+
+      Logger.debug(f_c)
+      if (AstUtility.matchRegex(f_c.name, new RegExp("^sha3$")) || AstUtility.matchRegex(f_c.name, new RegExp("^suicide$"))) {
         issuePointers.push(new IssuePointer(plugin_config.swcID, f_c.location));
+      }
+
+      else if (AstUtility.matchRegex(f_c.name, new RegExp("\.callcode$"))) {
+        issuePointers.push(new IssuePointer(plugin_config.swcID, f_c.location));
+      }
+
+      else if (AstUtility.matchRegex(f_c.name, new RegExp("^block.blockhash$"))) {
+        issuePointers.push(new IssuePointer(plugin_config.swcID, f_c.location));
+      }
+
+    }
+
+    const members: MemberAccess[] = SolidityAntlr.parseMemberAccess(c.subNodes);
+
+    for (const m of members) {
+      if (AstUtility.matchRegex(m.name, new RegExp("^gas$"))) {
+        if (AstUtility.hasProperty(m.expression.branch, "type") && AstUtility.hasProperty(m.expression.branch, "name")) {
+          if (AstUtility.matchRegex(m.expression.branch.name, new RegExp("^msg$"))) {
+            issuePointers.push(new IssuePointer(plugin_config.swcID, m.location));
+          }
+        }
       }
     }
   }
 
-  /*
+  for (const t of SolidityAntlr.parseThrowStatements(sol_file.block)) {
+    issuePointers.push(new IssuePointer(plugin_config.swcID, t.location));
+  }
 
-    /*
-    parser.visit(ast, {
-      FunctionCall(f_call: any) {
-        parser.visit(f_call, {
-          Identifier(identifier: any) {
-            if (AstUtility.matchRegex(identifier.name, new RegExp("sha3")) || AstUtility.matchRegex(identifier.name, new RegExp("suicide"))) {
-              issuePointers.push(AstUtility.createIssuePointerFromNode(id, identifier));
-            }
-          }
-        });
-        parser.visit(f_call, {
-          MemberAccess(member: any) {
-            if (AstUtility.matchRegex(member.memberName, new RegExp("callcode"))) {
-              issuePointers.push(AstUtility.createIssuePointerFromNode(id, member));
-            }
-          }
-        });
-      },
-  
-      MemberAccess(member: any) {
-        parser.visit(member, {
-          Identifier(identifier: any) {
-            if (AstUtility.matchRegex(identifier.name, new RegExp("msg")) && AstUtility.matchRegex(member.memberName, new RegExp("gas"))) {
-              issuePointers.push(AstUtility.createIssuePointerFromNode(id, member));
-            }
-            if (AstUtility.matchRegex(identifier.name, new RegExp("block")) && AstUtility.matchRegex(member.memberName, new RegExp("blockhash"))) {
-              issuePointers.push(AstUtility.createIssuePointerFromNode(id, member));
-            }
-          }
-        });
-      },
-  
-      ThrowStatement(throw_statement: any) {
-        issuePointers.push(AstUtility.createIssuePointerFromNode(id, throw_statement));
-      },
-  
-      FunctionDefinition(func: any) {
-        if (AstUtility.matchRegex(func.stateMutability, new RegExp("constant"))) {
-          issuePointers.push(AstUtility.createIssuePointerFromNode(id, func));
-        }
-      }
-  
-    });
-  
-    */
   return issuePointers;
 };
 

@@ -17,6 +17,8 @@ import AstUtility from '../utils/ast';
 import ArrayType from '../types/array_type';
 import UserDefinedType from '../types/user_defined_type';
 import FunctionCall from '../expressions/function_call';
+import MemberAccess from '../expressions/member_access';
+import Throw from '../expressions/throw';
 
 class SolidityAntlr {
 
@@ -138,6 +140,38 @@ class SolidityAntlr {
         return identifiers;
     }
 
+    static parseMemberAccess(parent_node: Node): MemberAccess[] {
+        let memberAccess: MemberAccess[] = [];
+
+        parser.visit(parent_node.branch, {
+            MemberAccess(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                memberAccess.push(
+                    new MemberAccess(
+                        location,
+                        node.memberName,
+                        new Node(node.expression)
+                    )
+                )
+            }
+        });
+        return memberAccess;
+    }
+
+    static parseThrowStatements(parent_node: Node): Throw[] {
+        let _throw: Throw[] = [];
+
+        parser.visit(parent_node.branch, {
+            ThrowStatement(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                _throw.push(
+                    new Throw(location)
+                )
+            }
+        });
+        return _throw;
+    }
+
     static parseLocation(loc: any, range: any): Location {
         const r_start: number = range[0];
         const r_end: number = range[1];
@@ -153,25 +187,34 @@ class SolidityAntlr {
         );
     }
 
+    // TODO: Need to parse nested expressions 
     static parseFunctionCalls(parent_node: Node): FunctionCall[] {
         let function_calls: FunctionCall[] = [];
+
         parser.visit(parent_node.branch, {
             FunctionCall(node: any) {
-                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
                 const expression: Node = new Node(node.expression);
                 const args: Node = new Node(node.arguments);
+                const member_access: MemberAccess[] = SolidityAntlr.parseMemberAccess(expression);
+                const identifier: Identifier[] = SolidityAntlr.parseIdentifiers(expression);
 
-                const identifier: Identifier[] = SolidityAntlr.parseIdentifiers(expression)
+                if (identifier.length !== 0) {
+                    let f_name: string = identifier[0].name;
+                    if (member_access.length !== 0) {
+                        f_name = `${f_name}.${member_access[0].name}`
+                    }
+                    function_calls.push(
+                        new FunctionCall(
+                            location,
+                            f_name,
+                            expression,
+                            args,
+                            "TODO"
+                        )
+                    );
+                }
 
-                function_calls.push(
-                    new FunctionCall(
-                        location,
-                        identifier[0].name,
-                        expression,
-                        args,
-                        "lol"
-                    )
-                );
             }
         });
 
@@ -264,10 +307,10 @@ class SolidityAntlr {
         return type;
     }
 
-    static parseVariables(ast: any): Variable[] {
+    static parseVariables(parent_node: Node): Variable[] {
 
         let var_declarations: any[] = [];
-        parser.visit(ast, {
+        parser.visit(parent_node.branch, {
             VariableDeclarationStatement(node: any) {
                 var_declarations.push(
                     {
@@ -278,7 +321,7 @@ class SolidityAntlr {
             }
         });
 
-        parser.visit(ast, {
+        parser.visit(parent_node.branch, {
             StateVariableDeclaration(node: any) {
                 var_declarations.push(
                     {

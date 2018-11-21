@@ -29,6 +29,7 @@ describe("Function call parsing ", () => {
 
         expect(fcs[0].name).toEqual("rofl");
         expect(fcs[1].name).toEqual("sha3");
+        expect(fcs[2].name).toEqual("block.blockhash");
     });
 
 });
