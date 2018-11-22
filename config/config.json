@@ -76,6 +76,20 @@
 			"descriptionShort": [
 				"Using tx.origin as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. "
 			]
+		},
+		"WeakRandomnessFunction": {
+			"active": "true",
+			"swcID": "SWC-120",
+			"descriptionShort": [
+				"Using past or the current block hashes as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
+			]
+		},
+		"TypoGraphicalErrorFunction": {
+			"active": "true",
+			"swcID": "SWC-129",
+			"descriptionShort": [
+				""
+			]
 		}
 	}
 }

@@ -5,12 +5,12 @@ import { Plugin } from '../maru/plugin';
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 
-let ShadowingVariablesFunction: Plugin;
+let IncorrectInheritanceOrderFunction: Plugin;
 
-ShadowingVariablesFunction = function (sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
+IncorrectInheritanceOrderFunction = function (sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
     // implememt me 
     return issuePointers;
 };
 
-exports.ShadowingVariablesFunction = ShadowingVariablesFunction;
+exports.IncorrectInheritanceOrderFunction = IncorrectInheritanceOrderFunction;

@@ -19,6 +19,7 @@ import UserDefinedType from '../types/user_defined_type';
 import FunctionCall from '../expressions/function_call';
 import MemberAccess from '../expressions/member_access';
 import Throw from '../expressions/throw';
+import BinaryOperation from '../expressions/binary_operation';
 
 class SolidityAntlr {
 
@@ -138,6 +139,24 @@ class SolidityAntlr {
             }
         });
         return identifiers;
+    }
+
+    static parseBinaryOperation(parent_node: any): BinaryOperation[] {
+        let bop: BinaryOperation[] = [];
+        parser.visit(parent_node.branch, {
+            BinaryOperation(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                bop.push(
+                    new BinaryOperation(
+                        location,
+                        node.operator,
+                        new Node(node.left),
+                        new Node(node.right)
+                    )
+                )
+            }
+        });
+        return bop;
     }
 
     static parseMemberAccess(parent_node: Node): MemberAccess[] {
