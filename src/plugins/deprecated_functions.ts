@@ -20,7 +20,7 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
 
   for (const f of sol_file.getContractFunctions()) {
     if (AstUtility.matchRegex(f.stateMutability, new RegExp("constant"))) {
-      //  issuePointers.push(new IssuePointer(plugin_config.swcID, f.location));
+      issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], f.location));
     }
   }
 
@@ -28,17 +28,20 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
     const f_cs: FunctionCall[] = SolidityAntlr.parseFunctionCalls(c.subNodes);
     for (const f_c of f_cs) {
 
-      // Logger.debug(f_c)
-      if (AstUtility.matchRegex(f_c.name, new RegExp("^sha3$")) || AstUtility.matchRegex(f_c.name, new RegExp("^suicide$"))) {
-        //  issuePointers.push(new IssuePointer(plugin_config.swcID, f_c.location));
+      if (AstUtility.matchRegex(f_c.name, new RegExp("^sha3$"))) {
+        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[1], f_c.location));
+      }
+
+      if (AstUtility.matchRegex(f_c.name, new RegExp("^suicide$"))) {
+        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[2], f_c.location));
       }
 
       else if (AstUtility.matchRegex(f_c.name, new RegExp("\.callcode$"))) {
-        //  issuePointers.push(new IssuePointer(plugin_config.swcID, f_c.location));
+        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[3], f_c.location));
       }
 
       else if (AstUtility.matchRegex(f_c.name, new RegExp("^block.blockhash$"))) {
-        // issuePointers.push(new IssuePointer(plugin_config.swcID, f_c.location));
+        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[5], f_c.location));
       }
 
     }
@@ -49,7 +52,7 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
       if (AstUtility.matchRegex(m.name, new RegExp("^gas$"))) {
         if (AstUtility.hasProperty(m.expression.branch, "type") && AstUtility.hasProperty(m.expression.branch, "name")) {
           if (AstUtility.matchRegex(m.expression.branch.name, new RegExp("^msg$"))) {
-            //     issuePointers.push(new IssuePointer(plugin_config.swcID, m.location));
+            issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[6], m.location));
           }
         }
       }
@@ -57,7 +60,7 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
   }
 
   for (const t of SolidityAntlr.parseThrowStatements(sol_file.block)) {
-    //  issuePointers.push(new IssuePointer(plugin_config.swcID, t.location));
+    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[7], t.location));
   }
 
   return issuePointers;

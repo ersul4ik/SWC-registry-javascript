@@ -26,7 +26,7 @@ class ElementaryType extends Type {
             this.name = 'bytes1'
         } else {
             this.name = type;
-            Logger.debug(`Elementary type found ${type}`)
+            //  Logger.debug(`Elementary type found ${type}`)
         }
     }
 

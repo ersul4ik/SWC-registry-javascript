@@ -26,7 +26,6 @@ class SolFile {
         for (const c of this.contracts_current) {
             f = f.concat(c.functions);
         }
-        logger.debug(f.length)
         return f;
     }
 

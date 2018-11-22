@@ -88,7 +88,7 @@ UncheckedCallReturnValue = function (sol_file: SolFile, plugin_config: PluginCon
       AstUtility.matchRegex(outer_caller['type'], new RegExp("^callcode$"))
     ) {
       const location: Location = SolidityAntlr.parseLocation(outer_caller['node'].loc, outer_caller['node'].range);
-      //  issuePointers.push(new IssuePointer(plugin_config.swcID, location));
+      issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], location));
     }
   }
   return issuePointers;

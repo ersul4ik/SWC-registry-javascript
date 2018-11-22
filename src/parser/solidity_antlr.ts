@@ -366,7 +366,7 @@ class SolidityAntlr {
             ast = parser.parse(file_content, { loc: true, range: true });
         } catch (e) {
             Logger.error("Exception during AST parsing for " + file_name);
-            console.log(e);
+            Logger.error(e);
         }
         return ast;
     }

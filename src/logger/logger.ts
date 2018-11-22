@@ -1,6 +1,6 @@
 const Logger = require("logplease");
 
-const DEFAULT_DEBUG_LEVEL = "ERROR"
+const DEFAULT_DEBUG_LEVEL = "NONE"
 const DEBUG_OPTIONS = ["DEBUG", "INFO", "WARN", "ERROR", "NONE"]
 
 Logger.setLogLevel(DEFAULT_DEBUG_LEVEL);
