@@ -1,44 +1,95 @@
 {
-	"plugins":{
-		"InsecureIntegerArithmetic":{
+	"plugins": {
+		"InsecureIntegerArithmetic": {
 			"active": "false",
-			"SWC": "101"
+			"swcID": "SWC-101",
+			"descriptionShort": [
+				""
+			]
 		},
-		"LockPragma":{
+		"LockPragma": {
 			"active": "true",
-			"SWC": "103"
+			"swcID": "SWC-103",
+			"descriptionShort": [
+				"It is recommended to make a conscious choice on what version of Solidity is used for compilation."
+			]
 		},
-		"OutdatedCompilerVersion":{
+		"OutdatedCompilerVersion": {
 			"active": "true",
-			"SWC": "102"
+			"swcID": "SWC-102",
+			"descriptionShort": [
+				"The version of the compiler specified in the Pragma is outdated. It is recommended to use a more recent one (>=0.4.23)."
+			]
 		},
-		"DefaultVisibilityFunction":{
+		"DefaultVisibilityFunction": {
 			"active": "true",
-			"SWC": "100"
+			"swcID": "SWC-100",
+			"descriptionShort": [
+				"The function does not have an explicit visibility set. The default visibility is set to public and anyone call the function."
+			]
 		},
-		"DefaultVisibilityStateVariable":{
+		"DefaultVisibilityStateVariable": {
 			"active": "true",
-			"SWC": "108"
+			"swcID": "SWC-108",
+			"descriptionShort": [
+				"It is best best practice to set the visibility of state variables explicitly."
+			]
 		},
-		"UndeclaredStoragePointer":{
+		"UndeclaredStoragePointer": {
 			"active": "true",
-			"SWC": "109"
+			"swcID": "SWC-109",
+			"descriptionShort": [
+				"Uninitialised storage variables of user-defined type can point to unexpected storage locations."
+			]
 		},
-		"DeprecatedFunctions":{
+		"DeprecatedFunctions": {
 			"active": "true",
-			"SWC": "111"
+			"swcID": "SWC-111",
+			"descriptionShort": [
+				"Using _constant_ as a function state mutability modifier is disallowed as of Solidity version 0.5.0 use _view_ instead.",
+				"_sha3()_ is disallowed as of Solidity version 0.5.0, use _keccak256()_ instead.",
+				"_suicide()_ is disallowed as of Solidity version 0.5.0, use _selfdestruct()_ instead.",
+				"_callcode()_ is disallowed as of Solidity version 0.5.0, use _delegatecall()_ instead.",
+				"_block.blockhash_ is deprecated and _blockhash()_ should be used instead.",
+				"_gasleft()_ is disallowed as of Solidity version 0.5.0, use _msg.gas_ instead. ",
+				"_throw_ is now disallowed as of Solidity version 0.5.0 in favor of _revert_, _require_ and _assert_"
+			]
 		},
-		"UncheckedCallReturnValue":{
+		"UncheckedCallReturnValue": {
 			"active": "true",
-			"SWC": "104"
+			"swcID": "SWC-104",
+			"descriptionShort": [
+				"Always check the return value for low level calls like call(), send() and delegatecall()."
+			]
 		},
-		"IncorrectConstructorName":{
+		"IncorrectConstructorName": {
 			"active": "true",
-			"SWC": "118"
+			"swcID": "SWC-118",
+			"descriptionShort": [
+				"Until Solidity version 0.4.22 a constructor can only be defined as a function that has the same name as the contract. It has been discovered that there is a function with a very similar name that only deviates based lower/upper case characters.",
+				"A function is named constructor. The correct way of defining a constructor is without the function delaration."
+			]
 		},
-		"AuthorizationTXOrigin":{
+		"AuthorizationTXOrigin": {
 			"active": "true",
-			"SWC": "118"
+			"swcID": "SWC-118",
+			"descriptionShort": [
+				"Using tx.origin as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. "
+			]
+		},
+		"WeakRandomnessFunction": {
+			"active": "true",
+			"swcID": "SWC-120",
+			"descriptionShort": [
+				"Using past or the current block hashes as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
+			]
+		},
+		"TypoGraphicalErrorFunction": {
+			"active": "true",
+			"swcID": "SWC-129",
+			"descriptionShort": [
+				"An unary operation was disovered directly after an assignment operation."
+			]
 		}
 	}
 }

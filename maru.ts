@@ -6,10 +6,11 @@ const commandLineUsage = require("command-line-usage");
 const pkg = require("./package.json");
 
 import Config from "./config/config.json";
-import Analyzer from "./src/analyzer";
-import Reporter from "./src/reporter";
-import Repository from "./src/repository";
-import AstUtility from "./src/ast_utility";
+import Analyzer from "./src/maru/analyzer";
+import Reporter from "./src/maru/reporter";
+import Repository from "./src/maru/repository";
+import AstUtility from "./src/utils/ast";
+import SolidityAntlr from "./src/parser/solidity_antlr.js";
 
 const optionDefinitions = [
   {
@@ -63,11 +64,10 @@ const sections = [
   },
 ];
 
-
-if (options.help || options.length < 1){
+if (options.help || options.length < 1) {
   const usage = commandLineUsage(sections);
   console.log(usage);
-} else if (options.version){
+} else if (options.version) {
   console.log(`This is version ${pkg.version}`);
 } else if (options.run) {
   let config: { [plugins: string]: any } = {};
@@ -96,9 +96,8 @@ if (options.help || options.length < 1){
     repo.addFile(options.run);
   }
 
-
-  if (options.ast) {
-    const output = AstUtility.getContractAST(repo);
+  if (options.ast && stats.isFile()) {
+    const output = SolidityAntlr.generateAST(options.run);
     const response = JSON.stringify(output, null, 2);
     console.log(response)
   } else {
@@ -109,11 +108,6 @@ if (options.help || options.length < 1){
       Reporter.toText(issues);
     }
   }
-
-}
-else {
+} else {
   console.log(`Maru v.${pkg.version}`);
 }
-
-
-
