@@ -22,16 +22,16 @@ describe("Binary Operators", () => {
     it(`Test case - =+/=- ${file_name}`, async () => {
         const contracts: Contract[] = sol_file.contracts_current;
 
-        const bops: BinaryOperation[] = SolidityAntlr.parseBinaryOperation(sol_file.block.branch);
+        const bops: BinaryOperation[] = SolidityAntlr.parseBinaryOperation(sol_file.block);
 
         for (const bop of bops) {
+            // AstUtility.printNode(bop)
             if (AstUtility.matchRegex(bop.operator, new RegExp("^=$"))) {
                 if (AstUtility.hasProperty(bop.right.branch, "type") &&
                     AstUtility.hasProperty(bop.right.branch, "left")) {
 
                     if (AstUtility.matchRegex(bop.right.branch["type"], new RegExp("^BinaryOperation$")) &&
                         AstUtility.matchRegex(bop.right.branch["operator"], new RegExp("^\\+|-$"))) {
-                        console.log(bop.right.branch["operator"])
                     }
 
                 }

@@ -88,7 +88,7 @@
 			"active": "true",
 			"swcID": "SWC-129",
 			"descriptionShort": [
-				""
+				"An unary operation was disovered directly after an assignment operation."
 			]
 		}
 	}
