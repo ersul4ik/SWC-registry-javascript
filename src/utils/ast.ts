@@ -47,12 +47,8 @@ class AstUtility {
     return false;
   }
 
-  static logNode(node: any): void {
-    logger.info(JSON.stringify(node, null, 4));
-  }
-
   static printNode(node: any): void {
-    console.log(JSON.stringify(node, null, 4));
+    logger.info(JSON.stringify(node, null, 4));
   }
 
 }
