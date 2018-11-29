@@ -75,7 +75,7 @@ if (options.help || options.length < 1) {
   if (options.plugin != null) {
     const usingPlugins: { [plugins: string]: any } = {};
     options.plugin.split(",").forEach((plugin: string) => {
-      if ((config.plugins[plugin] != null) && (config.plugins[plugin].SWC != null)) {
+      if ((config.plugins[plugin] != null) && (config.plugins[plugin].swcID != null)) {
         usingPlugins[plugin] = config.plugins[plugin];
       } else {
         console.log(`${plugin} does not exist.`)

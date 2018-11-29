@@ -90,6 +90,13 @@
 			"descriptionShort": [
 				"An unary operation was disovered directly after an assignment operation."
 			]
+		},
+		"IncorrectInheritanceOrderFunction": {
+			"active": "true",
+			"swcID": "SWC-125",
+			"descriptionShort": [
+				"The following functions were detected to exist in the contract and its base classes"
+			]
 		}
 	}
 }

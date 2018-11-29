@@ -9,7 +9,12 @@ let IncorrectInheritanceOrderFunction: Plugin;
 
 IncorrectInheritanceOrderFunction = function (sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
-    // implememt me 
+    // include imported contracts
+    for (const c of sol_file.contracts_current) {
+        for (const f of c.functions) {
+            console.log(f.name);
+        }
+    }
     return issuePointers;
 };
 
