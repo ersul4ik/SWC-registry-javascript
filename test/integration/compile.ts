@@ -13,7 +13,7 @@ var compiler = niv.require('solc@0.4.24')
 describe("Compile Sol File", () => {
     const file_name = "./test/sol_files/unary/typo_one_command.sol";
 
-    it(`Print Solc AST for ${file_name}`, async () => {
+    it(`Extract sources from Solc AST for ${file_name}`, async () => {
         var content = fs.readFileSync(file_name, 'utf8')
         const out = JSON.parse(compiler.compileStandardWrapper(compilerInput(content)));
 
