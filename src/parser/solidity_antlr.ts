@@ -20,6 +20,7 @@ import FunctionCall from '../expressions/function_call';
 import MemberAccess from '../expressions/member_access';
 import Throw from '../expressions/throw';
 import BinaryOperation from '../expressions/binary_operation';
+import Parameter from '../declarations/parameter';
 
 class SolidityAntlr {
 
@@ -247,7 +248,8 @@ class SolidityAntlr {
         parser.visit(parent_node.branch, {
             FunctionDefinition(node: any) {
                 let name: string = node.name;
-                const parameters: any = node.parameters;
+                const function_parameters: Parameter[] = SolidityAntlr.parseParameter(new Node(node.parameters));
+                const return_parameters: Parameter[] = SolidityAntlr.parseParameter(new Node(node.returnParameters));
                 const block: Node = new Node(node.body);
                 const visibility: string = node.visibility;
                 const modifiers: any = node.modifiers;
@@ -264,7 +266,8 @@ class SolidityAntlr {
                 functions.push(
                     new CFunction(
                         name,
-                        parameters,
+                        function_parameters,
+                        return_parameters,
                         block,
                         visibility,
                         modifiers,
@@ -277,6 +280,32 @@ class SolidityAntlr {
         });
 
         return functions;
+    }
+
+    static parseParameter(parent_node: Node): Parameter[] {
+
+        let parameters: Parameter[] = [];
+        parser.visit(parent_node.branch, {
+            Parameter(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+                if (node.typeName !== undefined) {
+                    const type: Type = SolidityAntlr.parseType(node.typeName)
+
+                    parameters.push(
+                        new Parameter(
+                            location,
+                            node.name,
+                            type,
+                            node.isStateVar,
+                            node.storageLocation
+                        )
+                    )
+                }
+
+            },
+
+        });
+        return parameters;
     }
 
     static parseType(node: any) {

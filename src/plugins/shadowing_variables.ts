@@ -9,6 +9,7 @@ let ShadowingVariablesFunction: Plugin;
 
 ShadowingVariablesFunction = function (sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
+
     // implememt me 
     return issuePointers;
 };

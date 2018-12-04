@@ -1,10 +1,12 @@
 import Node from "../misc/node";
 import Location from "../misc/location";
 import Delcaration from "./declaration";
+import Parameter from "./parameter";
 
 class CFunction extends Delcaration {
     name: string;
-    parameters: any;
+    function_parameters: Parameter[];
+    returnParameters: Parameter[];
     block: Node;
     visibility: string;
     modifiers: any;
@@ -13,7 +15,8 @@ class CFunction extends Delcaration {
 
     constructor(
         name: string,
-        parameters: any,
+        function_parameters: Parameter[],
+        returnParameters: Parameter[],
         block: Node,
         visibility: string,
         modifiers: any,
@@ -23,7 +26,8 @@ class CFunction extends Delcaration {
     ) {
         super(location);
         this.name = name;
-        this.parameters = parameters;
+        this.function_parameters = function_parameters;
+        this.returnParameters = returnParameters;
         this.block = block;
         this.visibility = visibility;
         this.modifiers = modifiers;
