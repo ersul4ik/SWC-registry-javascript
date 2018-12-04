@@ -10,7 +10,10 @@
     "logplease": "1.2.15",
     "require-all": "3.0.0",
     "semver": "^5.5.1",
-    "solidity-parser-antlr": "*"
+    "solidity-parser-antlr": "*",
+    "remix-solidity": "^0.3.1",
+    "remix-lib": "^0.4.1",
+    "npm-install-version": "^6.0.2"
   },
   "scripts": {
     "dev": "tsc -w",
@@ -19,9 +22,8 @@
     "build:dev": "npm run clean && npm run install:solidity-parser-antlr && npm install && npm run updateswc && npm run tsc && chmod +x dist/maru.js && cp package.json dist/",
     "install:solidity-parser-antlr": "deps/solidity-parser-antlr.sh",
     "test": "./node_modules/.bin/nyc mocha test/**/*.ts -r ts-node/register || exit 0",
-    "test:unit": "./node_modules/.bin/nyc mocha test/unit/* -r ts-node/register || exit 0",
-    "test:swc": "./node_modules/.bin/nyc mocha test/SWC-test-case-runner/run.ts -r ts-node/register || exit 0",
-    "test:functional": "nyc mocha test/functional/* -r ts-node/register || exit 0",
+    "test:unit": "./node_modules/.bin/nyc mocha --timeout 10000 test/unit/* -r ts-node/register || exit 0",
+    "test:integration": "nyc mocha --timeout 10000 test/integration/* -r ts-node/register || exit 0",
     "lint": "tslint -c tslint.json  -p .",
     "updateswc": "curl https://raw.githubusercontent.com/SmartContractSecurity/SWC-registry/master/export/swc-definition.json > src/swc-definition.json",
     "tsc": "tsc"
