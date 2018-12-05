@@ -19,7 +19,7 @@ describe("Compile Sol File", () => {
 
         expect(Object.keys(out.sources)[0]).toEqual("test.sol");
 
-        //AstUtility.printNode(Object.values(out.sources)[0])
+        AstUtility.printNode(out)
     });
 
 });
