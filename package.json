@@ -6,14 +6,15 @@
   "dependencies": {
     "command-line-args": "5.0.2",
     "command-line-usage": "5.0.5",
+    "detect-installed": "^2.0.4",
     "js-yaml": "^3.12.0",
     "logplease": "1.2.15",
+    "npm-install-version": "^6.0.2",
+    "remix-lib": "^0.4.1",
+    "remix-solidity": "^0.3.1",
     "require-all": "3.0.0",
     "semver": "^5.5.1",
-    "solidity-parser-antlr": "*",
-    "remix-solidity": "^0.3.1",
-    "remix-lib": "^0.4.1",
-    "npm-install-version": "^6.0.2"
+    "solidity-parser-antlr": "*"
   },
   "scripts": {
     "dev": "tsc -w",
