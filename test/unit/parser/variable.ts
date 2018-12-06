@@ -1,16 +1,10 @@
-import { should } from 'should/should';
+
 const assert = require("assert");
 const expect = require("expect");
 
-import FileUtils from '../../src/utils/file'
-import Analyzer from '../../src/maru/analyzer'
-import SolidityAntlr from '../../src/parser/solidity_antlr'
-import Contract from '../../src/declarations/contract'
-import Import from '../../src/declarations/import'
-import CFunction from '../../src/declarations/cfunction';
-import Variable from '../../src/declarations/variable';
-import AstUtility from '../../src/utils/ast';
-import SolFile from '../../src/maru/sol_file';
+import Variable from '../../../src/declarations/variable';
+import SolFile from '../../../src/maru/sol_file';
+import SolidityAntlr from '../../../src/parser/solidity_antlr';
 
 describe("Variable parsing simple", () => {
   const file_name = "./test/sol_files/variable/statements.sol";

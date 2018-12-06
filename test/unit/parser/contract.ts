@@ -2,16 +2,11 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import FileUtils from '../../src/utils/file'
-import Analyzer from '../../src/maru/analyzer'
-import SolidityAntlr from '../../src/parser/solidity_antlr'
-import Contract from '../../src/declarations/contract'
-import Import from '../../src/declarations/import'
-import AstUtility from '../../src/utils/ast'
-import SolFile from '../../src/maru/sol_file';
+import Contract from '../../../src/declarations/contract';
+import SolFile from '../../../src/maru/sol_file';
 
 describe("Contract parsing", () => {
-  const file_name = "./test/sol_files/contracts/simple.sol";
+  const file_name = "./test/sol_files/contracts/storage.sol";
   const sol_file = new SolFile(file_name);
   const contracts: Contract[] = sol_file.contracts_current;
 

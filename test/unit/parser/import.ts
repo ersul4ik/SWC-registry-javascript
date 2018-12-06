@@ -1,12 +1,8 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import FileUtils from '../../src/utils/file'
-import Analyzer from '../../src/maru/analyzer'
-import SolidityAntlr from '../../src/parser/solidity_antlr'
-import Contract from '../../src/declarations/contract'
-import Import from '../../src/declarations/import'
-import AstUtility from '../../src/utils/ast'
+import Import from '../../../src/declarations/import';
+import SolidityAntlr from '../../../src/parser/solidity_antlr';
 
 describe("Import parsing", () => {
   const file_name = "./test/sol_files/imports/A.sol";
@@ -25,7 +21,6 @@ describe("Import parsing", () => {
 
   });
 
-
   it(`Test case - should list all expected imports for ${file_name} and any other imports`, async () => {
     const imports: Import[] = SolidityAntlr.parseAllImports(file_name, ast)
 
@@ -35,10 +30,7 @@ describe("Import parsing", () => {
 
   });
 
-
 });
-
-
 
 /*
 describe("Contract parsing with imports", () => {
@@ -65,8 +57,6 @@ describe("Contract parsing with imports", () => {
       expect(all_contracts[2].location.columnEnd).toEqual(0);
       expect(all_contracts[2].location.src).toEqual("117:1531:0");
 
-
-      
       for (const contract of all_contracts){
         AstUtility.printNode(contract.name)
         AstUtility.printNode(contract.kind)

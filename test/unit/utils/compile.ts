@@ -1,5 +1,5 @@
-import AstUtility from "../../src/utils/ast";
-import SolcUtility from "../../src/utils/solc";
+import AstUtility from "../../../src/utils/ast";
+import SolcUtility from "../../../src/utils/solc";
 
 const expect = require("expect");
 const fs = require('fs')
@@ -22,8 +22,9 @@ let input = {
     }
 }
 
+const file_name = "./test/sol_files/contracts/simple.sol";
+
 describe("Compile Sol File", () => {
-    const file_name = "./test/sol_files/unary/typo_one_command.sol";
 
     it(`Extract sources from Solc AST for ${file_name}`, async () => {
 
@@ -31,7 +32,7 @@ describe("Compile Sol File", () => {
 
         expect(Object.keys(out.sources)[0]).toEqual(file_name);
 
-        // AstUtility.printNode(out)
+        //    AstUtility.printNode(out)
     });
 
     it(`Check if Solc version 0.4.24 is installed`, async () => {
@@ -42,7 +43,6 @@ describe("Compile Sol File", () => {
     });
 
     it(`Extract pramga version from Sol file`, async () => {
-        const file_name = "./test/sol_files/unary/typo_one_command.sol";
 
         const result = SolcUtility.getPragmaVersion(file_name)
         expect(result).toEqual("0.4.24");

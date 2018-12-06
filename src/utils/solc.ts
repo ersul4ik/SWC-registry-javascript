@@ -8,11 +8,10 @@ class SolcUtility {
 
     static isSolcVersionInstalled = async (version_number: string) => {
         const version: string = "solc@" + version_number;
-        const result = (await detectInstalled(version, {
+        const installed: boolean = detectInstalled.sync(version, {
             local: true
-        }))
-
-        return result;
+        })
+        return installed;
     }
 
     static getPragmaVersion(file_name: string) {
@@ -58,7 +57,7 @@ class SolcUtility {
             settings: {
                 outputSelection: {
                     '*': {
-                        '': ['ast']
+                        '': ['legacyAST']
                     }
                 }
             }
@@ -67,8 +66,8 @@ class SolcUtility {
         const file_content: string = FileUtils.getFileContent(file_name);
         input.sources = { [file_name]: { content: file_content } }
 
-        const out = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
-        return out;
+        const result = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
+        return result;
     }
 }
 

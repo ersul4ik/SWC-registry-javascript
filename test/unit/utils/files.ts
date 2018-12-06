@@ -1,5 +1,5 @@
 const assert = require("assert");
-import FileUtils from "../../src/utils/file";
+import FileUtils from "../../../src/utils/file";
 
 describe("Search for files", () => {
   describe("with .sol extension in ./test/", () => {

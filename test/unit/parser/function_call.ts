@@ -2,18 +2,11 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import FileUtils from '../../src/utils/file'
-import Analyzer from '../../src/maru/analyzer'
-import SolidityAntlr from '../../src/parser/solidity_antlr'
-import Contract from '../../src/declarations/contract'
-import Import from '../../src/declarations/import'
-import CFunction from '../../src/declarations/cfunction';
-import Variable from '../../src/declarations/variable';
-import AstUtility from '../../src/utils/ast';
-import ArrayType from '../../src/types/array_type';
-import FunctionCall from '../../src/expressions/function_call';
-import SolFile from '../../src/maru/sol_file';
-import logger from '../../src/logger/logger';
+import CFunction from '../../../src/declarations/cfunction';
+import FunctionCall from '../../../src/expressions/function_call';
+import SolFile from '../../../src/maru/sol_file';
+import SolidityAntlr from '../../../src/parser/solidity_antlr';
+import AstUtility from '../../../src/utils/ast';
 
 describe("Function call parsing ", () => {
     const file_name = "./test/sol_files/function_calls/any.sol";

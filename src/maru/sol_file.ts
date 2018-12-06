@@ -5,9 +5,14 @@ import Contract from '../declarations/contract';
 import { IssueDetailed, IssuePointer } from "./issue";
 import CFunction from "../declarations/cfunction";
 import logger from "../logger/logger";
+import FileUtils from "../utils/file";
+import Solc from "../parser/solc";
+import Location from "../misc/location";
 
 class SolFile {
     file_name: string;
+    file_content: string;
+    nodes: any[];
     block: Node;
     pragma: Pragma;
     contracts_current: Contract[];
@@ -15,6 +20,8 @@ class SolFile {
 
     constructor(file_name: string) {
         this.file_name = file_name;
+        this.file_content = FileUtils.getFileContent(file_name);
+        this.nodes = Solc.walkAST(file_name);
         this.block = new Node(SolidityAntlr.generateAST(file_name));
         this.pragma = SolidityAntlr.parsePragma(this.block);
         this.contracts_current = SolidityAntlr.parseContracts(this.block);
@@ -27,6 +34,17 @@ class SolFile {
             f = f.concat(c.functions);
         }
         return f;
+    }
+
+    parseLocation(src: any): Location {
+
+        return new Location(
+            1,
+            2,
+            3,
+            4,
+            src
+        );
     }
 
 }

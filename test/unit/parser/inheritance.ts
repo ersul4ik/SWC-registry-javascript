@@ -2,17 +2,8 @@ const c3 = require("c3-linearization");
 const assert = require("assert");
 const expect = require("expect");
 
-import { should } from 'should/should';
-import FileUtils from '../../src/utils/file'
-import Analyzer from '../../src/maru/analyzer'
-import SolidityAntlr from '../../src/parser/solidity_antlr'
-import Contract from '../../src/declarations/contract'
-import Import from '../../src/declarations/import'
-import CFunction from '../../src/declarations/cfunction';
-import StateVariable from '../../src/declarations/variable';
-import AstUtility from '../../src/utils/ast';
-import ContractHelper from '../../src/utils/contract';
-import SolFile from '../../src/maru/sol_file';
+import Contract from '../../../src/declarations/contract';
+import SolFile from '../../../src/maru/sol_file';
 
 describe("Inheritance linearization", () => {
   const file_name = "./test/sol_files/inheritance/simple_three_contract.sol";

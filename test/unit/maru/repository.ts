@@ -1,7 +1,7 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import Repository from "../../src/maru/repository";
+import Repository from "../../../src/maru/repository";
 
 describe("Repository", () => {
   describe("#addFiles recursively to a Repository", () => {
