@@ -19,10 +19,10 @@ class SolcUtility {
         // set a default version
         let version = "0.4.25";
         const file_content: string = FileUtils.getFileContent(file_name);
-        let arr = file_content.split('\n')
+        let lines = file_content.split('\n')
 
-        for (let x = 0; x < arr.length; x++) {
-            const filter_whitespaces: string = arr[x].replace(/\s|\t/g, "");
+        for (let x = 0; x < lines.length; x++) {
+            const filter_whitespaces: string = lines[x].replace(/\s|\t/g, "");
             if (filter_whitespaces.startsWith("pragmasolidity")) {
                 // if a floating pragma is used then take the oldest allowed version
                 let extracted_version = filter_whitespaces.replace(/pragmasolidity|\^|;/g, "");
@@ -45,7 +45,7 @@ class SolcUtility {
 
         const solc_version_string: string = 'solc@' + version
 
-        if (SolcUtility.isSolcVersionInstalled(version)) {
+        if (!SolcUtility.isSolcVersionInstalled(version)) {
             logger.debug(`Solc version ${solc_version_string} not installed, trying to do that now.`)
             niv.install(solc_version_string)
         }
