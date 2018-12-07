@@ -11,7 +11,8 @@ describe("Contract", () => {
     it(`Test case - parse contract attibutes in  ${file_name1}`, async () => {
         const sol_file = new SolFile(file_name1);
         const contracts: Contract[] = sol_file.parseContracts();
-        StringUtility.printNode(contracts);
+        expect(contracts[0].name).toEqual("Simple");
+        expect(contracts[0].kind).toEqual("contract");
     });
 
     const file_name2 = "./test/sol_files/contracts/storage.sol";
@@ -19,14 +20,15 @@ describe("Contract", () => {
     it(`Test case - parse contract attibutes in  ${file_name2}`, async () => {
         const sol_file = new SolFile(file_name2);
         const contracts: Contract[] = sol_file.parseContracts();
-        StringUtility.printNode(contracts);
+        expect(contracts[0].name).toEqual("TestStorage");
+        expect(contracts[0].kind).toEqual("contract");
     });
 
-    const file_name3 = "./test/sol_files/contracts/simple2.sol";
+    const file_name3 = "./test/sol_files/contracts/simple_v051.sol";
 
     it(`Test case - parse contract attibutes in  ${file_name3}`, async () => {
         const sol_file = new SolFile(file_name3);
-        StringUtility.printNode(sol_file.nodes);
+        //  StringUtility.printNode(sol_file.nodes);
     });
     /*
     it(`Test case - contract should have expected location information in ${file_name}`, async () => {

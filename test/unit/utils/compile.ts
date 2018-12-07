@@ -6,7 +6,6 @@ const fs = require("fs");
 
 const niv = require("npm-install-version");
 
-niv.install("solc@0.4.24");
 const compiler = niv.require("solc@0.4.24");
 const detectInstalled = require("detect-installed");
 
@@ -22,7 +21,7 @@ describe("Compile Sol File", () => {
     });
 
     it(`Check if Solc version 0.4.24 is installed`, async () => {
-        niv.install("solc@0.4.24");
+        niv.install("solc@0.4.24", { quiet: true });
 
         const result = await SolcUtility.isSolcVersionInstalled("0.4.24");
         expect(result).toEqual(true);

@@ -45,7 +45,7 @@ class SolcUtility {
             niv.install(solc_version_string);
         }
 
-        let compiler = niv.require(solc_version_string);
+        let compiler = niv.require(solc_version_string, { quiet: true });
 
         let input = {
             language: "Solidity",
