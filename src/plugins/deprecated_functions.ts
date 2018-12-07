@@ -1,7 +1,7 @@
 const parser = require("solidity-parser-antlr");
 const util = require("util");
 
-import AstUtility from "../utils/ast";
+import StringUtility from "../utils/ast";
 import { IssuePointer } from "../maru/issue";
 import { Plugin } from '../maru/plugin';
 import Logger from "../logger/logger";
@@ -19,7 +19,7 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
   const issuePointers: IssuePointer[] = [];
 
   for (const f of sol_file.getContractFunctions()) {
-    if (AstUtility.matchRegex(f.stateMutability, new RegExp("constant"))) {
+    if (StringUtility.matchRegex(f.stateMutability, new RegExp("constant"))) {
       issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], f.location));
     }
   }
@@ -28,19 +28,19 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
     const f_cs: FunctionCall[] = SolidityAntlr.parseFunctionCalls(c.subNodes);
     for (const f_c of f_cs) {
 
-      if (AstUtility.matchRegex(f_c.name, new RegExp("^sha3$"))) {
+      if (StringUtility.matchRegex(f_c.name, new RegExp("^sha3$"))) {
         issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[1], f_c.location));
       }
 
-      if (AstUtility.matchRegex(f_c.name, new RegExp("^suicide$"))) {
+      if (StringUtility.matchRegex(f_c.name, new RegExp("^suicide$"))) {
         issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[2], f_c.location));
       }
 
-      else if (AstUtility.matchRegex(f_c.name, new RegExp("\.callcode$"))) {
+      else if (StringUtility.matchRegex(f_c.name, new RegExp("\.callcode$"))) {
         issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[3], f_c.location));
       }
 
-      else if (AstUtility.matchRegex(f_c.name, new RegExp("^block.blockhash$"))) {
+      else if (StringUtility.matchRegex(f_c.name, new RegExp("^block.blockhash$"))) {
         issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[5], f_c.location));
       }
 
@@ -49,9 +49,9 @@ DeprecatedFunctions = function (sol_file: SolFile, plugin_config: PluginConfig):
     const members: MemberAccess[] = SolidityAntlr.parseMemberAccess(c.subNodes);
 
     for (const m of members) {
-      if (AstUtility.matchRegex(m.name, new RegExp("^gas$"))) {
-        if (AstUtility.hasProperty(m.expression.branch, "type") && AstUtility.hasProperty(m.expression.branch, "name")) {
-          if (AstUtility.matchRegex(m.expression.branch.name, new RegExp("^msg$"))) {
+      if (StringUtility.matchRegex(m.name, new RegExp("^gas$"))) {
+        if (StringUtility.hasProperty(m.expression.branch, "type") && StringUtility.hasProperty(m.expression.branch, "name")) {
+          if (StringUtility.matchRegex(m.expression.branch.name, new RegExp("^msg$"))) {
             issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[6], m.location));
           }
         }

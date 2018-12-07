@@ -9,7 +9,7 @@ import Config from "./config/config.json";
 import Analyzer from "./src/maru/analyzer";
 import Reporter from "./src/maru/reporter";
 import Repository from "./src/maru/repository";
-import AstUtility from "./src/utils/ast";
+import StringUtility from "./src/utils/ast";
 import SolidityAntlr from "./src/parser/solidity_antlr.js";
 
 const optionDefinitions = [

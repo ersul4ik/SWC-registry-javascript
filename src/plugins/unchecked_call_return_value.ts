@@ -1,6 +1,6 @@
 const parser = require("solidity-parser-antlr");
 
-import AstUtility from "../utils/ast";
+import StringUtility from "../utils/ast";
 import { IssuePointer } from "../maru/issue";
 import { Plugin } from '../maru/plugin';
 import Logger from "../logger/logger";
@@ -27,10 +27,10 @@ UncheckedCallReturnValue = function (sol_file: SolFile, plugin_config: PluginCon
         FunctionCall(f_call: any) {
           parser.visit(f_call, {
             MemberAccess(mb: any) {
-              if (AstUtility.matchRegex(mb.memberName, new RegExp("^call$")) ||
-                AstUtility.matchRegex(mb.memberName, new RegExp("^delegatecall$")) ||
-                AstUtility.matchRegex(mb.memberName, new RegExp("^send$")) ||
-                AstUtility.matchRegex(mb.memberName, new RegExp("^callcode$"))
+              if (StringUtility.matchRegex(mb.memberName, new RegExp("^call$")) ||
+                StringUtility.matchRegex(mb.memberName, new RegExp("^delegatecall$")) ||
+                StringUtility.matchRegex(mb.memberName, new RegExp("^send$")) ||
+                StringUtility.matchRegex(mb.memberName, new RegExp("^callcode$"))
               ) {
                 let entry: any = {};
                 entry.expr_nr = expression_nr;
@@ -46,8 +46,8 @@ UncheckedCallReturnValue = function (sol_file: SolFile, plugin_config: PluginCon
 
           parser.visit(f_call, {
             Identifier(identifier: any) {
-              if (AstUtility.matchRegex(identifier.name, new RegExp("^require$")) ||
-                AstUtility.matchRegex(identifier.name, new RegExp("^assert$"))) {
+              if (StringUtility.matchRegex(identifier.name, new RegExp("^require$")) ||
+                StringUtility.matchRegex(identifier.name, new RegExp("^assert$"))) {
                 let entry: any = {};
                 entry['expr_nr'] = expression_nr;
                 entry['expr_range'] = expr.range;
@@ -82,10 +82,10 @@ UncheckedCallReturnValue = function (sol_file: SolFile, plugin_config: PluginCon
       }
     }
 
-    if (AstUtility.matchRegex(outer_caller['type'], new RegExp("^call$")) ||
-      AstUtility.matchRegex(outer_caller['type'], new RegExp("^delegatecall$")) ||
-      AstUtility.matchRegex(outer_caller['type'], new RegExp("^send$")) ||
-      AstUtility.matchRegex(outer_caller['type'], new RegExp("^callcode$"))
+    if (StringUtility.matchRegex(outer_caller['type'], new RegExp("^call$")) ||
+      StringUtility.matchRegex(outer_caller['type'], new RegExp("^delegatecall$")) ||
+      StringUtility.matchRegex(outer_caller['type'], new RegExp("^send$")) ||
+      StringUtility.matchRegex(outer_caller['type'], new RegExp("^callcode$"))
     ) {
       const location: Location = SolidityAntlr.parseLocation(outer_caller['node'].loc, outer_caller['node'].range);
       issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], location));

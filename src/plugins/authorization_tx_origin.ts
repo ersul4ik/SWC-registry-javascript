@@ -1,6 +1,6 @@
 const parser = require("solidity-parser-antlr");
 
-import AstUtility from "../utils/ast";
+import StringUtility from "../utils/ast";
 import { IssuePointer } from "../maru/issue";
 import { Plugin } from '../maru/plugin';
 import Logger from "../logger/logger";
@@ -15,15 +15,15 @@ AuthorizationTXOrigin = function (sol_file: SolFile, plugin_config: PluginConfig
 
   parser.visit(sol_file.block, {
     BinaryOperation(b_op: any) {
-      if (AstUtility.matchRegex(b_op.operator, new RegExp("==")) ||
-        AstUtility.matchRegex(b_op.operator, new RegExp("!="))) {
+      if (StringUtility.matchRegex(b_op.operator, new RegExp("==")) ||
+        StringUtility.matchRegex(b_op.operator, new RegExp("!="))) {
         parser.visit(b_op, {
           MemberAccess(member: any) {
             parser.visit(b_op, {
               Identifier(identifier: any) {
                 if (
-                  AstUtility.matchRegex(member.memberName, new RegExp("^origin$")) &&
-                  AstUtility.matchRegex(identifier.name, new RegExp("^tx$"))
+                  StringUtility.matchRegex(member.memberName, new RegExp("^origin$")) &&
+                  StringUtility.matchRegex(identifier.name, new RegExp("^tx$"))
                 ) {
                   const location: Location = SolidityAntlr.parseLocation(member.loc, member.range);
                   issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], location));

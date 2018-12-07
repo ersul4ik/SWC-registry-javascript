@@ -1,6 +1,6 @@
 const parser = require("solidity-parser-antlr");
 
-import AstUtility from "../utils/ast";
+import StringUtility from "../utils/ast";
 import { IssuePointer } from "../maru/issue";
 import { Plugin } from '../maru/plugin';
 import Logger from "../logger/logger";
@@ -15,7 +15,7 @@ DefaultVisibilityStateVariable = function (sol_file: SolFile, plugin_config: Plu
 
   for (const c of sol_file.contracts_current) {
     for (const v of c.variables) {
-      if (AstUtility.matchRegex(v.visibility, new RegExp("default")) && v.isConstant === false) {
+      if (StringUtility.matchRegex(v.visibility, new RegExp("default")) && v.isConstant === false) {
         issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], v.location));
       }
 

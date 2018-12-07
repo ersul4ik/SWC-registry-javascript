@@ -6,7 +6,7 @@ import Analyzer from "../maru/analyzer";
 import { IssuePointer } from "../maru/issue";
 import FileUtils from "./file";
 
-class AstUtility {
+class StringUtility {
 
   static getStartLine(node: any) {
     return node.loc.start.line;
@@ -53,4 +53,4 @@ class AstUtility {
 
 }
 
-export default AstUtility;
+export default StringUtility;

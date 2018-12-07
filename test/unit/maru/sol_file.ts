@@ -4,6 +4,7 @@ const expect = require("expect");
 
 import Contract from '../../../src/declarations/contract';
 import SolFile from '../../../src/maru/sol_file';
+import StringUtility from '../../../src/utils/ast';
 
 describe("Locations", () => {
     const file_name = "./test/sol_files/contracts/simple.sol";
@@ -11,7 +12,7 @@ describe("Locations", () => {
 
     it(`Test case - get the function location from ${file_name}`, async () => {
 
-        // expect(contracts[0].subNodes.branch.length).toEqual(12);
+        StringUtility.printNode(sol_file.parsePragma())
 
     });
 

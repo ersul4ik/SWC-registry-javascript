@@ -1,6 +1,6 @@
 import SolcUtility from "../../src/utils/solc";
 import Solc from "../../src/parser/solc";
-import AstUtility from "../../src/utils/ast";
+import StringUtility from "../../src/utils/ast";
 
 const expect = require("expect");
 

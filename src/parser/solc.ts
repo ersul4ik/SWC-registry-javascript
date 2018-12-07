@@ -1,27 +1,23 @@
 import FileUtils from "../utils/file";
 import Node from "../misc/node";
 import SolcUtility from "../utils/solc";
-import AstUtility from "../utils/ast";
+import StringUtility from "../utils/ast";
 import Location from "../misc/location";
+import Pragma from "../declarations/pragma";
+import NodeTypes from "../maru/node_types";
 
 const AstWalker = require('remix-lib').AstWalker
-type AstType = any;
 
 class Solc {
 
-    static parseLocation(loc: any, range: any): Location {
-        const r_start: number = range[0];
-        const r_end: number = range[1];
-        let src_2: number = r_end - r_start + 1;
-        let src = `${r_start}:${src_2}:0`
-
-        return new Location(
-            loc.start.line,
-            loc.end.line,
-            loc.start.column,
-            loc.end.column,
-            src
-        );
+    static getNodeOfType(nodes: any[], type: string) {
+        let filter_nodes: any[] = [];
+        for (const n of nodes) {
+            if (StringUtility.matchString(n.name, type)) {
+                filter_nodes.push(n);
+            }
+        }
+        return filter_nodes;
     }
 
     static walkAST(file_name: string) {

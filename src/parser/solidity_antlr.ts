@@ -13,7 +13,7 @@ import ElementaryType from '../types/elementary_type';
 import Logger from '../logger/logger';
 import FileUtils from '../utils/file';
 import Type from '../types/type';
-import AstUtility from '../utils/ast';
+import StringUtility from '../utils/ast';
 import ArrayType from '../types/array_type';
 import UserDefinedType from '../types/user_defined_type';
 import FunctionCall from '../expressions/function_call';
@@ -312,19 +312,19 @@ class SolidityAntlr {
         let type: any;
         const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
 
-        if (AstUtility.matchString(node.type, "ElementaryTypeName")) {
+        if (StringUtility.matchString(node.type, "ElementaryTypeName")) {
             return new ElementaryType(
                 location,
                 node.name
             )
-        } else if (AstUtility.matchString(node.type, "ArrayTypeName")) {
+        } else if (StringUtility.matchString(node.type, "ArrayTypeName")) {
             let length: string = "null"
 
-            if (AstUtility.hasProperty(node.length, "number")) {
+            if (StringUtility.hasProperty(node.length, "number")) {
                 length = node.length.number;
             }
 
-            if (AstUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
+            if (StringUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
                 return new ArrayType(
                     location,
                     new ElementaryType(
@@ -333,7 +333,7 @@ class SolidityAntlr {
                     ),
                     length
                 )
-            } else if (AstUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
+            } else if (StringUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
                 return new ArrayType(
                     location,
                     new UserDefinedType(
@@ -346,7 +346,7 @@ class SolidityAntlr {
                 Logger.error("Array type not recognised at")
             }
 
-        } else if (AstUtility.matchString(node.type, "UserDefinedTypeName")) {
+        } else if (StringUtility.matchString(node.type, "UserDefinedTypeName")) {
             return new UserDefinedType(
                 location,
                 node.namePath
