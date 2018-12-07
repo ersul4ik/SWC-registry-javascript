@@ -5,6 +5,7 @@ import Variable from "../../../src/declarations/variable";
 import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 
+/*
 describe("Variable parsing simple", () => {
     const file_name = "./test/sol_files/variable/statements.sol";
     const sol_file = new SolFile(file_name);
@@ -31,3 +32,5 @@ describe("Variable parsing simple", () => {
         expect(abc.isStateVar).toEqual(true);
     });
 });
+
+*/

@@ -10,18 +10,6 @@ niv.install("solc@0.4.24");
 const compiler = niv.require("solc@0.4.24");
 const detectInstalled = require("detect-installed");
 
-let input = {
-    language: "Solidity",
-    sources: {},
-    settings: {
-        outputSelection: {
-            "*": {
-                "": ["ast"]
-            }
-        }
-    }
-};
-
 const file_name = "./test/sol_files/contracts/simple.sol";
 
 describe("Compile Sol File", () => {

@@ -7,7 +7,7 @@ describe("Repository", () => {
     describe("#addFiles recursively to a Repository", () => {
         it("should have more than 0 files in the sol  test directory", () => {
             const test = new Repository();
-            test.addFiles("./test/sol_files", ".sol");
+            test.addFiles("./test/sol_files/contracts", ".sol");
 
             expect(test.sol_files.length).toBeGreaterThan(0);
         });

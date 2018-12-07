@@ -14,8 +14,8 @@ OutdatedCompilerVersion = function(sol_file: SolFile, plugin_config: PluginConfi
     const issuePointers: IssuePointer[] = [];
     const oldest_recommended_version = "0.4.23";
 
-    if (semver.lt(sol_file.pragma.value.replace("^", ""), oldest_recommended_version)) {
-        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], sol_file.pragma.location));
+    if (semver.lt(sol_file.pragma[0].value.replace("^", ""), oldest_recommended_version)) {
+        issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], sol_file.pragma[0].location));
     }
 
     return issuePointers;

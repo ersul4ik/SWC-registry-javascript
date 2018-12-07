@@ -5,13 +5,13 @@ const detectInstalled = require("detect-installed");
 const niv = require("npm-install-version");
 
 class SolcUtility {
-    static isSolcVersionInstalled = async (version_number: string) => {
+    static isSolcVersionInstalled(version_number: string) {
         const version: string = "solc@" + version_number;
         const installed: boolean = detectInstalled.sync(version, {
             local: true
         });
         return installed;
-    };
+    }
 
     static getPragmaVersion(file_name: string) {
         // set a default version
@@ -38,8 +38,6 @@ class SolcUtility {
 
     static compile(file_name: string) {
         const version = SolcUtility.getPragmaVersion(file_name);
-        let compiler = undefined;
-
         const solc_version_string: string = "solc@" + version;
 
         if (!SolcUtility.isSolcVersionInstalled(version)) {
@@ -47,7 +45,7 @@ class SolcUtility {
             niv.install(solc_version_string);
         }
 
-        compiler = niv.require(solc_version_string);
+        let compiler = niv.require(solc_version_string);
 
         let input = {
             language: "Solidity",

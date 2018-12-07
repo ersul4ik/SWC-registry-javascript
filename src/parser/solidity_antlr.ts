@@ -33,7 +33,7 @@ class SolidityAntlr {
                 const subNodes: Node = new Node(node.subNodes);
                 const location = SolidityAntlr.parseLocation(node.loc, node.range);
 
-                contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
+                // contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
             }
         });
         return contracts;

@@ -1,0 +1,7 @@
+
+contract Simple{
+
+    function test(){
+        
+    }
+}

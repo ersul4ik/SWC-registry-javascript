@@ -2,16 +2,18 @@ import Location from "../misc/location";
 import Delcaration from "./declaration";
 
 interface Pragma {
+    location: Location;
     name: string;
     value: string;
 }
 
-class Pragma extends Delcaration {
+class Pragma {
+    location: Location;
     name: string;
     value: string;
 
     constructor(location: Location, name: string, value: string) {
-        super(location);
+        this.location = location;
         this.name = name;
         this.value = value;
     }

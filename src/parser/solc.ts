@@ -1,10 +1,5 @@
-import FileUtils from "../utils/file";
-import Node from "../misc/node";
-import SolcUtility from "../utils/solc";
 import StringUtility from "../utils/ast";
-import Location from "../misc/location";
-import Pragma from "../declarations/pragma";
-import NodeTypes from "../maru/node_types";
+import SolcUtility from "../utils/solc";
 
 const AstWalker = require("remix-lib").AstWalker;
 
@@ -34,12 +29,8 @@ class Solc {
         };
 
         Object.entries(compilation_result.sources).forEach(([pathName, source]) => {
-            let bar = <any>{};
-            bar = source;
-            //  AstUtility.printNode(bar.legacyAST)
-
             walker = new AstWalker();
-            walker.walk(bar.legacyAST, callback);
+            walker.walk((<any>source).legacyAST, callback);
         });
         return nodes;
     }

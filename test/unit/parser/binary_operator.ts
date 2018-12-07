@@ -8,6 +8,7 @@ import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 import StringUtility from "../../../src/utils/ast";
 
+/*
 describe("Binary Operators", () => {
     const file_name = "./test/sol_files/unary/typo_one_command.sol";
     const sol_file = new SolFile(file_name);
@@ -31,3 +32,5 @@ describe("Binary Operators", () => {
         }
     });
 });
+
+*/

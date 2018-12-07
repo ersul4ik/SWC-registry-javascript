@@ -16,7 +16,7 @@ class Contract extends Delcaration {
     functions: CFunction[];
     variables: Variable[];
 
-    constructor(name: string, kind: string, baseContracts: string[], subNodes: Node, location: Location) {
+    constructor(location: Location, name: string, kind: string, baseContracts: string[], subNodes: Node) {
         super(location);
         this.name = name;
         this.kind = kind;

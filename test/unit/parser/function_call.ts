@@ -7,6 +7,7 @@ import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 import AstUtility from "../../../src/utils/ast";
 
+/*
 describe("Function call parsing ", () => {
     const file_name = "./test/sol_files/function_calls/any.sol";
     const sol_file = new SolFile(file_name);
@@ -28,3 +29,5 @@ describe("Function call parsing ", () => {
         expect(fcs[2].name).toEqual("blockhash");
     });
 });
+
+*/
