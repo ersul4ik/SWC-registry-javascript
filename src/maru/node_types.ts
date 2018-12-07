@@ -1,5 +1,5 @@
 const NodeTypes = {
-    PragmaDirective: "PragmaDirective",
-}
+    PragmaDirective: "PragmaDirective"
+};
 
 export default NodeTypes;

@@ -3,7 +3,6 @@ import Location from "../misc/location";
 import ElementaryType from "./elementary_type";
 
 class ArrayType extends Type {
-
     type: Type;
     length: string;
 

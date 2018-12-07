@@ -14,7 +14,6 @@ class BinaryOperation extends Expression {
         this.left = left;
         this.right = right;
     }
-
 }
 
 export default BinaryOperation;

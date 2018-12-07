@@ -1,4 +1,3 @@
-
 import logger from "../logger/logger";
 import Contract from "../declarations/contract";
 
@@ -14,7 +13,6 @@ class ContractUtils {
         logger.debug(error);
         return error;
     }
-
 }
 
 export default ContractUtils;

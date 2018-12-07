@@ -6,7 +6,7 @@ class FunctionCall extends Expression {
     name: string;
     expression: Node;
     args: Node;
-    type: string
+    type: string;
 
     constructor(location: Location, name: string, expression: Node, args: Node, type: string) {
         super(location);
@@ -15,7 +15,6 @@ class FunctionCall extends Expression {
         this.args = args;
         this.type = type;
     }
-
 }
 
 export default FunctionCall;

@@ -8,7 +8,6 @@ class PluginConfig {
         this.swcID = swcID;
         this.descriptionShort = descriptionShort;
     }
-
 }
 
 export default PluginConfig;

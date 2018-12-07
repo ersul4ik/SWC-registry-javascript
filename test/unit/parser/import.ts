@@ -1,35 +1,32 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import Import from '../../../src/declarations/import';
-import SolidityAntlr from '../../../src/parser/solidity_antlr';
+import Import from "../../../src/declarations/import";
+import SolidityAntlr from "../../../src/parser/solidity_antlr";
 
 describe("Import parsing", () => {
-  const file_name = "./test/sol_files/imports/A.sol";
-  const ast = SolidityAntlr.generateAST(file_name);
+    const file_name = "./test/sol_files/imports/A.sol";
+    const ast = SolidityAntlr.generateAST(file_name);
 
-  it(`Test case - should list all expected imports for ${file_name}`, async () => {
-    const imports: Import[] = SolidityAntlr.parseImports(file_name, ast)
+    it(`Test case - should list all expected imports for ${file_name}`, async () => {
+        const imports: Import[] = SolidityAntlr.parseImports(file_name, ast);
 
-    expect(imports[0].path).toEqual("test/sol_files/imports/lib/B.sol")
+        expect(imports[0].path).toEqual("test/sol_files/imports/lib/B.sol");
 
-    /*
+        /*
     for (const i of imports){
       AstUtility.printNode(i)
     } 
     */
+    });
 
-  });
+    it(`Test case - should list all expected imports for ${file_name} and any other imports`, async () => {
+        const imports: Import[] = SolidityAntlr.parseAllImports(file_name, ast);
 
-  it(`Test case - should list all expected imports for ${file_name} and any other imports`, async () => {
-    const imports: Import[] = SolidityAntlr.parseAllImports(file_name, ast)
-
-    expect(imports[0].path).toEqual("test/sol_files/imports/lib/B.sol")
-    expect(imports[1].path).toEqual("test/sol_files/imports/lib2/C.sol")
-    expect(imports[2].path).toEqual("test/sol_files/imports/lib2/D.sol")
-
-  });
-
+        expect(imports[0].path).toEqual("test/sol_files/imports/lib/B.sol");
+        expect(imports[1].path).toEqual("test/sol_files/imports/lib2/C.sol");
+        expect(imports[2].path).toEqual("test/sol_files/imports/lib2/D.sol");
+    });
 });
 
 /*

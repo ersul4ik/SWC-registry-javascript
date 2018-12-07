@@ -10,9 +10,7 @@ class MemberAccess extends Expression {
         super(location);
         this.name = name;
         this.expression = expression;
-
     }
-
 }
 
 export default MemberAccess;

@@ -6,10 +6,9 @@ import Location from "../misc/location";
 import Pragma from "../declarations/pragma";
 import NodeTypes from "../maru/node_types";
 
-const AstWalker = require('remix-lib').AstWalker
+const AstWalker = require("remix-lib").AstWalker;
 
 class Solc {
-
     static getNodeOfType(nodes: any[], type: string) {
         let filter_nodes: any[] = [];
         for (const n of nodes) {
@@ -26,7 +25,7 @@ class Solc {
         let nodes: any[] = [];
 
         const callback = (node: any) => {
-            nodes.push(node)
+            nodes.push(node);
             if ("children" in node) {
                 for (const child of node.children) {
                     walker.walk(child, callback);
@@ -41,7 +40,7 @@ class Solc {
 
             walker = new AstWalker();
             walker.walk(bar.legacyAST, callback);
-        })
+        });
         return nodes;
     }
 }

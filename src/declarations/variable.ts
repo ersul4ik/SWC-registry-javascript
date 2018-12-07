@@ -35,7 +35,6 @@ class Variable extends Delcaration {
         this.isConstant = isConstant;
         this.storageLocation = storageLocation;
     }
-
 }
 
 export default Variable;

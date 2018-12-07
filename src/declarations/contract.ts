@@ -1,11 +1,11 @@
 const c3 = require("c3-linearization");
 
-import Location from '../misc/location';
-import Node from '../misc/node';
-import CFunction from './cfunction';
-import SolidityAntlr from '../parser/solidity_antlr';
-import Delcaration from './declaration';
-import Variable from './variable';
+import Location from "../misc/location";
+import Node from "../misc/node";
+import CFunction from "./cfunction";
+import SolidityAntlr from "../parser/solidity_antlr";
+import Delcaration from "./declaration";
+import Variable from "./variable";
 
 class Contract extends Delcaration {
     name: string;
@@ -16,21 +16,15 @@ class Contract extends Delcaration {
     functions: CFunction[];
     variables: Variable[];
 
-    constructor(
-        name: string,
-        kind: string,
-        baseContracts: string[],
-        subNodes: Node,
-        location: Location
-    ) {
-        super(location)
+    constructor(name: string, kind: string, baseContracts: string[], subNodes: Node, location: Location) {
+        super(location);
         this.name = name;
         this.kind = kind;
         this.baseContracts = baseContracts;
         this.baseContractsNormalized = [];
         this.subNodes = subNodes;
         this.functions = SolidityAntlr.parseCFunction(subNodes);
-        this.variables = SolidityAntlr.parseVariables(subNodes)
+        this.variables = SolidityAntlr.parseVariables(subNodes);
     }
 
     normalizeBaseContracts(contracts: Contract[]): void {
@@ -41,7 +35,7 @@ class Contract extends Delcaration {
         }
         let inheritance_lin = c3.linearize(inheritance, { reverse: true });
 
-        // the first item is the current contract itself, so remove it 
+        // the first item is the current contract itself, so remove it
         inheritance_lin[this.name].shift();
 
         this.baseContractsNormalized = inheritance_lin[this.name];
@@ -53,9 +47,8 @@ class Contract extends Delcaration {
                 return true;
             }
         }
-        return false
+        return false;
     }
-
 }
 
 export default Contract;

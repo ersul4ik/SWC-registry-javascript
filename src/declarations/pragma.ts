@@ -10,11 +10,10 @@ class Pragma extends Delcaration {
     name: string;
     value: string;
 
-    constructor(location: Location, name: string, value: string, ) {
-        super(location)
+    constructor(location: Location, name: string, value: string) {
+        super(location);
         this.name = name;
         this.value = value;
-
     }
 }
 

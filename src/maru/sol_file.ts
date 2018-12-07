@@ -1,9 +1,9 @@
-const src_location = require('src-location')
+const src_location = require("src-location");
 
 import Node from "../misc/node";
 import SolidityAntlr from "../parser/solidity_antlr";
 import Pragma from "../declarations/pragma";
-import Contract from '../declarations/contract';
+import Contract from "../declarations/contract";
 import { IssueDetailed, IssuePointer } from "./issue";
 import CFunction from "../declarations/cfunction";
 import logger from "../logger/logger";
@@ -41,18 +41,11 @@ class SolFile {
     }
 
     parseLocation(src: any): Location {
-
-        const src_array = src.split(":")
+        const src_array = src.split(":");
         const start = src_location.indexToLocation(this.file_content, src_array[0]);
         const end = src_location.indexToLocation(this.file_content, src_array[0] + src_array[1]);
 
-        return new Location(
-            start.line,
-            start.column,
-            end.line,
-            end.column,
-            src
-        );
+        return new Location(start.line, start.column, end.line, end.column, src);
     }
 
     parsePragma(): Pragma {
@@ -60,16 +53,11 @@ class SolFile {
         for (const node of this.nodes) {
             if (StringUtility.matchString(node.name, NodeTypes.PragmaDirective)) {
                 const location: Location = this.parseLocation(node.src);
-                pragma = new Pragma(
-                    location,
-                    node.attributes.literals[0],
-                    node.attributes.literals[1]
-                );
+                pragma = new Pragma(location, node.attributes.literals[0], node.attributes.literals[1]);
             }
         }
 
         return pragma;
-
     }
 
     private static newMethod() {

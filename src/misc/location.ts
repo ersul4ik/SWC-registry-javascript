@@ -3,7 +3,7 @@ class Location {
     lineNumberEnd: number;
     columnStart: number;
     columnEnd: number;
-    src: string
+    src: string;
 
     constructor(lineNumberStart: number, lineNumberEnd: number, columnStart: number, columnEnd: number, src: string) {
         this.lineNumberStart = lineNumberStart;
