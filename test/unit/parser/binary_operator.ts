@@ -6,7 +6,6 @@ import Contract from "../../../src/declarations/contract";
 import BinaryOperation from "../../../src/expressions/binary_operation";
 import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
-import StringUtility from "../../../src/utils/ast";
 
 /*
 describe("Binary Operators", () => {

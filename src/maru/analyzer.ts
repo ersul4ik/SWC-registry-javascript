@@ -7,7 +7,7 @@ const plugins = require("require-all")({
 });
 
 import Logger from "../logger/logger";
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 import FileUtils from "../utils/file";
 import { IssueDetailed, IssuePointer } from "./issue";
 import Repository from "./repository";

@@ -9,7 +9,7 @@ import Config from "./config/config.json";
 import Analyzer from "./src/maru/analyzer";
 import Reporter from "./src/maru/reporter";
 import Repository from "./src/maru/repository";
-import StringUtility from "./src/utils/ast";
+import NodeUtility from "./src/utils/node";
 import SolidityAntlr from "./src/parser/solidity_antlr.js";
 import Solc from "./src/parser/solc.js";
 import SolcUtility from "./src/utils/solc.js";

@@ -1,6 +1,7 @@
 const NodeTypes = {
     PragmaDirective: "PragmaDirective",
-    ContractDefinition: "ContractDefinition"
+    ContractDefinition: "ContractDefinition",
+    FunctionDefinition: "FunctionDefinition"
 };
 
 export default NodeTypes;

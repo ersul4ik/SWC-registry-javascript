@@ -3,6 +3,7 @@ const assert = require("assert");
 const expect = require("expect");
 
 import Contract from "../../../src/declarations/contract";
+import ContractUtils from "../../../src/utils/contract";
 import SolFile from "../../../src/maru/sol_file";
 
 describe("Inheritance linearization", () => {
@@ -18,13 +19,13 @@ describe("Inheritance linearization", () => {
         expect(contracts[1].name).toEqual("C");
         expect(contracts[1].linearizedBaseContracts).toEqual([]);
 
-        expect(sol_file.getContractName(23)).toEqual("C");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 23)).toEqual("C");
         expect(contracts[2].name).toEqual("B");
         expect(contracts[2].linearizedBaseContracts).toEqual([23]);
 
-        expect(sol_file.getContractName(12)).toEqual("D");
-        expect(sol_file.getContractName(34)).toEqual("B");
-        expect(sol_file.getContractName(23)).toEqual("C");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 12)).toEqual("D");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 34)).toEqual("B");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 23)).toEqual("C");
         expect(contracts[3].name).toEqual("A");
         expect(contracts[3].linearizedBaseContracts).toEqual([12, 34, 23]);
     });

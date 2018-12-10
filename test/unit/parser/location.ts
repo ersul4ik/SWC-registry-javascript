@@ -3,7 +3,7 @@ const expect = require("expect");
 
 import Contract from "../../../src/declarations/contract";
 import SolFile from "../../../src/maru/sol_file";
-import StringUtility from "../../../src/utils/ast";
+import NodeUtility from "../../../src/utils/node";
 
 describe("Location", () => {
     const file_name1 = "./test/sol_files/pragma/simple_unformatted_pragma.sol";

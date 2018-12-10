@@ -3,7 +3,7 @@ const expect = require("expect");
 
 import Contract from "../../../src/declarations/contract";
 import SolFile from "../../../src/maru/sol_file";
-import StringUtility from "../../../src/utils/ast";
+import NodeUtility from "../../../src/utils/node";
 
 describe("Contract", () => {
     const file_name1 = "./test/sol_files/contracts/simple.sol";
@@ -28,6 +28,8 @@ describe("Contract", () => {
 
     it(`Test case - parse contract attibutes in  ${file_name3}`, async () => {
         const sol_file = new SolFile(file_name3);
-        //  StringUtility.printNode(sol_file.nodes);
+        const contracts: Contract[] = sol_file.parseContracts();
+        expect(contracts[0].name).toEqual("A");
+        expect(contracts[0].kind).toEqual("contract");
     });
 });

@@ -1,17 +1,16 @@
 const src_location = require("src-location");
-
-import Node from "../misc/node";
 import SolidityAntlr from "../parser/solidity_antlr";
 import Pragma from "../declarations/pragma";
 import Contract from "../declarations/contract";
 import { IssueDetailed, IssuePointer } from "./issue";
-import CFunction from "../declarations/cfunction";
+import CFunction from "../declarations/function";
 import logger from "../logger/logger";
 import FileUtils from "../utils/file";
 import Solc from "../parser/solc";
 import Location from "../misc/location";
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 import NodeTypes from "../maru/node_types";
+import Parameter from "../declarations/parameter";
 
 class SolFile {
     file_name: string;
@@ -72,30 +71,73 @@ class SolFile {
         let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.ContractDefinition);
 
         for (const node of filtered_nodes) {
+            const location = this.parseLocation(node.id, node.src);
+
             const name: string = node.attributes.name;
             const kind: string = node.attributes.contractKind;
-            const linearizedBaseContracts: number[] = node.attributes.linearizedBaseContracts;
 
-            // We remove the contract itself from the linearizedBaseContracts array
+            const linearizedBaseContracts: number[] = node.attributes.linearizedBaseContracts;
+            // remove the contract itself from the linearizedBaseContracts array
             linearizedBaseContracts.shift();
 
-            const location = this.parseLocation(node.id, node.src);
-            const scope = node.attributes.scope;
-            const isfullyImplemented = node.attributes.fullyImplemented;
+            const scope: number = node.attributes.scope;
+            const isImplemented: boolean = node.attributes.fullyImplemented;
 
-            contracts.push(new Contract(location, scope, name, kind, isfullyImplemented, linearizedBaseContracts));
+            const functions: CFunction[] = this.parseFunction(node.id);
+
+            contracts.push(new Contract(location, scope, name, kind, isImplemented, linearizedBaseContracts, functions));
         }
 
         return contracts;
     }
 
-    getContractName(id: number): string {
-        for (const c of this.contracts_current) {
-            if (c.location.id == id) {
-                return c.name;
+    parseFunction(id?: number): CFunction[] {
+        let functions: CFunction[] = [];
+        let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.FunctionDefinition);
+
+        for (const node of filtered_nodes) {
+            if (!id || (NodeUtility.hasProperty(node.attributes, "scope") && id == node.attributes.scope)) {
+                const location: Location = this.parseLocation(node.id, node.src);
+                const scope = node.attributes.scope;
+
+                let name: string = node.attributes.name;
+                const isConstructor: boolean = node.attributes.isConstructor;
+                const visibility: string = node.attributes.visibility;
+                let stateMutability: string = node.attributes.stateMutability;
+                const isImplemented = node.attributes.implemented;
+
+                // rename constructor consistenly
+                if (isConstructor) {
+                    name = "constructor";
+                }
+
+                // stateMutability is null if it is not set specifically
+                if (stateMutability === null) {
+                    stateMutability = "nonpayable";
+                }
+
+                const modifiers: any = node.attributes.modifiers;
+                const function_parameters: Parameter[] = [];
+                const return_parameters: Parameter[] = [];
+
+                functions.push(
+                    new CFunction(
+                        location,
+                        scope,
+                        name,
+                        isConstructor,
+                        visibility,
+                        stateMutability,
+                        isImplemented,
+                        function_parameters,
+                        return_parameters,
+                        modifiers
+                    )
+                );
             }
         }
-        return "";
+
+        return functions;
     }
 }
 

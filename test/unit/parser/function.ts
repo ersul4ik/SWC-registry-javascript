@@ -1,48 +1,36 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import CFunction from "../../../src/declarations/cfunction";
+import CFunction from "../../../src/declarations/function";
 import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
+import NodeUtility from "../../../src/utils/node";
 
-/*
 describe("Function parsing", () => {
     const file_name = "./test/sol_files/functions/functions.sol";
     const sol_file = new SolFile(file_name);
-    const cfunctions: CFunction[] = SolidityAntlr.parseCFunction(sol_file.block);
 
-    it(`Test case - should parse all function elements for ${file_name}`, async () => {
-        expect(cfunctions.length).toEqual(8);
+    it(`Test case - should parse functions in contract OwnedToken in ${file_name}`, async () => {
+        expect(sol_file.contracts_current[0].functions[0].name).toEqual("constructor");
+        expect(sol_file.contracts_current[0].functions[0].isConstructor).toEqual(true);
+        expect(sol_file.contracts_current[0].functions[0].isImplemented).toEqual(true);
+        expect(sol_file.contracts_current[0].functions[0].visibility).toEqual("public");
+        expect(sol_file.contracts_current[0].functions[0].stateMutability).toEqual("nonpayable");
 
-        expect(cfunctions[0].name).toEqual("constructor");
-        expect(cfunctions[3].name).toEqual("constructor");
+        expect(sol_file.contracts_current[0].functions[1].name).toEqual("changeName");
 
-        expect(cfunctions[0].visibility).toEqual("public");
-        expect(cfunctions[7].visibility).toEqual("default");
-
-        expect(cfunctions[0].stateMutability).toEqual("nonpayable");
-        expect(cfunctions[6].stateMutability).toEqual("view");
-        expect(cfunctions[7].stateMutability).toEqual("payable");
+        expect(sol_file.contracts_current[0].functions[2].name).toEqual("transfer");
     });
 
-    it(`Test case - should parse all function parameters ${file_name}`, async () => {
-        const cfunctions: CFunction[] = SolidityAntlr.parseCFunction(sol_file.block);
+    it(`Test case - should functions in contract TokenCreator in ${file_name}`, async () => {
+        expect(sol_file.contracts_current[1].functions.length).toEqual(5);
 
-        expect(cfunctions[0].function_parameters[0].name).toEqual("_name");
-        expect(cfunctions[0].function_parameters[0].type.constructor.name).toEqual("ElementaryType");
+        expect(sol_file.contracts_current[1].functions[0].name).toEqual("constructor");
 
-        expect(cfunctions[5].function_parameters[1].name).toEqual("name");
-        expect(cfunctions[5].function_parameters[1].type.constructor.name).toEqual("ElementaryType");
-    });
+        expect(sol_file.contracts_current[1].functions[4].stateMutability).toEqual("payable");
 
-    it(`Test case - should parse all function return parameters ${file_name}`, async () => {
-        const cfunctions: CFunction[] = SolidityAntlr.parseCFunction(sol_file.block);
-
-        expect(cfunctions[4].returnParameters[0].name).toEqual("tokenAddress");
-        expect(cfunctions[4].returnParameters[0].type.constructor.name).toEqual("UserDefinedType");
-
-        expect(cfunctions[6].returnParameters[0].name).toEqual("ok");
-        expect(cfunctions[6].returnParameters[0].type.constructor.name).toEqual("ElementaryType");
+        for (const n of sol_file.nodes) {
+            console.log(n.id);
+        }
     });
 });
-*/

@@ -1,7 +1,7 @@
 const parser = require("solidity-parser-antlr");
 const path = require("path");
 
-import CFunction from "../declarations/cfunction";
+import CFunction from "../declarations/function";
 import Contract from "../declarations/contract";
 import Import from "../declarations/import";
 import Location from "../misc/location";
@@ -13,7 +13,7 @@ import ElementaryType from "../types/elementary_type";
 import Logger from "../logger/logger";
 import FileUtils from "../utils/file";
 import Type from "../types/type";
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 import ArrayType from "../types/array_type";
 import UserDefinedType from "../types/user_defined_type";
 import FunctionCall from "../expressions/function_call";
@@ -252,23 +252,23 @@ class SolidityAntlr {
         let type: any;
         const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
 
-        if (StringUtility.matchString(node.type, "ElementaryTypeName")) {
+        if (NodeUtility.matchString(node.type, "ElementaryTypeName")) {
             return new ElementaryType(location, node.name);
-        } else if (StringUtility.matchString(node.type, "ArrayTypeName")) {
+        } else if (NodeUtility.matchString(node.type, "ArrayTypeName")) {
             let length: string = "null";
 
-            if (StringUtility.hasProperty(node.length, "number")) {
+            if (NodeUtility.hasProperty(node.length, "number")) {
                 length = node.length.number;
             }
 
-            if (StringUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
+            if (NodeUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
                 return new ArrayType(location, new ElementaryType(location, node.baseTypeName.name), length);
-            } else if (StringUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
+            } else if (NodeUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
                 return new ArrayType(location, new UserDefinedType(location, node.baseTypeName.namePath), length);
             } else {
                 Logger.error("Array type not recognised at");
             }
-        } else if (StringUtility.matchString(node.type, "UserDefinedTypeName")) {
+        } else if (NodeUtility.matchString(node.type, "UserDefinedTypeName")) {
             return new UserDefinedType(location, node.namePath);
         }
         return type;

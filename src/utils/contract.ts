@@ -13,6 +13,15 @@ class ContractUtils {
         logger.debug(error);
         return error;
     }
+
+    static getContractNameFromID(contracts: Contract[], id: number): string {
+        for (const c of contracts) {
+            if (c.location.id == id) {
+                return c.name;
+            }
+        }
+        return "";
+    }
 }
 
 export default ContractUtils;

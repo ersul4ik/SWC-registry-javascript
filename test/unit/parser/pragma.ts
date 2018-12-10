@@ -2,7 +2,6 @@ const assert = require("assert");
 const expect = require("expect");
 
 import SolFile from "../../../src/maru/sol_file";
-import StringUtility from "../../../src/utils/ast";
 import Pragma from "../../../src/declarations/pragma";
 
 describe("Pragma", () => {

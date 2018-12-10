@@ -1,4 +1,3 @@
-import StringUtility from "../../../src/utils/ast";
 import SolcUtility from "../../../src/utils/solc";
 
 const expect = require("expect");

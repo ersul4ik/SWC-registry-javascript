@@ -1,4 +1,4 @@
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 import SolcUtility from "../utils/solc";
 
 const AstWalker = require("remix-lib").AstWalker;
@@ -7,7 +7,7 @@ class Solc {
     static getNodeOfType(nodes: any[], type: string) {
         let filter_nodes: any[] = [];
         for (const n of nodes) {
-            if (StringUtility.matchString(n.name, type)) {
+            if (NodeUtility.matchString(n.name, type)) {
                 filter_nodes.push(n);
             }
         }

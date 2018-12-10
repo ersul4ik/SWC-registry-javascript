@@ -1,7 +1,5 @@
 import SolcUtility from "../../src/utils/solc";
 import Solc from "../../src/parser/solc";
-import StringUtility from "../../src/utils/ast";
-
 const expect = require("expect");
 
 describe("Solc AST walk", () => {

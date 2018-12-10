@@ -5,35 +5,35 @@ import Parameter from "./parameter";
 
 class CFunction extends Delcaration {
     name: string;
+    isConstructor: boolean;
+    visibility: string;
+    stateMutability: string;
+    isImplemented: boolean;
     function_parameters: Parameter[];
     returnParameters: Parameter[];
-    block: Node;
-    visibility: string;
-    modifiers: any;
-    isConstructor: boolean;
-    stateMutability: string;
+    modifiers: any[];
 
     constructor(
+        location: Location,
+        scope: number,
         name: string,
+        isConstructor: boolean,
+        visibility: string,
+        stateMutability: string,
+        isImplemented: boolean,
         function_parameters: Parameter[],
         returnParameters: Parameter[],
-        block: Node,
-        visibility: string,
-        modifiers: any,
-        isConstructor: boolean,
-        stateMutability: string,
-        location: Location
+        modifiers: any
     ) {
-        super(location, 1);
+        super(location, scope);
         this.name = name;
+        this.isConstructor = isConstructor;
+        this.visibility = visibility;
+        this.stateMutability = stateMutability;
+        this.isImplemented = isImplemented;
         this.function_parameters = function_parameters;
         this.returnParameters = returnParameters;
-        this.block = block;
-        this.visibility = visibility;
         this.modifiers = modifiers;
-        this.isConstructor = isConstructor;
-        this.stateMutability = stateMutability;
-        this.location = location;
     }
 }
 
