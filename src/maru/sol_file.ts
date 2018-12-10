@@ -17,7 +17,6 @@ class SolFile {
     file_name: string;
     file_content: string;
     nodes: any[];
-    block: Node;
     pragma: Pragma[];
     contracts_current: Contract[];
     contracts_imported: Contract[];
@@ -26,10 +25,9 @@ class SolFile {
         this.file_name = file_name;
         this.file_content = FileUtils.getFileContent(file_name);
         this.nodes = Solc.walkAST(file_name);
-        this.block = new Node(SolidityAntlr.generateAST(file_name));
         this.pragma = this.parsePragma();
-        this.contracts_current = SolidityAntlr.parseContracts(this.block);
-        this.contracts_imported = SolidityAntlr.parseImportedContracts(file_name, this.block);
+        this.contracts_current = this.parseContracts();
+        this.contracts_imported = [];
     }
 
     getContractFunctions(): CFunction[] {
@@ -40,14 +38,15 @@ class SolFile {
         return f;
     }
 
-    parseLocation(src: any): Location {
+    parseLocation(_id: any, src: any): Location {
+        const id: number = parseInt(_id);
         const src_array: string[] = src.split(":");
         const index_start: number = parseInt(src_array[0]);
         const index_end: number = parseInt(src_array[1]);
         const start = src_location.indexToLocation(this.file_content, index_start);
         const end = src_location.indexToLocation(this.file_content, index_start + index_end);
 
-        return new Location(start.line, end.line, start.column, end.column, src);
+        return new Location(id, src, start.line, end.line, start.column, end.column);
     }
 
     parsePragma(): Pragma[] {
@@ -55,13 +54,14 @@ class SolFile {
         let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.PragmaDirective);
 
         for (const node of filtered_nodes) {
-            let version = "";
+            let part_one: string = node.attributes.literals[0];
+            let part_two: string = "";
             for (let x = 1; node.attributes.literals.length > x; x++) {
-                version += node.attributes.literals[x];
+                part_two += node.attributes.literals[x];
             }
 
-            const location: Location = this.parseLocation(node.src);
-            pragma.push(new Pragma(location, node.attributes.literals[0], version));
+            const location: Location = this.parseLocation(node.id, node.src);
+            pragma.push(new Pragma(location, part_one, part_two));
         }
 
         return pragma;
@@ -74,14 +74,28 @@ class SolFile {
         for (const node of filtered_nodes) {
             const name: string = node.attributes.name;
             const kind: string = node.attributes.contractKind;
-            const baseContracts: string[] = []; //SolidityAntlr.parseInheritance(node.baseContracts);
-            const subNodes: Node = new Node("");
-            const location = this.parseLocation(node.src);
+            const linearizedBaseContracts: number[] = node.attributes.linearizedBaseContracts;
 
-            contracts.push(new Contract(location, name, kind, baseContracts, subNodes));
+            // We remove the contract itself from the linearizedBaseContracts array
+            linearizedBaseContracts.shift();
+
+            const location = this.parseLocation(node.id, node.src);
+            const scope = node.attributes.scope;
+            const isfullyImplemented = node.attributes.fullyImplemented;
+
+            contracts.push(new Contract(location, scope, name, kind, isfullyImplemented, linearizedBaseContracts));
         }
 
         return contracts;
+    }
+
+    getContractName(id: number): string {
+        for (const c of this.contracts_current) {
+            if (c.location.id == id) {
+                return c.name;
+            }
+        }
+        return "";
     }
 }
 

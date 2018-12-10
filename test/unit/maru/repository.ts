@@ -5,7 +5,7 @@ import Repository from "../../../src/maru/repository";
 
 describe("Repository", () => {
     describe("#addFiles recursively to a Repository", () => {
-        it("should have more than 0 files in the sol  test directory", () => {
+        it("Test case - have more than 0 files in the sol test directory", () => {
             const test = new Repository();
             test.addFiles("./test/sol_files/contracts", ".sol");
 

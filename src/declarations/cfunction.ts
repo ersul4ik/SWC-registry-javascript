@@ -24,7 +24,7 @@ class CFunction extends Delcaration {
         stateMutability: string,
         location: Location
     ) {
-        super(location);
+        super(location, 1);
         this.name = name;
         this.function_parameters = function_parameters;
         this.returnParameters = returnParameters;

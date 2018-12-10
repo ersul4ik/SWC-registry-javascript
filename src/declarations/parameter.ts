@@ -11,7 +11,7 @@ class Parameter extends Delcaration {
     storageLocation: string;
 
     constructor(location: Location, name: string, type: Type, isStateVar: boolean, storageLocation: string) {
-        super(location);
+        super(location, 1);
         this.name = name;
         this.type = type;
         this.isStateVar = isStateVar;
