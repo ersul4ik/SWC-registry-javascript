@@ -1,8 +1,9 @@
 pragma solidity ^0.4.25;
 
-import './lib/B.sol';
 
-contract A{
+import 'A.sol';
+
+contract B{
   uint a = 1;
 
 }

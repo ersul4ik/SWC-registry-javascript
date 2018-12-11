@@ -11,10 +11,12 @@ import Location from "../misc/location";
 import NodeUtility from "../utils/node";
 import NodeTypes from "../maru/node_types";
 import Parameter from "../declarations/parameter";
+import Node from "../misc/node";
 
 class SolFile {
     file_name: string;
     file_content: string;
+    antlrAST: any;
     nodes: any[];
     pragma: Pragma[];
     contracts_current: Contract[];
@@ -23,7 +25,12 @@ class SolFile {
     constructor(file_name: string) {
         this.file_name = file_name;
         this.file_content = FileUtils.getFileContent(file_name);
-        this.nodes = Solc.walkAST(file_name);
+        this.antlrAST = SolidityAntlr.generateAST(file_name);
+        this.nodes = Solc.walkAST(
+            file_name,
+            SolidityAntlr.getPragmaVersion(this.antlrAST),
+            SolidityAntlr.parseAllImports(file_name, this.antlrAST)
+        );
         this.pragma = this.parsePragma();
         this.contracts_current = this.parseContracts();
         this.contracts_imported = [];

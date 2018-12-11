@@ -1,5 +1,6 @@
 import FileUtils from "./file";
 import logger from "../logger/logger";
+import Import from "../declarations/import";
 
 const detectInstalled = require("detect-installed");
 const niv = require("npm-install-version");
@@ -13,6 +14,8 @@ class SolcUtility {
         return installed;
     }
 
+    // This function is deprecated
+    // Using the Antlr AST to get the version string
     static getPragmaVersion(file_name: string) {
         // set a default version
         let version = "0.4.25";
@@ -36,8 +39,8 @@ class SolcUtility {
         return version;
     }
 
-    static compile(file_name: string) {
-        const version = SolcUtility.getPragmaVersion(file_name);
+    static compile(file_name: string, version: string, imports?: Import[]) {
+        //const version = SolcUtility.getPragmaVersion(file_name);
         const solc_version_string: string = "solc@" + version;
 
         if (!SolcUtility.isSolcVersionInstalled(version)) {
@@ -62,8 +65,22 @@ class SolcUtility {
         const file_content: string = FileUtils.getFileContent(file_name);
         input.sources = { [file_name]: { content: file_content } };
 
-        const result = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
-        return result;
+        let compile_output;
+        if (imports && imports.length > 0) {
+            compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input), 1, SolcUtility.findImports(imports)));
+        } else {
+            compile_output = JSON.parse(compiler.compileStandard(JSON.stringify(input)));
+        }
+        return compile_output;
+    }
+
+    static findImports(imports: Import[]): {} {
+        let i_string = "";
+        for (const i of imports) {
+            i_string += FileUtils.getFileContent(i.path);
+        }
+
+        return { contents: "library L { function f() internal returns (uint) { return 7; } }" };
     }
 }
 

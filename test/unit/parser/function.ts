@@ -29,8 +29,8 @@ describe("Function parsing", () => {
 
         expect(sol_file.contracts_current[1].functions[4].stateMutability).toEqual("payable");
 
-        for (const n of sol_file.nodes) {
-            console.log(n.id);
-        }
+        // for (const n of sol_file.nodes) {
+        //     console.log(n.id);
+        // }
     });
 });

@@ -6,7 +6,8 @@ class Import extends Delcaration {
     path: string;
 
     constructor(location: Location, path: string) {
-        super(location);
+        // stub scope as it does not exist in the antlr AST
+        super(location, -1);
         this.path = path;
     }
 }

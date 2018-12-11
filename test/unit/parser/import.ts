@@ -4,7 +4,6 @@ const expect = require("expect");
 import Import from "../../../src/declarations/import";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 
-/*
 describe("Import parsing", () => {
     const file_name = "./test/sol_files/imports/A.sol";
     const ast = SolidityAntlr.generateAST(file_name);
@@ -13,12 +12,6 @@ describe("Import parsing", () => {
         const imports: Import[] = SolidityAntlr.parseImports(file_name, ast);
 
         expect(imports[0].path).toEqual("test/sol_files/imports/lib/B.sol");
-
-        /*
-    for (const i of imports){
-      AstUtility.printNode(i)
-    } 
-
     });
 
     it(`Test case - should list all expected imports for ${file_name} and any other imports`, async () => {
@@ -30,6 +23,7 @@ describe("Import parsing", () => {
     });
 });
 
+/*
 describe("Contract parsing with imports", () => {
   const file_name = "./test/sol_files/contract_inherit_complex.sol";
   const ast = SolidityAntlr.generateAST(file_name);

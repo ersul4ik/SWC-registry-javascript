@@ -1,5 +1,6 @@
 import NodeUtility from "../utils/node";
 import SolcUtility from "../utils/solc";
+import Import from "../declarations/import";
 
 const AstWalker = require("remix-lib").AstWalker;
 
@@ -14,8 +15,8 @@ class Solc {
         return filter_nodes;
     }
 
-    static walkAST(file_name: string) {
-        const compilation_result = SolcUtility.compile(file_name);
+    static walkAST(file_name: string, version: string, imports: Import[]) {
+        const compilation_result = SolcUtility.compile(file_name, version, imports);
         let walker = new AstWalker();
         let nodes: any[] = [];
 

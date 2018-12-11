@@ -21,8 +21,10 @@ import MemberAccess from "../expressions/member_access";
 import Throw from "../expressions/throw";
 import BinaryOperation from "../expressions/binary_operation";
 import Parameter from "../declarations/parameter";
+import logger from "../logger/logger";
 
 class SolidityAntlr {
+    /*
     static parseContracts(parent_node: Node): Contract[] {
         let contracts: Contract[] = [];
         parser.visit(parent_node.branch, {
@@ -33,11 +35,12 @@ class SolidityAntlr {
                 const subNodes: Node = new Node(node.subNodes);
                 const location = SolidityAntlr.parseLocation(node.loc, node.range);
 
-                // contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
+                contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
             }
         });
         return contracts;
     }
+
 
     static parseImportedContracts(file_name: string, subNodes: Node): Contract[] {
         let imports: Import[] = SolidityAntlr.parseAllImports(file_name, subNodes);
@@ -49,6 +52,7 @@ class SolidityAntlr {
         }
         return imported_contracts;
     }
+        */
 
     static parseAllImports(file_name: string, ast: any): Import[] {
         file_name = path.normalize(file_name);
@@ -88,17 +92,37 @@ class SolidityAntlr {
         return imports;
     }
 
-    static parsePragma(parent_node: Node): Pragma {
-        let pragma: any;
-        parser.visit(parent_node.branch, {
-            PragmaDirective(node: any) {
-                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
-                pragma = new Pragma(location, node.name, node.value);
+    static getPragmaVersion(ast: any): string {
+        let pragmas = SolidityAntlr.parsePragma(ast);
+
+        let default_version: string = "0.4.25";
+
+        for (const pragma of pragmas) {
+            if (pragma.name.match(/solidity/)) {
+                let extracted_version: string = pragma.value.replace(/\^/, "");
+                if (extracted_version.match(/^(\d+\.\d+\.\d+)$/)) {
+                    return extracted_version;
+                } else {
+                    logger.error(`Extracting Solidity version failed got: ${extracted_version}`);
+                }
             }
-        });
-        return pragma;
+        }
+        logger.debug(`Solidity version string not recognized or not set. Switching to default version ${default_version}`);
+        return default_version;
     }
 
+    static parsePragma(ast: any): Pragma[] {
+        let pragmas: Pragma[] = [];
+        parser.visit(ast, {
+            PragmaDirective(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                pragmas.push(new Pragma(location, node.name, node.value));
+            }
+        });
+        return pragmas;
+    }
+
+    /*
     static parseInheritance(parent_node: any): string[] {
         let baseContracts: string[] = [];
         parser.visit(parent_node, {
@@ -155,6 +179,7 @@ class SolidityAntlr {
         });
         return _throw;
     }
+    */
 
     static parseLocation(loc: any, range: any): Location {
         const r_start: number = range[0];
@@ -162,9 +187,13 @@ class SolidityAntlr {
         let src_2: number = r_end - r_start + 1;
         let src = `${r_start}:${src_2}:0`;
 
-        return new Location(loc.start.line, loc.end.line, loc.start.column, loc.end.column, src);
+        // ids are not available in the antlr AST
+        const id = -1;
+
+        return new Location(id, src, loc.start.line, loc.end.line, loc.start.column, loc.end.column);
     }
 
+    /*
     // TODO: Need to parse nested expressions
     static parseFunctionCalls(parent_node: Node): FunctionCall[] {
         let function_calls: FunctionCall[] = [];
@@ -189,20 +218,24 @@ class SolidityAntlr {
 
         return function_calls;
     }
+    */
 
-    static parseCFunction(parent_node: Node): CFunction[] {
+    static parseFunction(parent_node: Node): CFunction[] {
         let functions: CFunction[] = [];
         parser.visit(parent_node.branch, {
             FunctionDefinition(node: any) {
                 let name: string = node.name;
                 const function_parameters: Parameter[] = SolidityAntlr.parseParameter(new Node(node.parameters));
                 const return_parameters: Parameter[] = SolidityAntlr.parseParameter(new Node(node.returnParameters));
-                const block: Node = new Node(node.body);
                 const visibility: string = node.visibility;
                 const modifiers: any = node.modifiers;
                 const isConstructor: boolean = node.isConstructor;
                 let stateMutability: string = node.stateMutability;
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+
+                // those params do not exist in the antlr AST, stubbing them
+                const scope: number = -1;
+                const isImplemented: boolean = true;
 
                 // rename constructor consistenly
                 if (isConstructor) {
@@ -216,15 +249,16 @@ class SolidityAntlr {
 
                 functions.push(
                     new CFunction(
+                        location,
+                        scope,
                         name,
+                        isConstructor,
+                        visibility,
+                        stateMutability,
+                        isImplemented,
                         function_parameters,
                         return_parameters,
-                        block,
-                        visibility,
-                        modifiers,
-                        isConstructor,
-                        stateMutability,
-                        location
+                        modifiers
                     )
                 );
             }
@@ -321,7 +355,7 @@ class SolidityAntlr {
         return variables;
     }
 
-    static generateAST(file_name: string): Node {
+    static generateAST(file_name: string): any {
         const file_content = FileUtils.getFileContent(file_name);
         let ast;
         try {

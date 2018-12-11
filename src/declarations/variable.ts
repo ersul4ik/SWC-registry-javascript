@@ -25,7 +25,7 @@ class Variable extends Delcaration {
         isConstant: boolean,
         storageLocation: string
     ) {
-        super(location);
+        super(location, -1);
         this.name = name;
         this.type = type;
         this.expression = expression;

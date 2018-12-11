@@ -29,6 +29,7 @@ describe("Contract", () => {
     it(`Test case - parse contract attibutes in  ${file_name3}`, async () => {
         const sol_file = new SolFile(file_name3);
         const contracts: Contract[] = sol_file.parseContracts();
+        //  NodeUtility.printNode(sol_file);
         expect(contracts[0].name).toEqual("A");
         expect(contracts[0].kind).toEqual("contract");
     });
