@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/ConsenSys/maru.svg?style=svg&circle-token=842b09eb6f78f1b2c42b18e3e7d354d2264de3ae)](https://circleci.com/gh/ConsenSys/maru)
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/956b8618278f3538b8f18df0889d29ec.svg?columns=all)](https://waffle.io/ConsenSys/maru)
+[![JIRA-Board](https://img.shields.io/badge/JIRA-Online-blue.svg)](https://diligence.atlassian.net/secure/RapidBoard.jspa?projectKey=MARU&useStoredSettings=true&rapidView=25)
 
 # Maru 
 
