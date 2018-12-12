@@ -12,7 +12,7 @@ import Location from "../misc/location";
 let AuthorizationTXOrigin: Plugin;
 AuthorizationTXOrigin = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
-
+    /*
     parser.visit(sol_file.block, {
         BinaryOperation(b_op: any) {
             if (NodeUtility.matchRegex(b_op.operator, new RegExp("==")) || NodeUtility.matchRegex(b_op.operator, new RegExp("!="))) {
@@ -34,6 +34,7 @@ AuthorizationTXOrigin = function(sol_file: SolFile, plugin_config: PluginConfig)
             }
         }
     });
+    */
     return issuePointers;
 };
 

@@ -8,7 +8,7 @@ describe("Meta commands", () => {
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
             const str = data.toString();
-            assert(str.includes(`This is version ${version}`));
+            assert(str.includes(`Maru version v${version}`));
         });
     });
 });

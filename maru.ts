@@ -10,9 +10,7 @@ import Analyzer from "./src/maru/analyzer";
 import Reporter from "./src/maru/reporter";
 import Repository from "./src/maru/repository";
 import NodeUtility from "./src/utils/node";
-import SolidityAntlr from "./src/parser/solidity_antlr.js";
-import Solc from "./src/parser/solc.js";
-import SolcUtility from "./src/utils/solc.js";
+import SolFile from "./src/maru/sol_file";
 
 const optionDefinitions = [
     {
@@ -102,8 +100,10 @@ if (options.help || options.length < 1) {
     }
 
     if (options.ast && stats.isFile()) {
-        const output = SolcUtility.compile(options.run);
-        const response = JSON.stringify(output, null, 2);
+        const sol_file = new SolFile(options.run);
+        //fix me
+        const compile_result = ""; // sol_file.solc_compile_results
+        const response = JSON.stringify(compile_result, null, 2);
         console.log(response);
     } else {
         const issues = Analyzer.runAllPlugins(repo, config);

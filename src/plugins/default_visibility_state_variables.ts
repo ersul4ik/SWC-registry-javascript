@@ -12,7 +12,7 @@ let DefaultVisibilityStateVariable: Plugin;
 
 DefaultVisibilityStateVariable = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
-
+    /*
     for (const c of sol_file.contracts_current) {
         for (const v of c.variables) {
             if (NodeUtility.matchRegex(v.visibility, new RegExp("default")) && v.isConstant === false) {
@@ -20,7 +20,7 @@ DefaultVisibilityStateVariable = function(sol_file: SolFile, plugin_config: Plug
             }
         }
     }
-
+*/
     return issuePointers;
 };
 

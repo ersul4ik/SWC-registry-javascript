@@ -13,6 +13,7 @@ let UndeclaredStoragePointer: Plugin;
 UndeclaredStoragePointer = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
 
+    /*
     for (const c of sol_file.contracts_current) {
         for (const v of c.variables) {
             if (v.storageLocation == null && v.isStateVar === false && v.type instanceof UserDefinedType && v.initialValue === null) {
@@ -20,7 +21,7 @@ UndeclaredStoragePointer = function(sol_file: SolFile, plugin_config: PluginConf
             }
         }
     }
-
+*/
     return issuePointers;
 };
 

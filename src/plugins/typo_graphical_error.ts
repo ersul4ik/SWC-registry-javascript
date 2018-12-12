@@ -6,12 +6,12 @@ import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 import BinaryOperation from "../expressions/binary_operation";
 import SolidityAntlr from "../parser/solidity_antlr";
-import NodeUtility from "../utils/node";
 
 let TypoGraphicalErrorFunction: Plugin;
 
 TypoGraphicalErrorFunction = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
+    /*
     const bops: BinaryOperation[] = SolidityAntlr.parseBinaryOperation(sol_file.block);
 
     for (const bop of bops) {
@@ -27,6 +27,7 @@ TypoGraphicalErrorFunction = function(sol_file: SolFile, plugin_config: PluginCo
             }
         }
     }
+    */
     return issuePointers;
 };
 

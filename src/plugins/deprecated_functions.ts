@@ -17,7 +17,7 @@ let DeprecatedFunctions: Plugin;
 
 DeprecatedFunctions = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
-
+    /*
     for (const f of sol_file.getContractFunctions()) {
         if (NodeUtility.matchRegex(f.stateMutability, new RegExp("constant"))) {
             issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], f.location));
@@ -56,7 +56,7 @@ DeprecatedFunctions = function(sol_file: SolFile, plugin_config: PluginConfig): 
     for (const t of SolidityAntlr.parseThrowStatements(sol_file.block)) {
         issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[7], t.location));
     }
-
+*/
     return issuePointers;
 };
 

@@ -17,6 +17,8 @@ let UncheckedCallReturnValue: Plugin;
 
 UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
+
+    /*
     let functions: any = [];
     let expression_nr: number = 0;
 
@@ -93,6 +95,8 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
             issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], location));
         }
     }
+
+    */
     return issuePointers;
 };
 

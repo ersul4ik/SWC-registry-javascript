@@ -11,7 +11,6 @@ const fs = require("fs");
 
 const niv = require("npm-install-version");
 
-const compiler = niv.require("solc@0.4.25");
 const detectInstalled = require("detect-installed");
 
 describe("Compile Sol File without imports", () => {
@@ -45,6 +44,8 @@ describe("Compile Sol File with imports", () => {
     it(`Check if imports are compiled correctly for ${file_name}`, async () => {
         //const sol_file = new SolFile(file_name);
         // NodeUtility.printNode(sol_file.nodes);
+        niv.install("solc@0.4.25", { quiet: true });
+        const compiler = niv.require("solc@0.4.25");
         const CONTRACTS_DIR = path.resolve(__dirname, "../../sol_files/imports/");
 
         function findContract(pathName: any) {

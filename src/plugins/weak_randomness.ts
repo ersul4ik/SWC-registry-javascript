@@ -6,13 +6,13 @@ import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 import FunctionCall from "../expressions/function_call";
 import SolidityAntlr from "../parser/solidity_antlr";
-import NodeUtility from "../utils/node";
 
 let WeakRandomnessFunction: Plugin;
 
 WeakRandomnessFunction = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
 
+    /*
     for (const c of sol_file.contracts_current) {
         const f_cs: FunctionCall[] = SolidityAntlr.parseFunctionCalls(c.subNodes);
 
@@ -24,7 +24,7 @@ WeakRandomnessFunction = function(sol_file: SolFile, plugin_config: PluginConfig
             }
         }
     }
-
+*/
     return issuePointers;
 };
 
