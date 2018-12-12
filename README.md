@@ -38,7 +38,7 @@ DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage
 
 ## Issues and Features
 
-Maru relies on [Jira](All issues and new features will be tracked in [Jira](https://diligence.atlassian.net/secure/RapidBoard.jspa?rapidView=25&projectKey=MARU&view=planning&selectedIssue=MARU-79&epics=visible&selectedEpic=MARU-76) to track issues and keep track of new features.
+The Mytril team relies on [Jira](https://diligence.atlassian.net/secure/RapidBoard.jspa?rapidView=25&projectKey=MARU&view=planning&selectedIssue=MARU-79&epics=visible&selectedEpic=MARU-76) to track issues and keep track of new features for most of its projects. 
 
 ## Contribute
 
