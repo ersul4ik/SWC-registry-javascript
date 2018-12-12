@@ -71,7 +71,7 @@ if (options.help || options.length < 1) {
     const usage = commandLineUsage(sections);
     console.log(usage);
 } else if (options.version) {
-    console.log(`This is version ${pkg.version}`);
+    console.log(`Maru version ${pkg.version}`);
 } else if (options.run) {
     let config: { [plugins: string]: any } = {};
     config = Config;
@@ -114,5 +114,5 @@ if (options.help || options.length < 1) {
         }
     }
 } else {
-    console.log(`Maru v.${pkg.version}`);
+    console.log(`Maru version ${pkg.version}`);
 }

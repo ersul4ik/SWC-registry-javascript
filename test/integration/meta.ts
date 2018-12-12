@@ -4,11 +4,12 @@ const { version } = require("../../package.json");
 
 describe("Meta commands", () => {
     it("should return maru version", () => {
-        const prc = spawn("maru", ["-v"]);
+        const prc = spawn("./maru", ["-v"]);
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
             const str = data.toString();
-            assert(str.includes(`Maru version v${version}`));
+            console.log(str);
+            assert(str.includes(`Maru version ${version}`));
         });
     });
 });
