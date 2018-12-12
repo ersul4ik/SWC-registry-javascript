@@ -6,7 +6,7 @@ import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 import BinaryOperation from "../expressions/binary_operation";
 import SolidityAntlr from "../parser/solidity_antlr";
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 
 let TypoGraphicalErrorFunction: Plugin;
 
@@ -15,12 +15,12 @@ TypoGraphicalErrorFunction = function(sol_file: SolFile, plugin_config: PluginCo
     const bops: BinaryOperation[] = SolidityAntlr.parseBinaryOperation(sol_file.block);
 
     for (const bop of bops) {
-        if (StringUtility.matchRegex(bop.operator, new RegExp("^=$"))) {
-            StringUtility.printNode(bop);
-            if (StringUtility.hasProperty(bop.right.branch, "type") && StringUtility.hasProperty(bop.right.branch, "operator")) {
+        if (NodeUtility.matchRegex(bop.operator, new RegExp("^=$"))) {
+            NodeUtility.printNode(bop);
+            if (NodeUtility.hasProperty(bop.right.branch, "type") && NodeUtility.hasProperty(bop.right.branch, "operator")) {
                 if (
-                    StringUtility.matchRegex(bop.right.branch["type"], new RegExp("^BinaryOperation|UnaryOperation$")) &&
-                    StringUtility.matchRegex(bop.right.branch["operator"], new RegExp("^\\+|-$"))
+                    NodeUtility.matchRegex(bop.right.branch["type"], new RegExp("^BinaryOperation|UnaryOperation$")) &&
+                    NodeUtility.matchRegex(bop.right.branch["operator"], new RegExp("^\\+|-$"))
                 ) {
                     issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], bop.location));
                 }

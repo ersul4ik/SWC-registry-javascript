@@ -1,6 +1,6 @@
 const parser = require("solidity-parser-antlr");
 
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 import { IssuePointer } from "../maru/issue";
 import { Plugin } from "../maru/plugin";
 import Logger from "../logger/logger";

@@ -1,7 +1,7 @@
 const parser = require("solidity-parser-antlr");
 const semver = require("semver");
 
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 import { IssuePointer } from "../maru/issue";
 import { Plugin } from "../maru/plugin";
 import Logger from "../logger/logger";

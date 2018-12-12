@@ -1,6 +1,6 @@
 const parser = require("solidity-parser-antlr");
 
-import StringUtility from "../utils/ast";
+import NodeUtility from "../utils/node";
 import { IssuePointer } from "../maru/issue";
 import { Plugin } from "../maru/plugin";
 import Logger from "../logger/logger";
@@ -28,10 +28,10 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
                     parser.visit(f_call, {
                         MemberAccess(mb: any) {
                             if (
-                                StringUtility.matchRegex(mb.memberName, new RegExp("^call$")) ||
-                                StringUtility.matchRegex(mb.memberName, new RegExp("^delegatecall$")) ||
-                                StringUtility.matchRegex(mb.memberName, new RegExp("^send$")) ||
-                                StringUtility.matchRegex(mb.memberName, new RegExp("^callcode$"))
+                                NodeUtility.matchRegex(mb.memberName, new RegExp("^call$")) ||
+                                NodeUtility.matchRegex(mb.memberName, new RegExp("^delegatecall$")) ||
+                                NodeUtility.matchRegex(mb.memberName, new RegExp("^send$")) ||
+                                NodeUtility.matchRegex(mb.memberName, new RegExp("^callcode$"))
                             ) {
                                 let entry: any = {};
                                 entry.expr_nr = expression_nr;
@@ -48,8 +48,8 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
                     parser.visit(f_call, {
                         Identifier(identifier: any) {
                             if (
-                                StringUtility.matchRegex(identifier.name, new RegExp("^require$")) ||
-                                StringUtility.matchRegex(identifier.name, new RegExp("^assert$"))
+                                NodeUtility.matchRegex(identifier.name, new RegExp("^require$")) ||
+                                NodeUtility.matchRegex(identifier.name, new RegExp("^assert$"))
                             ) {
                                 let entry: any = {};
                                 entry["expr_nr"] = expression_nr;
@@ -84,10 +84,10 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
         }
 
         if (
-            StringUtility.matchRegex(outer_caller["type"], new RegExp("^call$")) ||
-            StringUtility.matchRegex(outer_caller["type"], new RegExp("^delegatecall$")) ||
-            StringUtility.matchRegex(outer_caller["type"], new RegExp("^send$")) ||
-            StringUtility.matchRegex(outer_caller["type"], new RegExp("^callcode$"))
+            NodeUtility.matchRegex(outer_caller["type"], new RegExp("^call$")) ||
+            NodeUtility.matchRegex(outer_caller["type"], new RegExp("^delegatecall$")) ||
+            NodeUtility.matchRegex(outer_caller["type"], new RegExp("^send$")) ||
+            NodeUtility.matchRegex(outer_caller["type"], new RegExp("^callcode$"))
         ) {
             const location: Location = SolidityAntlr.parseLocation(outer_caller["node"].loc, outer_caller["node"].range);
             issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], location));
