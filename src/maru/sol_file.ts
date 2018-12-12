@@ -18,7 +18,7 @@ class SolFile {
     file_content: string;
     antlrAST: any;
     nodes: any[];
-    pragma: Pragma[];
+    pragmas: Pragma[];
     contracts_current: Contract[];
     contracts_imported: Contract[];
 
@@ -31,7 +31,7 @@ class SolFile {
             SolidityAntlr.getPragmaVersion(this.antlrAST),
             SolidityAntlr.parseAllImports(file_name, this.antlrAST)
         );
-        this.pragma = this.parsePragma();
+        this.pragmas = this.parsePragma();
         this.contracts_current = this.parseContracts();
         this.contracts_imported = [];
     }
