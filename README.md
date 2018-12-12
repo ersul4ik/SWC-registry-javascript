@@ -36,16 +36,24 @@ DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage
 
 ```
 
-## Dev Setup
-* Install dependencies: `npm install` 
-* Checkout submodule
-  - `git submodule init`
-  - `git submodule update --remote`
-* Create a development build (if you want to extend [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr)): `npm run build:dev` 
+## Contribute
 
-## Run maru with SWC test cases 
+The preferred IDE for developing Maru is [Visual Studio Code](https://code.visualstudio.com) and the Prettier code formatting plugin. The custom settings that should be used are as follows:
 
-Run the following the command `npm run test:swc` to see which test samples Maru detects. This requires a dev build. 
+```
+{
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "window.zoomLevel": 0,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "prettier.tabWidth": 4,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "prettier.printWidth": 140,
+    "javascript.updateImportsOnFileMove.enabled": "always"
+}
+```
+
+The project also uses fairly strict compiler rules, for more information see [tsconfig.json](./tsconfig.json). 
 
 ## Credits 
 Maru uses the excellent 3rd party Solidity grammar in [solidity-antlr4](https://github.com/solidityj/solidity-antlr4) and AST abstraction in [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr) from @federicobond. 
