@@ -36,6 +36,10 @@ DEBUG_LEVEL=info ./maru --run test/SWC-registry/test_cases/uninitialised_storage
 
 ```
 
+## Issues and Features
+
+Maru relies on [Jira](All issues and new features will be tracked in Jira -> https://diligence.atlassian.net/secure/RapidBoard.jspa?rapidView=25&projectKey=MARU&view=planning&selectedIssue=MARU-79&epics=visible&selectedEpic=MARU-76) to track issues and keep track of new features.
+
 ## Contribute
 
 The preferred IDE for developing Maru is [Visual Studio Code](https://code.visualstudio.com) and the Prettier code formatting plugin. The custom settings that should be used are as follows:
