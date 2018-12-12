@@ -67,14 +67,14 @@ class SolcUtility {
 
         let compile_output;
         if (imports && imports.length > 0) {
-            compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input), 1, SolcUtility.findImports(imports)));
+            compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
         } else {
-            compile_output = JSON.parse(compiler.compileStandard(JSON.stringify(input)));
+            compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
         }
         return compile_output;
     }
 
-    static findImports(imports: Import[]): {} {
+    findImports(imports: Import[]): {} {
         let i_string = "";
         for (const i of imports) {
             i_string += FileUtils.getFileContent(i.path);

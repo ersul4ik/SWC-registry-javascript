@@ -4,12 +4,14 @@ import Solc from "../../../src/parser/solc";
 import SolFile from "../../../src/maru/sol_file";
 import NodeUtility from "../../../src/utils/node";
 
+import path from "path";
+
 const expect = require("expect");
 const fs = require("fs");
 
 const niv = require("npm-install-version");
 
-const compiler = niv.require("solc@0.4.24");
+const compiler = niv.require("solc@0.4.25");
 const detectInstalled = require("detect-installed");
 
 describe("Compile Sol File without imports", () => {
@@ -41,7 +43,40 @@ describe("Compile Sol File with imports", () => {
     const file_name = "./test/sol_files/imports/simple.sol";
 
     it(`Check if imports are compiled correctly for ${file_name}`, async () => {
-        const sol_file = new SolFile(file_name);
-        NodeUtility.printNode(sol_file.nodes);
+        //const sol_file = new SolFile(file_name);
+        // NodeUtility.printNode(sol_file.nodes);
+        const CONTRACTS_DIR = path.resolve(__dirname, "../../sol_files/imports/");
+
+        function findContract(pathName: any) {
+            const contractPath = path.resolve(CONTRACTS_DIR, pathName);
+            if (isContract(contractPath)) {
+                return fs.readFileSync(contractPath, "utf8");
+            } else {
+                throw new Error(`File ${contractPath} not found`);
+            }
+        }
+
+        function isContract(path: any) {
+            return fs.existsSync(path);
+        }
+        function findImports(pathName: any) {
+            try {
+                return { contents: findContract(pathName) };
+            } catch (e) {
+                return { error: e.message };
+            }
+        }
+
+        const source = findContract("A.sol");
+        const compiled = compiler.compile(
+            {
+                sources: {
+                    "A.sol": source
+                }
+            },
+            1,
+            findImports
+        );
+        NodeUtility.printNode(compiled);
     });
 });
