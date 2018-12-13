@@ -338,14 +338,13 @@ class SolidityAntlr {
                     variables.push(
                         new Variable(
                             location,
+                            -1,
                             node.name,
                             type,
-                            node.expression,
-                            var_declaration.initialValue,
                             node.visibility,
+                            node.storageLocation,
                             node.isStateVar,
-                            node.isDeclaredConst,
-                            node.storageLocation
+                            node.isDeclaredConst
                         )
                     );
                 }

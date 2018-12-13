@@ -18,7 +18,9 @@ describe("Variables", () => {
         console.log(functions[0].name);
         console.log(functions[0].location.id);
 
-        const nodes = Solc.getNodeOfType(sol_file.nodes, NodeTypes.FunctionDefinition, functions[0].location.id);
+        const nodes = Solc.filterNodes(sol_file.nodes, NodeTypes.VariableDeclaration, functions[0].location.id);
+
+        // NodeUtility.printNode(sol_file.getNode(36));
 
         for (const n of nodes) {
             NodeUtility.printNode(n);

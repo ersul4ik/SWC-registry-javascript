@@ -12,6 +12,11 @@ import NodeUtility from "../utils/node";
 import NodeTypes from "../maru/node_types";
 import Parameter from "../declarations/parameter";
 import Node from "../misc/node";
+import Variable from "../declarations/variable";
+import Type from "../types/type";
+import ElementaryType from "../types/elementary_type";
+import ArrayType from "../types/array_type";
+import UserDefinedType from "../types/user_defined_type";
 
 class SolFile {
     file_name: string;
@@ -44,6 +49,14 @@ class SolFile {
         return f;
     }
 
+    getNode(id: number): any {
+        for (const n of this.nodes) {
+            if (id === n.id) {
+                return n;
+            }
+        }
+    }
+
     parseLocation(_id: any, src: any): Location {
         const id: number = parseInt(_id);
         const src_array: string[] = src.split(":");
@@ -57,7 +70,7 @@ class SolFile {
 
     parsePragma(): Pragma[] {
         let pragma: Pragma[] = [];
-        let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.PragmaDirective);
+        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.PragmaDirective);
 
         for (const node of filtered_nodes) {
             let part_one: string = node.attributes.literals[0];
@@ -75,7 +88,7 @@ class SolFile {
 
     parseContracts(): Contract[] {
         let contracts: Contract[] = [];
-        let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.ContractDefinition);
+        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.ContractDefinition);
 
         for (const node of filtered_nodes) {
             const location = this.parseLocation(node.id, node.src);
@@ -100,7 +113,7 @@ class SolFile {
 
     parseFunction(id?: number): CFunction[] {
         let functions: CFunction[] = [];
-        let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.FunctionDefinition, id);
+        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.FunctionDefinition, id);
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -143,6 +156,30 @@ class SolFile {
         }
 
         return functions;
+    }
+
+    parseVariables(id?: number): Variable[] {
+        let variables: Variable[] = [];
+        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.FunctionDefinition, id);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+            const scope: number = node.attributes.scope;
+            const function_name: string = node.attributes.name;
+            const type: Type = node.attributes.type;
+            const visibility: string = node.attributes.visibility;
+            const storageLocation: string = node.attributes.storageLocation;
+            const isStateVar: boolean = node.attributes.stateVariable;
+            const isConstant: boolean = node.attributes.constant;
+
+            variables.push(new Variable(location, scope, function_name, type, visibility, storageLocation, isStateVar, isConstant));
+        }
+
+        return variables;
+    }
+
+    parseType(node: any) {
+        // implement me
     }
 }
 

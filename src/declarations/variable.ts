@@ -7,33 +7,28 @@ import Type from "../types/type";
 class Variable extends Delcaration {
     name: string;
     type: Type;
-    expression: Node;
-    initialValue: Node;
     visibility: string;
+    storageLocation: string;
     isStateVar: boolean;
     isConstant: boolean;
-    storageLocation: string;
 
     constructor(
         location: Location,
+        scope: number,
         name: string,
         type: Type,
-        expression: Node,
-        initialValue: Node,
         visibility: string,
+        storageLocation: string,
         isStateVar: boolean,
-        isConstant: boolean,
-        storageLocation: string
+        isConstant: boolean
     ) {
-        super(location, -1);
+        super(location, scope);
         this.name = name;
         this.type = type;
-        this.expression = expression;
-        this.initialValue = initialValue;
         this.visibility = visibility;
-        this.isStateVar = isStateVar;
-        this.isConstant = isConstant;
         this.storageLocation = storageLocation;
+        this.isConstant = isConstant;
+        this.isStateVar = isStateVar;
     }
 }
 

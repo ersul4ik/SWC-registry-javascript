@@ -5,7 +5,7 @@ import Import from "../declarations/import";
 const AstWalker = require("remix-lib").AstWalker;
 
 class Solc {
-    static getNodeOfType(nodes: any[], type?: string, id?: number) {
+    static filterNodes(nodes: any[], type?: string, id?: number) {
         let filter_nodes_types: any[] = [];
         let filter_nodes_ids: any[] = [];
 
