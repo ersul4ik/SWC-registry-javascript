@@ -104,8 +104,9 @@ class SolFile {
             const isImplemented: boolean = node.attributes.fullyImplemented;
 
             const functions: CFunction[] = this.parseFunction(node.id);
+            const variables: Variable[] = this.parseVariables(node.id);
 
-            contracts.push(new Contract(location, scope, name, kind, isImplemented, linearizedBaseContracts, functions));
+            contracts.push(new Contract(location, scope, name, kind, isImplemented, linearizedBaseContracts, functions, variables));
         }
 
         return contracts;

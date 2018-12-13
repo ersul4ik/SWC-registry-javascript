@@ -22,7 +22,8 @@ class Contract extends Delcaration {
         kind: string,
         isImplemented: boolean,
         linearizedBaseContracts: number[],
-        functions: CFunction[]
+        functions: CFunction[],
+        variables: Variable[]
     ) {
         super(location, scope);
         this.name = name;
@@ -30,7 +31,7 @@ class Contract extends Delcaration {
         this.linearizedBaseContracts = linearizedBaseContracts;
         this.isImplemented = isImplemented;
         this.functions = functions;
-        this.variables = [];
+        this.variables = variables;
     }
 
     hasConstructor(): boolean {
