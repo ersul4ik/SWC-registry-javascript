@@ -5,7 +5,7 @@ import Import from "../declarations/import";
 const AstWalker = require("remix-lib").AstWalker;
 
 class Solc {
-    static filterNodes(nodes: any[], type?: string, id?: number) {
+    static filterNodes(nodes: any[], type?: string, id?: number): any[] {
         let filter_nodes_types: any[] = [];
         let filter_nodes_ids: any[] = [];
 
@@ -34,7 +34,27 @@ class Solc {
         return filter_nodes_ids;
     }
 
-    static walkAST(file_name: string, version: string, imports: Import[]) {
+    static getChildrenNodes(nodes: any[], parent_id: number): any[] {
+        let push: boolean = false;
+        let filter_nodes: any[] = [];
+
+        for (const n of nodes) {
+            if (parent_id === n.id) {
+                push = true;
+            }
+
+            if (push) {
+                if (parent_id >= n.id) {
+                    filter_nodes.push(n);
+                } else {
+                    push = false;
+                }
+            }
+        }
+        return filter_nodes;
+    }
+
+    static walkAST(file_name: string, version: string, imports: Import[]): any[] {
         const compilation_result = SolcUtility.compile(file_name, version, imports);
         let walker = new AstWalker();
         let nodes: any[] = [];

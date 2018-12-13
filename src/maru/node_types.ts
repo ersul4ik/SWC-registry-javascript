@@ -3,6 +3,7 @@ const NodeTypes = {
     ContractDefinition: "ContractDefinition",
     FunctionDefinition: "FunctionDefinition",
     VariableDeclaration: "VariableDeclaration",
+    ParameterList: "ParameterList",
     ElementaryTypeName: "ElementaryTypeName",
     ArrayTypeName: "ArrayTypeName",
     UserDefinedTypeName: "UserDefinedTypeName"

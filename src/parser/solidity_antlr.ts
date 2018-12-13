@@ -220,6 +220,7 @@ class SolidityAntlr {
     }
     */
 
+    /*
     static parseFunction(parent_node: Node): CFunction[] {
         let functions: CFunction[] = [];
         parser.visit(parent_node.branch, {
@@ -267,7 +268,7 @@ class SolidityAntlr {
         });
 
         return functions;
-    }
+    }*/
 
     static parseParameter(parent_node: Node): Parameter[] {
         let parameters: Parameter[] = [];

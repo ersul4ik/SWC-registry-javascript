@@ -53,5 +53,9 @@ describe("Variables", () => {
         expect(var_t.storageLocation).toEqual("default");
         expect(var_t.type).toEqual("uint256");
         expect(var_t.visibility).toEqual("internal");
+
+        for (const n of sol_file.nodes) {
+            console.log(n.id);
+        }
     });
 });

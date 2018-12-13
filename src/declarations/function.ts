@@ -11,8 +11,7 @@ class CFunction extends Delcaration {
     stateMutability: string;
     isImplemented: boolean;
     variables: Variable[];
-    function_parameters: Parameter[];
-    returnParameters: Parameter[];
+    function_parameters: Variable[];
     modifiers: any[];
 
     constructor(
@@ -24,8 +23,7 @@ class CFunction extends Delcaration {
         stateMutability: string,
         isImplemented: boolean,
         variables: Variable[],
-        function_parameters: Parameter[],
-        returnParameters: Parameter[],
+        function_parameters: Variable[],
         modifiers: any
     ) {
         super(location, scope);
@@ -36,7 +34,6 @@ class CFunction extends Delcaration {
         this.isImplemented = isImplemented;
         this.variables = variables;
         this.function_parameters = function_parameters;
-        this.returnParameters = returnParameters;
         this.modifiers = modifiers;
     }
 }

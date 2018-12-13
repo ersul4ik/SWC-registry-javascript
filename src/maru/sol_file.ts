@@ -138,8 +138,7 @@ class SolFile {
 
             const variables = this.parseVariables(node.id);
             const modifiers: any = node.attributes.modifiers;
-            const function_parameters: Parameter[] = [];
-            const return_parameters: Parameter[] = [];
+            const function_parameters: Variable[] = this.parseParameters(node.id);
 
             functions.push(
                 new CFunction(
@@ -152,7 +151,6 @@ class SolFile {
                     isImplemented,
                     variables,
                     function_parameters,
-                    return_parameters,
                     modifiers
                 )
             );
@@ -161,9 +159,15 @@ class SolFile {
         return functions;
     }
 
-    parseVariables(id?: number): Variable[] {
+    parseVariables(id: number, variable_declarations?: any[]): Variable[] {
         let variables: Variable[] = [];
-        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.VariableDeclaration, id);
+        let filtered_nodes: any[] = [];
+
+        if (variable_declarations) {
+            filtered_nodes = variable_declarations;
+        } else {
+            filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.VariableDeclaration, id);
+        }
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -176,6 +180,19 @@ class SolFile {
             const isConstant: boolean = node.attributes.constant;
 
             variables.push(new Variable(location, scope, function_name, type, visibility, storageLocation, isStateVar, isConstant));
+        }
+
+        return variables;
+    }
+
+    parseParameters(id: number): Variable[] {
+        let variables: Variable[] = [];
+        let parameter_list_nodes = Solc.filterNodes(this.nodes, NodeTypes.ParameterList, id);
+
+        for (const n of parameter_list_nodes) {
+            logger.debug(n);
+            const parameter_list_nodes_children: any[] = Solc.getChildrenNodes(this.nodes, n.id);
+            variables = variables.concat(this.parseVariables(id, parameter_list_nodes_children));
         }
 
         return variables;
