@@ -34,7 +34,7 @@ describe("Function parsing", () => {
 
     it(`Test case - should parse parameters of changeName in contract TokenCreator in ${file_name}`, async () => {
         expect(sol_file.contracts_current[1].functions[2].name).toEqual("changeName");
-
-        //expect(sol_file.contracts_current[1].functions[3].function_parameters.length).toEqual(2);
+        NodeUtility.printNode(sol_file.contracts_current[1].functions[3].function_parameters);
+        expect(sol_file.contracts_current[1].functions[3].function_parameters.length).toEqual(2);
     });
 });

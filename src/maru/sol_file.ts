@@ -167,7 +167,7 @@ class SolFile {
 
             const variables = this.parseVariables(node.id);
             const modifiers: any = node.attributes.modifiers;
-            const function_parameters: Variable[] = this.parseParameters(node.id);
+            const function_parameters: Variable[] = this.parseParameters(variables);
 
             functions.push(
                 new CFunction(
@@ -217,11 +217,27 @@ class SolFile {
     parseParameters(variables: Variable[]): Variable[] {
         let parameters: Variable[] = [];
 
-        //for (const variable of variables) {
-        // const parameter_list_nodes_children: any[] = Solc.isParent(this.nodes, n.id);
-        //}
+        for (const variable of variables) {
+            if (this.isParent(variable.location.id, NodeTypes.ParameterList)) {
+                parameters.push(variable);
+            }
+        }
 
         return parameters;
+    }
+
+    isParent(id: number, node_type: string): boolean {
+        for (let x = 0; this.nodes.length; x++) {
+            if (id === this.nodes[x].id) {
+                let parts: any[] = this.nodes.slice(0, x);
+                for (const p of parts) {
+                    if (NodeUtility.matchString(p.name, node_type)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     parseType(node: any) {
