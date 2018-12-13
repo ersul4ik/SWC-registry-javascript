@@ -67,6 +67,7 @@ class SolcUtility {
 
         let compile_output;
         if (imports && imports.length > 0) {
+            // Implement imports
             compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
         } else {
             compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
