@@ -5,14 +5,33 @@ import Import from "../declarations/import";
 const AstWalker = require("remix-lib").AstWalker;
 
 class Solc {
-    static getNodeOfType(nodes: any[], type: string) {
-        let filter_nodes: any[] = [];
+    static getNodeOfType(nodes: any[], type?: string, id?: number) {
+        let filter_nodes_types: any[] = [];
+        let filter_nodes_ids: any[] = [];
+
+        // filter types
         for (const n of nodes) {
-            if (NodeUtility.matchString(n.name, type)) {
-                filter_nodes.push(n);
+            if (type) {
+                if (NodeUtility.matchString(n.name, type)) {
+                    filter_nodes_types.push(n);
+                }
+            } else {
+                filter_nodes_types.push(n);
             }
         }
-        return filter_nodes;
+
+        // filter ids
+        for (const n of filter_nodes_types) {
+            if (id) {
+                if (NodeUtility.hasProperty(n.attributes, "scope") && id == n.attributes.scope) {
+                    filter_nodes_ids.push(n);
+                }
+            } else {
+                filter_nodes_ids.push(n);
+            }
+        }
+
+        return filter_nodes_ids;
     }
 
     static walkAST(file_name: string, version: string, imports: Import[]) {

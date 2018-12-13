@@ -17,6 +17,8 @@ describe("Function parsing", () => {
         expect(sol_file.contracts_current[0].functions[0].visibility).toEqual("public");
         expect(sol_file.contracts_current[0].functions[0].stateMutability).toEqual("nonpayable");
 
+        expect(sol_file.contracts_current[0].functions.length).toEqual(3);
+
         expect(sol_file.contracts_current[0].functions[1].name).toEqual("changeName");
 
         expect(sol_file.contracts_current[0].functions[2].name).toEqual("transfer");

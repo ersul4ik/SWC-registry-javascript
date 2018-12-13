@@ -78,6 +78,6 @@ describe("Compile Sol File with imports", () => {
             1,
             findImports
         );
-        NodeUtility.printNode(compiled);
+        // NodeUtility.printNode(compiled);
     });
 });

@@ -100,48 +100,46 @@ class SolFile {
 
     parseFunction(id?: number): CFunction[] {
         let functions: CFunction[] = [];
-        let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.FunctionDefinition);
+        let filtered_nodes = Solc.getNodeOfType(this.nodes, NodeTypes.FunctionDefinition, id);
 
         for (const node of filtered_nodes) {
-            if (!id || (NodeUtility.hasProperty(node.attributes, "scope") && id == node.attributes.scope)) {
-                const location: Location = this.parseLocation(node.id, node.src);
-                const scope = node.attributes.scope;
+            const location: Location = this.parseLocation(node.id, node.src);
+            const scope = node.attributes.scope;
 
-                let name: string = node.attributes.name;
-                const isConstructor: boolean = node.attributes.isConstructor;
-                const visibility: string = node.attributes.visibility;
-                let stateMutability: string = node.attributes.stateMutability;
-                const isImplemented = node.attributes.implemented;
+            let name: string = node.attributes.name;
+            const isConstructor: boolean = node.attributes.isConstructor;
+            const visibility: string = node.attributes.visibility;
+            let stateMutability: string = node.attributes.stateMutability;
+            const isImplemented = node.attributes.implemented;
 
-                // rename constructor consistenly
-                if (isConstructor) {
-                    name = "constructor";
-                }
-
-                // stateMutability is null if it is not set specifically
-                if (stateMutability === null) {
-                    stateMutability = "nonpayable";
-                }
-
-                const modifiers: any = node.attributes.modifiers;
-                const function_parameters: Parameter[] = [];
-                const return_parameters: Parameter[] = [];
-
-                functions.push(
-                    new CFunction(
-                        location,
-                        scope,
-                        name,
-                        isConstructor,
-                        visibility,
-                        stateMutability,
-                        isImplemented,
-                        function_parameters,
-                        return_parameters,
-                        modifiers
-                    )
-                );
+            // rename constructor consistenly
+            if (isConstructor) {
+                name = "constructor";
             }
+
+            // stateMutability is null if it is not set specifically
+            if (stateMutability === null) {
+                stateMutability = "nonpayable";
+            }
+
+            const modifiers: any = node.attributes.modifiers;
+            const function_parameters: Parameter[] = [];
+            const return_parameters: Parameter[] = [];
+
+            functions.push(
+                new CFunction(
+                    location,
+                    scope,
+                    name,
+                    isConstructor,
+                    visibility,
+                    stateMutability,
+                    isImplemented,
+                    function_parameters,
+                    return_parameters,
+                    modifiers
+                )
+            );
         }
 
         return functions;
