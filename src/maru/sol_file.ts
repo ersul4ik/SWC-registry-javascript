@@ -217,10 +217,9 @@ class SolFile {
     parseParameters(variables: Variable[]): Variable[] {
         let parameters: Variable[] = [];
 
-        for (const variable of variables) {
-            const parameter_list_nodes_children: any[] = Solc.isParent(this.nodes, n.id);
-            variables = variables.concat(this.parseVariables(id, parameter_list_nodes_children));
-        }
+        //for (const variable of variables) {
+        // const parameter_list_nodes_children: any[] = Solc.isParent(this.nodes, n.id);
+        //}
 
         return parameters;
     }

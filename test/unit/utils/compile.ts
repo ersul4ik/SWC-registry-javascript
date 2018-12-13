@@ -1,4 +1,3 @@
-import SolcUtility from "../../../src/utils/solc";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 import Solc from "../../../src/parser/solc";
 import SolFile from "../../../src/maru/sol_file";
@@ -17,7 +16,7 @@ describe("Compile Sol File without imports", () => {
     const file_name = "./test/sol_files/contracts/simple.sol";
 
     it(`Extract sources from Solc AST for ${file_name}`, async () => {
-        const out = SolcUtility.compile(file_name, "0.4.24");
+        const out = Solc.compile(file_name, "0.4.24");
 
         expect(Object.keys(out.sources)[0]).toEqual(file_name);
 
@@ -27,7 +26,7 @@ describe("Compile Sol File without imports", () => {
     it(`Check if Solc version 0.4.24 is installed`, async () => {
         niv.install("solc@0.4.24", { quiet: true });
 
-        const result = SolcUtility.isSolcVersionInstalled("0.4.24");
+        const result = Solc.isSolcVersionInstalled("0.4.24");
         expect(result).toEqual(true);
     });
 
