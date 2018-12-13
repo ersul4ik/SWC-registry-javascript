@@ -6,7 +6,7 @@ import Type from "../types/type";
 
 class Variable extends Delcaration {
     name: string;
-    type: Type;
+    type: string;
     visibility: string;
     storageLocation: string;
     isStateVar: boolean;
@@ -16,7 +16,7 @@ class Variable extends Delcaration {
         location: Location,
         scope: number,
         name: string,
-        type: Type,
+        type: string,
         visibility: string,
         storageLocation: string,
         isStateVar: boolean,

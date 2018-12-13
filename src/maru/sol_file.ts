@@ -135,6 +135,7 @@ class SolFile {
                 stateMutability = "nonpayable";
             }
 
+            const variables = this.parseVariables(node.id);
             const modifiers: any = node.attributes.modifiers;
             const function_parameters: Parameter[] = [];
             const return_parameters: Parameter[] = [];
@@ -148,6 +149,7 @@ class SolFile {
                     visibility,
                     stateMutability,
                     isImplemented,
+                    variables,
                     function_parameters,
                     return_parameters,
                     modifiers
@@ -160,13 +162,13 @@ class SolFile {
 
     parseVariables(id?: number): Variable[] {
         let variables: Variable[] = [];
-        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.FunctionDefinition, id);
+        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.VariableDeclaration, id);
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
             const scope: number = node.attributes.scope;
             const function_name: string = node.attributes.name;
-            const type: Type = node.attributes.type;
+            const type: string = node.attributes.type;
             const visibility: string = node.attributes.visibility;
             const storageLocation: string = node.attributes.storageLocation;
             const isStateVar: boolean = node.attributes.stateVariable;

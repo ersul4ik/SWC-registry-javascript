@@ -229,6 +229,7 @@ class SolidityAntlr {
                 const return_parameters: Parameter[] = SolidityAntlr.parseParameter(new Node(node.returnParameters));
                 const visibility: string = node.visibility;
                 const modifiers: any = node.modifiers;
+                const variables: Variable[] = [];
                 const isConstructor: boolean = node.isConstructor;
                 let stateMutability: string = node.stateMutability;
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
@@ -256,6 +257,7 @@ class SolidityAntlr {
                         visibility,
                         stateMutability,
                         isImplemented,
+                        variables,
                         function_parameters,
                         return_parameters,
                         modifiers
@@ -340,7 +342,7 @@ class SolidityAntlr {
                             location,
                             -1,
                             node.name,
-                            type,
+                            "type",
                             node.visibility,
                             node.storageLocation,
                             node.isStateVar,

@@ -11,38 +11,31 @@ import NodeTypes from "../../../src/maru/node_types";
 describe("Variables", () => {
     const file_name = "./test/sol_files/variable/statements.sol";
     const sol_file = new SolFile(file_name);
+    const variables: Variable[] = sol_file.contracts_current[0].functions[0].variables;
 
-    it(`Test case - should have the correct number of variables in ${file_name}`, async () => {
-        const functions = sol_file.contracts_current[0].functions;
-
-        console.log(functions[0].name);
-        console.log(functions[0].location.id);
-
-        const nodes = Solc.filterNodes(sol_file.nodes, NodeTypes.VariableDeclaration, functions[0].location.id);
-
-        // NodeUtility.printNode(sol_file.getNode(36));
-
-        for (const n of nodes) {
-            NodeUtility.printNode(n);
-        }
-    });
-    /*
-    it(`Test case - should have the correct attributes for UserDefinedType variable in ${file_name}`, async () => {
-        let gamePlayed: any = vars.find(item => item.name === "gamePlayed");
-
-        expect(gamePlayed.type.constructor.name).toEqual("UserDefinedType");
-        expect(gamePlayed.initialValue).toEqual(null);
-        expect(gamePlayed.storageLocation).toEqual(null);
-        expect(gamePlayed.isStateVar).toEqual(false);
+    it(`Test case - get correct number of variables for function lol() in ${file_name}`, async () => {
+        expect(variables.length).toEqual(8);
     });
 
-    it(`Test case - should have the correct attributes for dynamic array variable abc in ${file_name}`, async () => {
-        let abc: any = vars.find(item => item.name === "abc");
-
-        expect(abc.type.constructor.name).toEqual("ArrayType");
-        expect(abc.visibility).toEqual("default");
-        expect(abc.isStateVar).toEqual(true);
+    it(`Test case - get attributes for variable r in function lol() in ${file_name}`, async () => {
+        const var_r: Variable = variables[0];
+        expect(var_r.isConstant).toEqual(false);
+        expect(var_r.isStateVar).toEqual(false);
+        expect(var_r.name).toEqual("r");
+        expect(var_r.scope).toEqual(76);
+        expect(var_r.storageLocation).toEqual("default");
+        expect(var_r.type).toEqual("uint8");
+        expect(var_r.visibility).toEqual("internal");
     });
 
-    */
+    it(`Test case - get attributes for variable gamesplayed in function lol() in ${file_name}`, async () => {
+        const var_r: Variable = variables[2];
+        expect(var_r.isConstant).toEqual(false);
+        expect(var_r.isStateVar).toEqual(false);
+        expect(var_r.name).toEqual("gamesPlayed");
+        expect(var_r.scope).toEqual(76);
+        expect(var_r.storageLocation).toEqual("default");
+        expect(var_r.type).toEqual("struct TestStorage.Game[]");
+        expect(var_r.visibility).toEqual("internal");
+    });
 });
