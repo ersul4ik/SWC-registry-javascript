@@ -57,6 +57,35 @@ class SolFile {
         }
     }
 
+    filterNodes(type?: string, id?: number): any[] {
+        let filter_nodes_types: any[] = [];
+        let filter_nodes_ids: any[] = [];
+
+        // filter types
+        for (const n of this.nodes) {
+            if (type) {
+                if (NodeUtility.matchString(n.name, type)) {
+                    filter_nodes_types.push(n);
+                }
+            } else {
+                filter_nodes_types.push(n);
+            }
+        }
+
+        // filter ids
+        for (const n of filter_nodes_types) {
+            if (id) {
+                if (NodeUtility.hasProperty(n.attributes, "scope") && id == n.attributes.scope) {
+                    filter_nodes_ids.push(n);
+                }
+            } else {
+                filter_nodes_ids.push(n);
+            }
+        }
+
+        return filter_nodes_ids;
+    }
+
     parseLocation(_id: any, src: any): Location {
         const id: number = parseInt(_id);
         const src_array: string[] = src.split(":");
@@ -70,7 +99,7 @@ class SolFile {
 
     parsePragma(): Pragma[] {
         let pragma: Pragma[] = [];
-        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.PragmaDirective);
+        let filtered_nodes = this.filterNodes(NodeTypes.PragmaDirective);
 
         for (const node of filtered_nodes) {
             let part_one: string = node.attributes.literals[0];
@@ -88,7 +117,7 @@ class SolFile {
 
     parseContracts(): Contract[] {
         let contracts: Contract[] = [];
-        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.ContractDefinition);
+        let filtered_nodes = this.filterNodes(NodeTypes.ContractDefinition);
 
         for (const node of filtered_nodes) {
             const location = this.parseLocation(node.id, node.src);
@@ -114,7 +143,7 @@ class SolFile {
 
     parseFunction(id?: number): CFunction[] {
         let functions: CFunction[] = [];
-        let filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.FunctionDefinition, id);
+        let filtered_nodes = this.filterNodes(NodeTypes.FunctionDefinition, id);
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -166,7 +195,7 @@ class SolFile {
         if (variable_declarations) {
             filtered_nodes = variable_declarations;
         } else {
-            filtered_nodes = Solc.filterNodes(this.nodes, NodeTypes.VariableDeclaration, id);
+            filtered_nodes = this.filterNodes(NodeTypes.VariableDeclaration, id);
         }
 
         for (const node of filtered_nodes) {
@@ -185,17 +214,15 @@ class SolFile {
         return variables;
     }
 
-    parseParameters(id: number): Variable[] {
-        let variables: Variable[] = [];
-        let parameter_list_nodes = Solc.filterNodes(this.nodes, NodeTypes.ParameterList, id);
+    parseParameters(variables: Variable[]): Variable[] {
+        let parameters: Variable[] = [];
 
-        for (const n of parameter_list_nodes) {
-            logger.debug(n);
-            const parameter_list_nodes_children: any[] = Solc.getChildrenNodes(this.nodes, n.id);
+        for (const variable of variables) {
+            const parameter_list_nodes_children: any[] = Solc.isParent(this.nodes, n.id);
             variables = variables.concat(this.parseVariables(id, parameter_list_nodes_children));
         }
 
-        return variables;
+        return parameters;
     }
 
     parseType(node: any) {
