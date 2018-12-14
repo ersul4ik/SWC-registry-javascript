@@ -244,6 +244,21 @@ class SolFile {
         return false;
     }
 
+    getParents(id: number): any[] {
+        let parents: any[] = [];
+        for (let x = 0; x < this.nodes.length; x++) {
+            if (id === this.nodes[x].id) {
+                let parts: any[] = this.nodes.slice(0, x);
+                for (const p of parts.reverse()) {
+                    if (id < p.id) {
+                        parents.push(p);
+                    }
+                }
+            }
+        }
+        return parents;
+    }
+
     parseType(node: any) {
         // implement me
     }
