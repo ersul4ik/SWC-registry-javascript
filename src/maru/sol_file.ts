@@ -218,7 +218,7 @@ class SolFile {
         let parameters: Variable[] = [];
 
         for (const variable of variables) {
-            if (this.isParent(variable.location.id, NodeTypes.ParameterList)) {
+            if (this.hasParent(variable.location.id, NodeTypes.ParameterList)) {
                 parameters.push(variable);
             }
         }
@@ -226,13 +226,17 @@ class SolFile {
         return parameters;
     }
 
-    isParent(id: number, node_type: string): boolean {
-        for (let x = 0; this.nodes.length; x++) {
+    hasParent(id: number, node_type: string): boolean {
+        for (let x = 0; x < this.nodes.length; x++) {
             if (id === this.nodes[x].id) {
                 let parts: any[] = this.nodes.slice(0, x);
-                for (const p of parts) {
-                    if (NodeUtility.matchString(p.name, node_type)) {
-                        return true;
+                for (const p of parts.reverse()) {
+                    // if that's the case then we have found a parent
+                    if (id < p.id) {
+                        // NodeUtility.printNode(p.id + " - " + p.name);
+                        if (NodeUtility.matchString(p.name, node_type)) {
+                            return true;
+                        }
                     }
                 }
             }
