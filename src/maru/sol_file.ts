@@ -17,6 +17,7 @@ import Type from "../types/type";
 import ElementaryType from "../types/elementary_type";
 import ArrayType from "../types/array_type";
 import UserDefinedType from "../types/user_defined_type";
+import { log } from "util";
 
 class SolFile {
     file_name: string;
@@ -257,6 +258,53 @@ class SolFile {
             }
         }
         return parents;
+    }
+
+    getChildren(id: number, depth?: number): any[] {
+        if (!depth) {
+            depth = 1337;
+        }
+
+        let children: any[] = [];
+        let start_i: number = -1;
+        let current_top: number = 1;
+        let current_depth: number = 1;
+        let last_id = 0;
+
+        for (let x = 0; x < this.nodes.length; x++) {
+            last_id = this.nodes[x].id;
+            if (id === this.nodes[x].id) {
+                start_i = x;
+                current_top = this.nodes[x + 1].id;
+                logger.debug(`Setting initial current top to ${current_top}`);
+            } else if (start_i >= 0) {
+                if (this.nodes[x].id > id) {
+                    return children;
+                } else {
+                    if (current_top <= this.nodes[x].id) {
+                        current_top = this.nodes[x].id;
+                        current_depth = 1;
+                        logger.debug(`Pushing new current top ${current_top}`);
+                        children.push(this.nodes[x]);
+                    } else if (current_top > this.nodes[x].id && current_depth < depth) {
+                        let same_level: number = last_id - this.nodes[x].id;
+                        if (same_level > 1) {
+                            do {
+                                x++;
+                                same_level--;
+                                children.push(this.nodes[x]);
+                            } while (same_level != 1);
+                        } else {
+                            children.push(this.nodes[x]);
+                        }
+
+                        current_depth++;
+                    }
+                }
+            }
+        }
+
+        return children;
     }
 
     parseType(node: any) {
