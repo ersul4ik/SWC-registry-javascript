@@ -18,6 +18,9 @@ import ElementaryType from "../types/elementary_type";
 import ArrayType from "../types/array_type";
 import UserDefinedType from "../types/user_defined_type";
 import { log } from "util";
+import Identifier from "../expressions/identifier";
+import BinaryOperation from "../expressions/binary_operation";
+import IfStatement from "../expressions/if_statement";
 
 class SolFile {
     file_name: string;
@@ -225,6 +228,59 @@ class SolFile {
         }
 
         return parameters;
+    }
+
+    parseIdentifiers(id: number): Identifier[] {
+        let identifiers: Identifier[] = [];
+        let filtered_nodes: any[] = [];
+
+        filtered_nodes = this.filterNodes(NodeTypes.Identifier, id);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+            const name: string = node.attributes.name;
+            let referencedDeclaration: number = -1;
+            if (isNaN(node.attributes.referencedDeclaration)) {
+                referencedDeclaration = node.attributes.referencedDeclaration;
+            }
+
+            identifiers.push(new Identifier(location, name, referencedDeclaration));
+        }
+
+        return identifiers;
+    }
+
+    parseBinaryOperation(id: number): BinaryOperation[] {
+        let bo: BinaryOperation[] = [];
+        let filtered_nodes: any[] = [];
+
+        filtered_nodes = this.filterNodes(NodeTypes.BinaryOperation, id);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+            const operator: string = node.attributes.operator;
+            const type: string = node.attributes.type;
+            const isPure: boolean = node.attributes.isPure;
+
+            bo.push(new BinaryOperation(location, operator, type, isPure));
+        }
+
+        return bo;
+    }
+
+    parseIfStatement(id: number): IfStatement[] {
+        let if_s: IfStatement[] = [];
+        let filtered_nodes: any[] = [];
+
+        filtered_nodes = this.filterNodes(NodeTypes.BinaryOperation, id);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+
+            if_s.push(new IfStatement(location));
+        }
+
+        return if_s;
     }
 
     hasParent(id: number, node_type: string): boolean {

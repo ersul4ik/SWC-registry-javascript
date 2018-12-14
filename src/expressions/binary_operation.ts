@@ -5,14 +5,14 @@ import Type from "../types/type";
 
 class BinaryOperation extends Expression {
     operator: string;
-    left: Node;
-    right: Node;
+    type: string;
+    isPure: boolean;
 
-    constructor(location: Location, operator: string, left: Node, right: Node) {
+    constructor(location: Location, operator: string, type: string, isPure: boolean) {
         super(location);
         this.operator = operator;
-        this.left = left;
-        this.right = right;
+        this.type = type;
+        this.isPure = isPure;
     }
 }
 

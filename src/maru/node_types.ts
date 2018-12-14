@@ -6,7 +6,10 @@ const NodeTypes = {
     ParameterList: "ParameterList",
     ElementaryTypeName: "ElementaryTypeName",
     ArrayTypeName: "ArrayTypeName",
-    UserDefinedTypeName: "UserDefinedTypeName"
+    UserDefinedTypeName: "UserDefinedTypeName",
+    Identifier: "Identifier",
+    BinaryOperation: "BinaryOperation",
+    IfStatement: "IfStatement"
 };
 
 export default NodeTypes;
