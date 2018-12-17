@@ -102,7 +102,7 @@ if (options.help || options.length < 1) {
 
     if (options.ast && stats.isFile()) {
         const sol_file = new SolFile(options.run);
-        const ast_object = options.ast === "solc" ? sol_file.getSolcAst() : sol_file.antlrAST;
+        const ast_object = options.ast === "solc" ? sol_file.solcAST : sol_file.antlrAST;
         const response = JSON.stringify(ast_object, null, 2);
         console.log(response);
     } else {

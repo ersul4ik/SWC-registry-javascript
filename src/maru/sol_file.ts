@@ -26,6 +26,7 @@ class SolFile {
     file_name: string;
     file_content: string;
     antlrAST: any;
+    solcAST: any;
     nodes: any[];
     pragmas: Pragma[];
     contracts_current: Contract[];
@@ -36,11 +37,12 @@ class SolFile {
         this.file_name = file_name;
         this.file_content = FileUtils.getFileContent(file_name);
         this.antlrAST = SolidityAntlr.generateAST(file_name);
-        this.nodes = Solc.walkAST(
-            file_name,
-            SolidityAntlr.getPragmaVersion(this.antlrAST),
-            SolidityAntlr.parseAllImports(file_name, this.antlrAST)
-        );
+
+        const version = SolidityAntlr.getPragmaVersion(this.antlrAST);
+        this.solcAST = Solc.compile(file_name, version);
+        this.solc_compilation_errors = this.solcAST.errors;
+
+        this.nodes = Solc.walkAST(file_name, version, SolidityAntlr.parseAllImports(file_name, this.antlrAST));
         this.pragmas = this.parsePragma();
         this.contracts_current = this.parseContracts();
         this.contracts_imported = [];
@@ -52,12 +54,6 @@ class SolFile {
             f = f.concat(c.functions);
         }
         return f;
-    }
-
-    getSolcAst(): object {
-        const res = Solc.compile(this.file_name, SolidityAntlr.getPragmaVersion(this.antlrAST));
-        this.solc_compilation_errors = res.errors;
-        return res;
     }
 
     getNode(id: number): any {
