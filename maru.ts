@@ -49,8 +49,9 @@ const optionDefinitions = [
     {
         name: "ast",
         alias: "a",
-        type: Boolean,
-        description: "Dump the entire ast of the contract. e.g. --run contract.sol --ast"
+        type: String,
+        description: "Dump the entire antlr/solc ast of the contract. e.g. --run contract.sol --ast solc",
+        defaultOption: "antlr"
     }
 ];
 
@@ -101,9 +102,8 @@ if (options.help || options.length < 1) {
 
     if (options.ast && stats.isFile()) {
         const sol_file = new SolFile(options.run);
-        //fix me
-        const compile_result = ""; // sol_file.solc_compile_results
-        const response = JSON.stringify(compile_result, null, 2);
+        const ast_object = options.ast === "solc" ? sol_file.getSolcAst() : sol_file.antlrAST;
+        const response = JSON.stringify(ast_object, null, 2);
         console.log(response);
     } else {
         const issues = Analyzer.runAllPlugins(repo, config);

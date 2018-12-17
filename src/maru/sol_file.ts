@@ -53,6 +53,10 @@ class SolFile {
         return f;
     }
 
+    getSolcAst(): object {
+        return Solc.compile(this.file_name, SolidityAntlr.getPragmaVersion(this.antlrAST));
+    }
+
     getNode(id: number): any {
         for (const n of this.nodes) {
             if (id === n.id) {
