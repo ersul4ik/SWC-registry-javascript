@@ -30,6 +30,7 @@ class SolFile {
     pragmas: Pragma[];
     contracts_current: Contract[];
     contracts_imported: Contract[];
+    solc_compilation_errors: any;
 
     constructor(file_name: string) {
         this.file_name = file_name;
@@ -54,7 +55,9 @@ class SolFile {
     }
 
     getSolcAst(): object {
-        return Solc.compile(this.file_name, SolidityAntlr.getPragmaVersion(this.antlrAST));
+        const res = Solc.compile(this.file_name, SolidityAntlr.getPragmaVersion(this.antlrAST));
+        this.solc_compilation_errors = res.errors;
+        return res;
     }
 
     getNode(id: number): any {
