@@ -24,6 +24,7 @@ import IfStatement from "../expressions/if_statement";
 import SourceUnit from "../declarations/source_unit";
 import FunctionCall from "../expressions/function_call";
 import MemberAccess from "../expressions/member_access";
+import UnaryOperation from "../expressions/unary_operation";
 
 class SolFile {
     file_name: string;
@@ -306,6 +307,24 @@ class SolFile {
         }
 
         return bo;
+    }
+
+    parseUnaryOperation(id: number): UnaryOperation[] {
+        let uo: UnaryOperation[] = [];
+        let filtered_nodes: any[] = [];
+
+        filtered_nodes = this.getChildren(id, NodeTypes.UnaryOperation);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+            const operator: string = node.attributes.operator;
+            const type: string = node.attributes.type;
+            const isPure: boolean = node.attributes.isPure;
+
+            uo.push(new UnaryOperation(location, operator, type, isPure));
+        }
+
+        return uo;
     }
 
     parseIfStatement(id: number): IfStatement[] {

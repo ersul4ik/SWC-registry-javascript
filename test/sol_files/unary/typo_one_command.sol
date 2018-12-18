@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 contract TypoOneCommand {
-    uint numberOne = 1;
+    int numberOne = 1;
 
     function alwaysOne() public {
         numberOne =+ 1337 + 2; 
@@ -11,6 +11,6 @@ contract TypoOneCommand {
 
 
     function alwaysTwo() public {
-        numberOne =+ 2;
+        numberOne =- 2;
     }
 }

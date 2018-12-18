@@ -12,6 +12,7 @@ const NodeTypes = {
     Identifier: "Identifier",
     MemberAccess: "MemberAccess",
     BinaryOperation: "BinaryOperation",
+    UnaryOperation: "UnaryOperation",
     IfStatement: "IfStatement",
     Literal: "Literal"
 };
