@@ -4,16 +4,16 @@ import Node from "../misc/node";
 
 class FunctionCall extends Expression {
     name: string;
-    expression: Node;
-    args: Node;
     type: string;
+    member_name: string;
+    member_type: string;
 
-    constructor(location: Location, name: string, expression: Node, args: Node, type: string) {
+    constructor(location: Location, name: string, type: string, member_name: string, member_type: string) {
         super(location);
         this.name = name;
-        this.expression = expression;
-        this.args = args;
         this.type = type;
+        this.member_name = member_name;
+        this.member_type = member_type;
     }
 }
 

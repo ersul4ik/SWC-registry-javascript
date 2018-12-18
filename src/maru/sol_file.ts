@@ -181,17 +181,20 @@ class SolFile {
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
-            const expression: Node = new Node(node.expression);
-            const args: Node = new Node(node.arguments);
             const member_access: MemberAccess[] = this.parseMemberAccess(node.id);
             const identifier: Identifier[] = this.parseIdentifiers(node.id);
 
             if (identifier.length !== 0) {
                 let f_name: string = identifier[0].name;
+                let f_type: string = identifier[0].type;
+                let member_name: string = "";
+                let member_type: string = "";
+
                 if (member_access.length !== 0) {
-                    f_name = `${f_name}.${member_access[0].member_name}`;
+                    member_name = member_access[0].member_name;
+                    member_type = member_access[0].type;
                 }
-                function_calls.push(new FunctionCall(location, f_name, expression, args, "TODO"));
+                function_calls.push(new FunctionCall(location, f_name, f_type, member_name, member_type));
             }
         }
 
@@ -334,6 +337,24 @@ class SolFile {
                 return n;
             }
         }
+    }
+
+    printNodes() {
+        for (const n of this.nodes) {
+            NodeUtility.printNode(n.id + " - " + n.name);
+        }
+    }
+
+    getInternalReferencedIdentifiers(): any[] {
+        let su: SourceUnit[] = this.parseSourceUnit();
+        let external_references: any[] = [];
+
+        for (const n of this.nodes) {
+            if (NodeUtility.hasProperty(n.attributes, "referencedDeclaration") && n.attributes.referencedDeclaration > su[0].id) {
+                external_references.push(n);
+            }
+        }
+        return external_references;
     }
 
     /*
