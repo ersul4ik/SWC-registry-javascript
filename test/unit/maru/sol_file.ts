@@ -32,10 +32,26 @@ describe("Solfile", () => {
     const file_name2 = "./test/sol_files/variable/statements.sol";
     const sol_file2 = new SolFile(file_name2);
 
-    it(`Test case - variable tokenAddress has the following parents in ${file_name1}`, async () => {
-        const children = sol_file2.getChildren(76, 2);
-        for (const c of children) {
-            console.log(c.id);
-        }
+    it(`Test case - Contract variable t has the following children in ${file_name1}`, async () => {
+        const children = sol_file2.getChildren(4);
+
+        expect(children.length).toEqual(2);
+
+        expect(children[0].name).toEqual(NodeTypes.ElementaryTypeName);
+        expect(children[1].name).toEqual(NodeTypes.Literal);
+    });
+
+    it(`Test case - Contract variable t has the following children of ElementaryTypeName in ${file_name1}`, async () => {
+        const children = sol_file2.getChildren(4, NodeTypes.ElementaryTypeName);
+
+        expect(children.length).toEqual(1);
+
+        expect(children[0].name).toEqual(NodeTypes.ElementaryTypeName);
+    });
+
+    it(`Test case - Node Elements in ${file_name1}`, async () => {
+        const number = sol_file2.nodes.length;
+
+        expect(number).toEqual(95);
     });
 });

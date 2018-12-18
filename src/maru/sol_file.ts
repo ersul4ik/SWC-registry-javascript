@@ -21,6 +21,7 @@ import { log } from "util";
 import Identifier from "../expressions/identifier";
 import BinaryOperation from "../expressions/binary_operation";
 import IfStatement from "../expressions/if_statement";
+import SourceUnit from "../declarations/source_unit";
 
 class SolFile {
     file_name: string;
@@ -28,6 +29,7 @@ class SolFile {
     antlrAST: any;
     nodes: any[];
     pragmas: Pragma[];
+    source_unit: SourceUnit[];
     contracts_current: Contract[];
     contracts_imported: Contract[];
 
@@ -41,53 +43,9 @@ class SolFile {
             SolidityAntlr.parseAllImports(file_name, this.antlrAST)
         );
         this.pragmas = this.parsePragma();
+        this.source_unit = this.parseSourceUnit();
         this.contracts_current = this.parseContracts();
         this.contracts_imported = [];
-    }
-
-    getContractFunctions(): CFunction[] {
-        let f: CFunction[] = [];
-        for (const c of this.contracts_current) {
-            f = f.concat(c.functions);
-        }
-        return f;
-    }
-
-    getNode(id: number): any {
-        for (const n of this.nodes) {
-            if (id === n.id) {
-                return n;
-            }
-        }
-    }
-
-    filterNodes(type?: string, id?: number): any[] {
-        let filter_nodes_types: any[] = [];
-        let filter_nodes_ids: any[] = [];
-
-        // filter types
-        for (const n of this.nodes) {
-            if (type) {
-                if (NodeUtility.matchString(n.name, type)) {
-                    filter_nodes_types.push(n);
-                }
-            } else {
-                filter_nodes_types.push(n);
-            }
-        }
-
-        // filter ids
-        for (const n of filter_nodes_types) {
-            if (id) {
-                if (NodeUtility.hasProperty(n.attributes, "scope") && id == n.attributes.scope) {
-                    filter_nodes_ids.push(n);
-                }
-            } else {
-                filter_nodes_ids.push(n);
-            }
-        }
-
-        return filter_nodes_ids;
     }
 
     parseLocation(_id: any, src: any): Location {
@@ -103,7 +61,7 @@ class SolFile {
 
     parsePragma(): Pragma[] {
         let pragma: Pragma[] = [];
-        let filtered_nodes = this.filterNodes(NodeTypes.PragmaDirective);
+        let filtered_nodes = this.getChildren(this.nodes.length, NodeTypes.PragmaDirective);
 
         for (const node of filtered_nodes) {
             let part_one: string = node.attributes.literals[0];
@@ -119,9 +77,20 @@ class SolFile {
         return pragma;
     }
 
-    parseContracts(): Contract[] {
+    parseSourceUnit(): SourceUnit[] {
+        let source_unit: SourceUnit[] = [];
+        for (const n of this.nodes) {
+            if (NodeUtility.matchString(n.name, NodeTypes.SourceUnit)) {
+                source_unit.push(new SourceUnit(n.id, n.attributes.absolutePath));
+            }
+        }
+        return source_unit;
+    }
+
+    parseContracts(id?: number): Contract[] {
         let contracts: Contract[] = [];
-        let filtered_nodes = this.filterNodes(NodeTypes.ContractDefinition);
+
+        let filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.ContractDefinition);
 
         for (const node of filtered_nodes) {
             const location = this.parseLocation(node.id, node.src);
@@ -137,7 +106,7 @@ class SolFile {
             const isImplemented: boolean = node.attributes.fullyImplemented;
 
             const functions: CFunction[] = this.parseFunction(node.id);
-            const variables: Variable[] = this.parseVariables(node.id);
+            const variables: Variable[] = this.parseVariables(undefined, this.getScopedChildren(node.id, NodeTypes.VariableDeclaration));
 
             contracts.push(new Contract(location, scope, name, kind, isImplemented, linearizedBaseContracts, functions, variables));
         }
@@ -147,7 +116,13 @@ class SolFile {
 
     parseFunction(id?: number): CFunction[] {
         let functions: CFunction[] = [];
-        let filtered_nodes = this.filterNodes(NodeTypes.FunctionDefinition, id);
+        let filtered_nodes: any[] = [];
+
+        if (id) {
+            filtered_nodes = this.getChildren(id, NodeTypes.FunctionDefinition);
+        } else {
+            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.FunctionDefinition);
+        }
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -192,14 +167,16 @@ class SolFile {
         return functions;
     }
 
-    parseVariables(id: number, variable_declarations?: any[]): Variable[] {
+    parseVariables(id?: number, variable_declarations?: any[]): Variable[] {
         let variables: Variable[] = [];
         let filtered_nodes: any[] = [];
 
         if (variable_declarations) {
             filtered_nodes = variable_declarations;
+        } else if (id) {
+            filtered_nodes = this.getChildren(id, NodeTypes.VariableDeclaration);
         } else {
-            filtered_nodes = this.filterNodes(NodeTypes.VariableDeclaration, id);
+            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.VariableDeclaration);
         }
 
         for (const node of filtered_nodes) {
@@ -234,7 +211,7 @@ class SolFile {
         let identifiers: Identifier[] = [];
         let filtered_nodes: any[] = [];
 
-        filtered_nodes = this.filterNodes(NodeTypes.Identifier, id);
+        filtered_nodes = this.getChildren(id, NodeTypes.Identifier);
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -254,7 +231,7 @@ class SolFile {
         let bo: BinaryOperation[] = [];
         let filtered_nodes: any[] = [];
 
-        filtered_nodes = this.filterNodes(NodeTypes.BinaryOperation, id);
+        filtered_nodes = this.getChildren(id, NodeTypes.BinaryOperation);
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -272,7 +249,7 @@ class SolFile {
         let if_s: IfStatement[] = [];
         let filtered_nodes: any[] = [];
 
-        filtered_nodes = this.filterNodes(NodeTypes.BinaryOperation, id);
+        filtered_nodes = this.getChildren(id, NodeTypes.IfStatement);
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -283,6 +260,25 @@ class SolFile {
         return if_s;
     }
 
+    getContractFunctions(): CFunction[] {
+        let f: CFunction[] = [];
+        for (const c of this.contracts_current) {
+            f = f.concat(c.functions);
+        }
+        return f;
+    }
+
+    getNode(id: number): any {
+        for (const n of this.nodes) {
+            if (id === n.id) {
+                return n;
+            }
+        }
+    }
+
+    /*
+     * Check if a node has a parent node of a particular type
+     */
     hasParent(id: number, node_type: string): boolean {
         for (let x = 0; x < this.nodes.length; x++) {
             if (id === this.nodes[x].id) {
@@ -301,14 +297,52 @@ class SolFile {
         return false;
     }
 
-    getParents(id: number): any[] {
+    getScopedChildren(id: number, type?: string): any[] {
+        let filter_nodes_types: any[] = [];
+        let filter_nodes_ids: any[] = [];
+
+        // filter types
+        for (const n of this.nodes) {
+            if (type) {
+                if (NodeUtility.matchString(n.name, type)) {
+                    filter_nodes_types.push(n);
+                }
+            } else {
+                filter_nodes_types.push(n);
+            }
+        }
+
+        // filter ids
+        for (const n of filter_nodes_types) {
+            if (id) {
+                if (NodeUtility.hasProperty(n.attributes, "scope") && id == n.attributes.scope) {
+                    filter_nodes_ids.push(n);
+                }
+            } else {
+                filter_nodes_ids.push(n);
+            }
+        }
+
+        return filter_nodes_ids;
+    }
+
+    /*
+     * Get all parent nodes of a particular node
+     */
+    getParents(id: number, node_type?: string): any[] {
         let parents: any[] = [];
         for (let x = 0; x < this.nodes.length; x++) {
             if (id === this.nodes[x].id) {
                 let parts: any[] = this.nodes.slice(0, x);
                 for (const p of parts.reverse()) {
                     if (id < p.id) {
-                        parents.push(p);
+                        if (node_type) {
+                            if (NodeUtility.matchString(node_type, p.name)) {
+                                parents.push(p);
+                            }
+                        } else {
+                            parents.push(p);
+                        }
                     }
                 }
             }
@@ -316,45 +350,26 @@ class SolFile {
         return parents;
     }
 
-    getChildren(id: number, depth?: number): any[] {
-        if (!depth) {
-            depth = 1337;
-        }
-
+    /*
+     * Get all child nodes of a particular node
+     */
+    getChildren(id: number, node_type?: string): any[] {
         let children: any[] = [];
         let start_i: number = -1;
-        let current_top: number = 1;
-        let current_depth: number = 1;
-        let last_id = 0;
 
         for (let x = 0; x < this.nodes.length; x++) {
-            last_id = this.nodes[x].id;
             if (id === this.nodes[x].id) {
                 start_i = x;
-                current_top = this.nodes[x + 1].id;
-                logger.debug(`Setting initial current top to ${current_top}`);
             } else if (start_i >= 0) {
                 if (this.nodes[x].id > id) {
                     return children;
                 } else {
-                    if (current_top <= this.nodes[x].id) {
-                        current_top = this.nodes[x].id;
-                        current_depth = 1;
-                        logger.debug(`Pushing new current top ${current_top}`);
-                        children.push(this.nodes[x]);
-                    } else if (current_top > this.nodes[x].id && current_depth < depth) {
-                        let same_level: number = last_id - this.nodes[x].id;
-                        if (same_level > 1) {
-                            do {
-                                x++;
-                                same_level--;
-                                children.push(this.nodes[x]);
-                            } while (same_level != 1);
-                        } else {
+                    if (node_type) {
+                        if (NodeUtility.matchString(node_type, this.nodes[x].name)) {
                             children.push(this.nodes[x]);
                         }
-
-                        current_depth++;
+                    } else {
+                        children.push(this.nodes[x]);
                     }
                 }
             }

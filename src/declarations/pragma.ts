@@ -1,12 +1,6 @@
 import Location from "../misc/location";
 import Delcaration from "./declaration";
 
-interface Pragma {
-    location: Location;
-    name: string;
-    value: string;
-}
-
 class Pragma {
     location: Location;
     name: string;

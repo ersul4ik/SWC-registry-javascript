@@ -1,4 +1,5 @@
 const NodeTypes = {
+    SourceUnit: "SourceUnit",
     PragmaDirective: "PragmaDirective",
     ContractDefinition: "ContractDefinition",
     FunctionDefinition: "FunctionDefinition",
@@ -9,7 +10,8 @@ const NodeTypes = {
     UserDefinedTypeName: "UserDefinedTypeName",
     Identifier: "Identifier",
     BinaryOperation: "BinaryOperation",
-    IfStatement: "IfStatement"
+    IfStatement: "IfStatement",
+    Literal: "Literal"
 };
 
 export default NodeTypes;
