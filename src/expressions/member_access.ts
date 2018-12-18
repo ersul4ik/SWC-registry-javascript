@@ -3,13 +3,13 @@ import Expression from "./expression";
 import Node from "../misc/node";
 
 class MemberAccess extends Expression {
-    name: string;
-    expression: Node;
+    member_name: string;
+    type: string;
 
-    constructor(location: Location, name: string, expression: Node) {
+    constructor(location: Location, member_name: string, type: string) {
         super(location);
-        this.name = name;
-        this.expression = expression;
+        this.member_name = member_name;
+        this.type = type;
     }
 }
 

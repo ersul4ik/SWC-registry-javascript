@@ -4,7 +4,7 @@ const expect = require("expect");
 import Import from "../../../src/declarations/import";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 
-describe("Import parsing", () => {
+describe("Imports", () => {
     const file_name = "./test/sol_files/imports/A.sol";
     const ast = SolidityAntlr.generateAST(file_name);
 

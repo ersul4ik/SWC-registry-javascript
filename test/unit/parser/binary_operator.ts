@@ -8,7 +8,7 @@ import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 import NodeUtility from "../../../src/utils/node";
 
-describe("Binary Operators", () => {
+describe("Binary Operator", () => {
     const file_name = "./test/sol_files/unary/typo_one_command.sol";
     const sol_file = new SolFile(file_name);
 

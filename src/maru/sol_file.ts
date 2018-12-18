@@ -22,6 +22,8 @@ import Identifier from "../expressions/identifier";
 import BinaryOperation from "../expressions/binary_operation";
 import IfStatement from "../expressions/if_statement";
 import SourceUnit from "../declarations/source_unit";
+import FunctionCall from "../expressions/function_call";
+import MemberAccess from "../expressions/member_access";
 
 class SolFile {
     file_name: string;
@@ -167,6 +169,35 @@ class SolFile {
         return functions;
     }
 
+    parseFunctionCalls(id?: number): FunctionCall[] {
+        let function_calls: FunctionCall[] = [];
+        let filtered_nodes: any[] = [];
+
+        if (id) {
+            filtered_nodes = this.getChildren(id, NodeTypes.FunctionCall);
+        } else {
+            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.FunctionCall);
+        }
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+            const expression: Node = new Node(node.expression);
+            const args: Node = new Node(node.arguments);
+            const member_access: MemberAccess[] = this.parseMemberAccess(node.id);
+            const identifier: Identifier[] = this.parseIdentifiers(node.id);
+
+            if (identifier.length !== 0) {
+                let f_name: string = identifier[0].name;
+                if (member_access.length !== 0) {
+                    f_name = `${f_name}.${member_access[0].member_name}`;
+                }
+                function_calls.push(new FunctionCall(location, f_name, expression, args, "TODO"));
+            }
+        }
+
+        return function_calls;
+    }
+
     parseVariables(id?: number, variable_declarations?: any[]): Variable[] {
         let variables: Variable[] = [];
         let filtered_nodes: any[] = [];
@@ -207,24 +238,53 @@ class SolFile {
         return parameters;
     }
 
-    parseIdentifiers(id: number): Identifier[] {
+    parseIdentifiers(id?: number): Identifier[] {
         let identifiers: Identifier[] = [];
         let filtered_nodes: any[] = [];
 
-        filtered_nodes = this.getChildren(id, NodeTypes.Identifier);
+        if (id) {
+            filtered_nodes = this.getChildren(id, NodeTypes.Identifier);
+        } else {
+            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.Identifier);
+        }
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
-            const name: string = node.attributes.name;
+            const name: string = node.attributes.value;
+            const type: string = node.attributes.type;
+
             let referencedDeclaration: number = -1;
-            if (isNaN(node.attributes.referencedDeclaration)) {
+
+            if (!isNaN(node.attributes.referencedDeclaration)) {
                 referencedDeclaration = node.attributes.referencedDeclaration;
             }
 
-            identifiers.push(new Identifier(location, name, referencedDeclaration));
+            identifiers.push(new Identifier(location, name, type, referencedDeclaration));
         }
 
         return identifiers;
+    }
+
+    parseMemberAccess(id?: number): MemberAccess[] {
+        let memberAccess: MemberAccess[] = [];
+
+        let filtered_nodes: any[] = [];
+
+        if (id) {
+            filtered_nodes = this.getChildren(id, NodeTypes.MemberAccess);
+        } else {
+            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.MemberAccess);
+        }
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+            const member_name: string = node.attributes.member_name;
+            const type: string = node.attributes.type;
+
+            memberAccess.push(new MemberAccess(location, member_name, type));
+        }
+
+        return memberAccess;
     }
 
     parseBinaryOperation(id: number): BinaryOperation[] {
