@@ -185,8 +185,8 @@ class SolFile {
             const identifier: Identifier[] = this.parseIdentifiers(node.id);
 
             if (identifier.length !== 0) {
-                let f_name: string = identifier[0].name;
-                let f_type: string = identifier[0].type;
+                let identifier_name: string = identifier[0].name;
+                let identifier_type: string = identifier[0].type;
                 let member_name: string = "";
                 let member_type: string = "";
 
@@ -194,7 +194,7 @@ class SolFile {
                     member_name = member_access[0].member_name;
                     member_type = member_access[0].type;
                 }
-                function_calls.push(new FunctionCall(location, f_name, f_type, member_name, member_type));
+                function_calls.push(new FunctionCall(location, identifier_name, identifier_type, member_name, member_type));
             }
         }
 

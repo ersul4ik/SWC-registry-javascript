@@ -11,18 +11,17 @@ describe("Function call parsing ", () => {
     const file_name = "./test/sol_files/function_calls/any.sol";
     const sol_file = new SolFile(file_name);
 
-    sol_file.getInternalReferencedNodes();
+    sol_file.getInternalReferencedIdentifiers();
 
     it(`Test case - should parse function calls in ${file_name}`, async () => {
         const cfunctions: CFunction[] = sol_file.parseFunction();
 
         let fcs: FunctionCall[] = sol_file.parseFunctionCalls(cfunctions[1].location.id);
-        for (const f of fcs) {
-            //   NodeUtility.printNode(f);
-        }
 
-        //       expect(fcs[0].name).toEqual("super.addOne");
-        //       expect(fcs[1].name).toEqual("block.blockhash");
-        //     expect(fcs[2].name).toEqual("blockhash");
+        expect(fcs[0].member_name).toEqual("addOne");
+        expect(fcs[0].identifier_name).toEqual("super");
+
+        expect(fcs[1].member_name).toEqual("blockhash");
+        expect(fcs[1].identifier_name).toEqual("block");
     });
 });
