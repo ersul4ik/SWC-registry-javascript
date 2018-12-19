@@ -3,6 +3,9 @@ import Import from "../core/declarations/import";
 import FileUtils from "../utils/file";
 import logger from "../logger/logger";
 import Source from "../maru/source";
+import PragmaUtils from "../utils/pragma";
+
+const path = require("path");
 
 const detectInstalled = require("detect-installed");
 const niv = require("npm-install-version");
@@ -42,7 +45,7 @@ class Solc {
         return version;
     }
 
-    static compile(file_name: string, version: string, imports?: Import[]): any {
+    static compile(file_name: string, version: string, hasImports: boolean): any {
         //const version = SolcUtility.getPragmaVersion(file_name);
         const solc_version_string: string = "solc@" + version;
 
@@ -53,41 +56,65 @@ class Solc {
 
         let compiler = niv.require(solc_version_string, { quiet: true });
 
-        let input = {
-            language: "Solidity",
-            sources: {},
-            settings: {
-                outputSelection: {
-                    "*": {
-                        "": ["legacyAST"]
-                    }
-                }
+        function findImports(pathName: any) {
+            try {
+                return { contents: FileUtils.getFileContent(pathName) };
+            } catch (e) {
+                return { error: e.message };
             }
-        };
+        }
 
         const file_content: string = FileUtils.getFileContent(file_name);
-        input.sources = { [file_name]: { content: file_content } };
 
-        let compilation_output;
-        if (imports && imports.length > 0) {
-            // Implement imports
-            compilation_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
-        } else {
-            compilation_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
+        let input = {};
+
+        if (PragmaUtils.isVersion04(version)) {
+            input = {
+                language: "Solidity",
+                sources: {
+                    [file_name]: file_content
+                },
+                settings: {
+                    outputSelection: {
+                        "*": {
+                            "*": ["*"],
+                            "": ["*"]
+                        }
+                    }
+                }
+            };
+        } else if (PragmaUtils.isVersion05(version)) {
+            input = {
+                language: "Solidity",
+                sources: {
+                    [file_name]: {
+                        content: file_content
+                    }
+                },
+                settings: {
+                    outputSelection: {
+                        "*": {
+                            "*": ["*"],
+                            "": ["*"]
+                        }
+                    }
+                }
+            };
         }
+
+        let compilation_output = {};
+        if (PragmaUtils.isVersion04(version)) {
+            compilation_output = compiler.compile(input, 1, findImports);
+        } else if (PragmaUtils.isVersion05(version)) {
+            compilation_output = JSON.parse(compiler.compile(JSON.stringify(input), findImports));
+        } else {
+            logger(`What's version is that ${version}? I can't compile this Beep Beep.`);
+        }
+
         return compilation_output;
     }
 
-    findImports(imports: Import[]): {} {
-        let i_string = "";
-        for (const i of imports) {
-            i_string += FileUtils.getFileContent(i.path);
-        }
-
-        return { contents: "library L { function f() internal returns (uint) { return 7; } }" };
-    }
-
-    static walkAST(compilation_output: any): Source[] {
+    static walkAST(compilation_output: any, version: string): Source[] {
         let walker = new AstWalker();
         let sources: Source[] = [];
         let nodes: any[] = [];
@@ -103,7 +130,14 @@ class Solc {
 
         Object.entries(compilation_output.sources).forEach(([file_name, source]) => {
             walker = new AstWalker();
-            walker.walk((<any>source).legacyAST, callback);
+
+            if (PragmaUtils.isVersion04(version)) {
+                walker.walk((<any>source).AST, callback);
+            } else if (PragmaUtils.isVersion05(version)) {
+                walker.walk((<any>source).legacyAST, callback);
+            } else {
+                logger(`What's version is that ${version}? I can't compile this Beep Beep.`);
+            }
 
             sources.push(new Source(file_name, nodes));
             nodes = [];

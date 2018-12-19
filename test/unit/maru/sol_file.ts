@@ -29,8 +29,6 @@ describe("Solfile", () => {
         expect(typeof sol_file1.nodes).toEqual("object");
         expect(sol_file1.nodes.length).toBeGreaterThanOrEqual(0);
         expect(typeof sol_file1.solc_compilation_output).toEqual("object");
-
-        NodeUtility.printNode(sol_file1.solc_compilation_output);
     });
 
     it(`Test case - variable tokenAddress has the following parents in ${file_name1}`, async () => {

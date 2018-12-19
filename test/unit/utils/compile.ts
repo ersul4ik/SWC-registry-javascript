@@ -16,7 +16,7 @@ describe("Compile Sol File without imports", () => {
     const file_name = "./test/sol_files/contracts/simple.sol";
 
     it(`Extract sources from Solc AST for ${file_name}`, async () => {
-        const out = Solc.compile(file_name, "0.4.24");
+        const out = Solc.compile(file_name, "0.4.24", false);
 
         expect(Object.keys(out.sources)[0]).toEqual(file_name);
 
@@ -37,7 +37,7 @@ describe("Compile Sol File without imports", () => {
     });
 });
 
-describe("Compile Sol File with imports", () => {
+describe("Compile Sol File with imports - POC ", () => {
     const file_name = "./test/sol_files/imports/simple.sol";
 
     it(`Check if imports are compiled correctly for ${file_name}`, async () => {
@@ -78,5 +78,15 @@ describe("Compile Sol File with imports", () => {
             findImports
         );
         // NodeUtility.printNode(compiled);
+    });
+});
+
+describe("Compile Sol File with imports - POC ", () => {
+    const file_name = "./test/sol_files/imports/A.sol";
+
+    it(`Check if imports are compiled correctly for ${file_name}`, async () => {
+        //const sol_file = new SolFile(file_name);
+        // NodeUtility.printNode(sol_file.nodes);
+        let sol_file: SolFile = new SolFile(file_name);
     });
 });

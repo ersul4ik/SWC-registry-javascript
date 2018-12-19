@@ -21,6 +21,7 @@ import Modifier from "../core/declarations/modifier";
 import logger from "../logger/logger";
 import PlaceHolder from "../core/statements/placeholder";
 import Source from "./source";
+import Node from "../misc/node";
 
 class SolFile {
     file_name: string;
@@ -41,10 +42,10 @@ class SolFile {
         this.antlrAST = SolidityAntlr.generateAST(file_name);
 
         const version = SolidityAntlr.getPragmaVersion(this.antlrAST);
-        this.solc_compilation_output = Solc.compile(file_name, version);
-        this.sources = Solc.walkAST(this.solc_compilation_output);
+        this.solc_compilation_output = Solc.compile(file_name, version, SolidityAntlr.hasImports(file_name, this.antlrAST));
+        this.sources = Solc.walkAST(this.solc_compilation_output, version);
 
-        this.nodes = Solc.walkAST(this.solc_compilation_output)[0].nodes;
+        this.nodes = this.sources[0].nodes;
         this.pragmas = this.parsePragma();
         this.source_unit = this.parseSourceUnit();
         this.contracts_current = this.parseContracts();

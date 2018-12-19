@@ -92,6 +92,15 @@ class SolidityAntlr {
         return imports;
     }
 
+    static hasImports(file_name: string, ast: any): boolean {
+        let imports: Import[] = this.parseImports(file_name, ast);
+        if (imports.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     static getPragmaVersion(ast: any): string {
         let pragmas = SolidityAntlr.parsePragma(ast);
 
