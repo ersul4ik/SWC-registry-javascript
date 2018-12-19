@@ -1,4 +1,4 @@
-import Location from "../misc/location";
+import Location from "../../misc/location";
 import Expression from "./expression";
 
 class Identifier extends Expression {

@@ -1,7 +1,7 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import CFunction from "../../../src/declarations/function";
+import CFunction from "../../../src/core/declarations/function";
 import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 import NodeUtility from "../../../src/utils/node";

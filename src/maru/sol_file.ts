@@ -1,30 +1,22 @@
 const src_location = require("src-location");
-import SolidityAntlr from "../parser/solidity_antlr";
-import Pragma from "../declarations/pragma";
-import Contract from "../declarations/contract";
-import { IssueDetailed, IssuePointer } from "./issue";
-import CFunction from "../declarations/function";
-import logger from "../logger/logger";
-import FileUtils from "../utils/file";
-import Solc from "../parser/solc";
-import Location from "../misc/location";
-import NodeUtility from "../utils/node";
+
+import Contract from "../core/declarations/contract";
+import CFunction from "../core/declarations/function";
+import Pragma from "../core/declarations/pragma";
+import SourceUnit from "../core/meta/source_unit";
+import Variable from "../core/declarations/variable";
+import BinaryOperation from "../core/expressions/binary_operation";
+import FunctionCall from "../core/expressions/function_call";
+import Identifier from "../core/expressions/identifier";
+import IfStatement from "../core/expressions/if_statement";
+import MemberAccess from "../core/expressions/member_access";
+import UnaryOperation from "../core/expressions/unary_operation";
 import NodeTypes from "../maru/node_types";
-import Parameter from "../declarations/parameter";
-import Node from "../misc/node";
-import Variable from "../declarations/variable";
-import Type from "../types/type";
-import ElementaryType from "../types/elementary_type";
-import ArrayType from "../types/array_type";
-import UserDefinedType from "../types/user_defined_type";
-import { log } from "util";
-import Identifier from "../expressions/identifier";
-import BinaryOperation from "../expressions/binary_operation";
-import IfStatement from "../expressions/if_statement";
-import SourceUnit from "../declarations/source_unit";
-import FunctionCall from "../expressions/function_call";
-import MemberAccess from "../expressions/member_access";
-import UnaryOperation from "../expressions/unary_operation";
+import Location from "../misc/location";
+import Solc from "../parser/solc";
+import SolidityAntlr from "../parser/solidity_antlr";
+import FileUtils from "../utils/file";
+import NodeUtility from "../utils/node";
 
 class SolFile {
     file_name: string;

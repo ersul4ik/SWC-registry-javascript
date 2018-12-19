@@ -1,8 +1,8 @@
-import Node from "../misc/node";
-import Location from "../misc/location";
-import Delcaration from "./declaration";
-import Parameter from "./parameter";
-import Variable from "./variable";
+import Location from '../../misc/location';
+import Node from '../../misc/node';
+import Delcaration from './declaration';
+import Parameter from './parameter';
+import Variable from './variable';
 
 class CFunction extends Delcaration {
     name: string;

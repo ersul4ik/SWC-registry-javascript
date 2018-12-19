@@ -8,10 +8,10 @@ import Logger from "../logger/logger";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 import SolidityAntlr from "../parser/solidity_antlr";
-import Identifier from "../expressions/identifier";
+import Identifier from "../core/expressions/identifier";
 import logger from "../logger/logger";
-import FunctionCall from "../expressions/function_call";
-import MemberAccess from "../expressions/member_access";
+import FunctionCall from "../core/expressions/function_call";
+import MemberAccess from "../core/expressions/member_access";
 
 let DeprecatedFunctions: Plugin;
 

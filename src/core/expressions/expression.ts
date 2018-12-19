@@ -1,4 +1,4 @@
-import Location from "../misc/location";
+import Location from "../../misc/location";
 
 class Expression {
     location: Location;

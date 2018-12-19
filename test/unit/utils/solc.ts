@@ -1,7 +1,7 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import Variable from "../../../src/declarations/variable";
+import Variable from "../../../src/core/declarations/variable";
 import SolFile from "../../../src/maru/sol_file";
 import Solc from "../../../src/parser/solc";
 import NodeUtility from "../../../src/utils/node";

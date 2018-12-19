@@ -6,7 +6,7 @@ import { Plugin } from "../maru/plugin";
 import Logger from "../logger/logger";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
-import UserDefinedType from "../types/user_defined_type";
+import UserDefinedType from "../core/types/user_defined_type";
 
 let UndeclaredStoragePointer: Plugin;
 

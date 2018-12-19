@@ -4,7 +4,7 @@ import { IssuePointer } from "../maru/issue";
 import { Plugin } from "../maru/plugin";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
-import BinaryOperation from "../expressions/binary_operation";
+import BinaryOperation from "../core/expressions/binary_operation";
 import SolidityAntlr from "../parser/solidity_antlr";
 
 let TypoGraphicalErrorFunction: Plugin;

@@ -4,7 +4,7 @@ import { IssuePointer } from "../maru/issue";
 import { Plugin } from "../maru/plugin";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
-import FunctionCall from "../expressions/function_call";
+import FunctionCall from "../core/expressions/function_call";
 import SolidityAntlr from "../parser/solidity_antlr";
 
 let WeakRandomnessFunction: Plugin;

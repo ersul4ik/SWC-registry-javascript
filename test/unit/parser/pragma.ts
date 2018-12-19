@@ -2,7 +2,7 @@ const assert = require("assert");
 const expect = require("expect");
 
 import SolFile from "../../../src/maru/sol_file";
-import Pragma from "../../../src/declarations/pragma";
+import Pragma from "../../../src/core/declarations/pragma";
 
 describe("Pragma", () => {
     const file_name1 = "./test/sol_files/pragma/simple_nopragma.sol";

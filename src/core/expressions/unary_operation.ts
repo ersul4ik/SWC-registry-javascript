@@ -1,6 +1,6 @@
 import Expression from "./expression";
-import Location from "../misc/location";
-import Node from "../misc/node";
+import Location from "../../misc/location";
+import Node from "../../misc/node";
 import Type from "../types/type";
 
 class UnaryOperation extends Expression {

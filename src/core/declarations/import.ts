@@ -1,7 +1,7 @@
-const fs = require("fs");
-import Delcaration from "./declaration";
-import Location from "../misc/location";
+import Location from '../../misc/location';
+import Delcaration from './declaration';
 
+const fs = require("fs");
 class Import extends Delcaration {
     path: string;
 

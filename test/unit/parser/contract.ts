@@ -1,7 +1,7 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import Contract from "../../../src/declarations/contract";
+import Contract from "../../../src/core/declarations/contract";
 import SolFile from "../../../src/maru/sol_file";
 import NodeUtility from "../../../src/utils/node";
 

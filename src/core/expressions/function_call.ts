@@ -1,6 +1,6 @@
 import Expression from "./expression";
-import Location from "../misc/location";
-import Node from "../misc/node";
+import Location from "../../misc/location";
+import Node from "../../misc/node";
 
 class FunctionCall extends Expression {
     identifier_name: string;

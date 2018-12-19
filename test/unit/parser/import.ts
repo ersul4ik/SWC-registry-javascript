@@ -1,7 +1,7 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import Import from "../../../src/declarations/import";
+import Import from "../../../src/core/declarations/import";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 
 describe("Imports", () => {

@@ -1,5 +1,5 @@
 import Type from "./type";
-import Location from "../misc/location";
+import Location from "../../misc/location";
 import ElementaryType from "./elementary_type";
 
 class UserDefinedType extends Type {

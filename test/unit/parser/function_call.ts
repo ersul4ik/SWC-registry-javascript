@@ -1,10 +1,10 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import FunctionCall from "../../../src/expressions/function_call";
+import FunctionCall from "../../../src/core/expressions/function_call";
 import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
-import CFunction from "../../../src/declarations/function";
+import CFunction from "../../../src/core/declarations/function";
 import NodeUtility from "../../../src/utils/node";
 
 describe("Function call parsing ", () => {

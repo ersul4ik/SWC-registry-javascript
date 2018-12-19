@@ -1,5 +1,5 @@
 import NodeUtility from "../utils/node";
-import Import from "../declarations/import";
+import Import from "../core/declarations/import";
 import FileUtils from "../utils/file";
 import logger from "../logger/logger";
 

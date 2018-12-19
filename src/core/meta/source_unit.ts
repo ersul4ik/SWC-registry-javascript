@@ -1,5 +1,5 @@
-import Location from "../misc/location";
-import Delcaration from "./declaration";
+import Location from '../../misc/location';
+import Delcaration from '../declarations/declaration';
 
 class SourceUnit {
     id: number;

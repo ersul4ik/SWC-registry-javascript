@@ -2,7 +2,7 @@ const c3 = require("c3-linearization");
 const assert = require("assert");
 const expect = require("expect");
 
-import Contract from "../../../src/declarations/contract";
+import Contract from "../../../src/core/declarations/contract";
 import ContractUtils from "../../../src/utils/contract";
 import SolFile from "../../../src/maru/sol_file";
 

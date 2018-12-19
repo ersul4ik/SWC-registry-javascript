@@ -1,7 +1,7 @@
-import Constants from "../misc/constants";
-import Logger from "../logger/logger";
-import Expression from "../expressions/expression";
-import Location from "../misc/location";
+import Constants from "../../misc/constants";
+import Logger from "../../logger/logger";
+import Expression from "../../core/expressions/expression";
+import Location from "../../misc/location";
 import Type from "./type";
 
 // TODO: Add https://solidity.readthedocs.io/en/develop/types.html#fixed-point-numbers

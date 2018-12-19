@@ -6,7 +6,7 @@ import { Plugin } from "../maru/plugin";
 import Logger from "../logger/logger";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
-import Variable from "../declarations/variable";
+import Variable from "../core/declarations/variable";
 
 let DefaultVisibilityStateVariable: Plugin;
 

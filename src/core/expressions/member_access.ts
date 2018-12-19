@@ -1,6 +1,6 @@
-import Location from "../misc/location";
+import Location from "../../misc/location";
 import Expression from "./expression";
-import Node from "../misc/node";
+import Node from "../../misc/node";
 
 class MemberAccess extends Expression {
     member_name: string;

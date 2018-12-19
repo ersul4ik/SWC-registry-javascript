@@ -1,10 +1,10 @@
+import Location from "../../misc/location";
 import Expression from "./expression";
-import Location from "../misc/location";
 
-class Throw extends Expression {
+class IfStatement extends Expression {
     constructor(location: Location) {
         super(location);
     }
 }
 
-export default Throw;
+export default IfStatement;

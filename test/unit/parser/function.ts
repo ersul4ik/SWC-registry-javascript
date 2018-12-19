@@ -1,12 +1,12 @@
 const assert = require("assert");
 const expect = require("expect");
 
-import CFunction from "../../../src/declarations/function";
+import CFunction from "../../../src/core/declarations/function";
 import SolFile from "../../../src/maru/sol_file";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
 import NodeUtility from "../../../src/utils/node";
 
-describe("Function parsing", () => {
+describe("Function", () => {
     const file_name = "./test/sol_files/functions/functions.sol";
     const sol_file = new SolFile(file_name);
 

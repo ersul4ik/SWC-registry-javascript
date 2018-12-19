@@ -6,7 +6,7 @@ import { Plugin } from "../maru/plugin";
 import Logger from "../logger/logger";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
-import Pragma from "../declarations/pragma";
+import Pragma from "../core/declarations/pragma";
 
 let LockPragma: Plugin;
 
