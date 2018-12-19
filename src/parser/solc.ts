@@ -2,6 +2,7 @@ import NodeUtility from "../utils/node";
 import Import from "../core/declarations/import";
 import FileUtils from "../utils/file";
 import logger from "../logger/logger";
+import Source from "../maru/source";
 
 const detectInstalled = require("detect-installed");
 const niv = require("npm-install-version");
@@ -18,7 +19,7 @@ class Solc {
 
     // This function is deprecated
     // Using the Antlr AST to get the version string
-    static getPragmaVersion(file_name: string) {
+    static getPragmaVersion(file_name: string): string {
         // set a default version
         let version = "0.4.25";
         const file_content: string = FileUtils.getFileContent(file_name);
@@ -41,7 +42,7 @@ class Solc {
         return version;
     }
 
-    static compile(file_name: string, version: string, imports?: Import[]) {
+    static compile(file_name: string, version: string, imports?: Import[]): any {
         //const version = SolcUtility.getPragmaVersion(file_name);
         const solc_version_string: string = "solc@" + version;
 
@@ -67,14 +68,14 @@ class Solc {
         const file_content: string = FileUtils.getFileContent(file_name);
         input.sources = { [file_name]: { content: file_content } };
 
-        let compile_output;
+        let compilation_output;
         if (imports && imports.length > 0) {
             // Implement imports
-            compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
+            compilation_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
         } else {
-            compile_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
+            compilation_output = JSON.parse(compiler.compileStandardWrapper(JSON.stringify(input)));
         }
-        return compile_output;
+        return compilation_output;
     }
 
     findImports(imports: Import[]): {} {
@@ -86,29 +87,9 @@ class Solc {
         return { contents: "library L { function f() internal returns (uint) { return 7; } }" };
     }
 
-    static getChildrenNodes(nodes: any[], parent_id: number): any[] {
-        let push: boolean = false;
-        let filter_nodes: any[] = [];
-
-        for (const n of nodes) {
-            if (parent_id === n.id) {
-                push = true;
-            }
-
-            if (push) {
-                if (parent_id >= n.id) {
-                    filter_nodes.push(n);
-                } else {
-                    push = false;
-                }
-            }
-        }
-        return filter_nodes;
-    }
-
-    static walkAST(file_name: string, version: string, imports: Import[]): any[] {
-        const compilation_result = Solc.compile(file_name, version, imports);
+    static walkAST(compilation_output: any): Source[] {
         let walker = new AstWalker();
+        let sources: Source[] = [];
         let nodes: any[] = [];
 
         const callback = (node: any) => {
@@ -120,11 +101,14 @@ class Solc {
             }
         };
 
-        Object.entries(compilation_result.sources).forEach(([pathName, source]) => {
+        Object.entries(compilation_output.sources).forEach(([file_name, source]) => {
             walker = new AstWalker();
             walker.walk((<any>source).legacyAST, callback);
+
+            sources.push(new Source(file_name, nodes));
+            nodes = [];
         });
-        return nodes;
+        return sources;
     }
 }
 export default Solc;

@@ -20,6 +20,7 @@ import NodeUtility from "../utils/node";
 import Modifier from "../core/declarations/modifier";
 import logger from "../logger/logger";
 import PlaceHolder from "../core/statements/placeholder";
+import Source from "./source";
 
 class SolFile {
     file_name: string;
@@ -27,11 +28,12 @@ class SolFile {
     antlrAST: any;
     solcAST: any;
     nodes: any[];
+    sources: Source[];
     pragmas: Pragma[];
     source_unit: SourceUnit[];
     contracts_current: Contract[];
     contracts_imported: Contract[];
-    solc_compilation_errors: any;
+    solc_compilation_output: any;
 
     constructor(file_name: string) {
         this.file_name = file_name;
@@ -39,10 +41,10 @@ class SolFile {
         this.antlrAST = SolidityAntlr.generateAST(file_name);
 
         const version = SolidityAntlr.getPragmaVersion(this.antlrAST);
-        this.solcAST = Solc.compile(file_name, version);
-        this.solc_compilation_errors = this.solcAST.errors;
+        this.solc_compilation_output = Solc.compile(file_name, version);
+        this.sources = Solc.walkAST(this.solc_compilation_output);
 
-        this.nodes = Solc.walkAST(file_name, version, SolidityAntlr.parseAllImports(file_name, this.antlrAST));
+        this.nodes = Solc.walkAST(this.solc_compilation_output)[0].nodes;
         this.pragmas = this.parsePragma();
         this.source_unit = this.parseSourceUnit();
         this.contracts_current = this.parseContracts();

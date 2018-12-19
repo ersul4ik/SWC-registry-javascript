@@ -22,13 +22,15 @@ describe("Solfile", () => {
     it("Test case - sanity check for SolFile attributes", async () => {
         expect(sol_file1.file_name).toEqual(file_name1);
         expect(typeof sol_file1.file_content).toEqual("string");
-        expect(typeof sol_file1.solcAST).toEqual("object");
-        expect(typeof sol_file1.solcAST.contracts[file_name1]).toEqual("object");
+        //expect(typeof sol_file1.solcAST).toEqual("object");
+        // expect(typeof sol_file1.solcAST.contracts[file_name1]).toEqual("object");
         expect(typeof sol_file1.antlrAST).toEqual("object");
         expect(typeof sol_file1.antlrAST.children).toEqual("object");
         expect(typeof sol_file1.nodes).toEqual("object");
         expect(sol_file1.nodes.length).toBeGreaterThanOrEqual(0);
-        expect(typeof sol_file1.solc_compilation_errors).toEqual("object");
+        expect(typeof sol_file1.solc_compilation_output).toEqual("object");
+
+        NodeUtility.printNode(sol_file1.solc_compilation_output);
     });
 
     it(`Test case - variable tokenAddress has the following parents in ${file_name1}`, async () => {

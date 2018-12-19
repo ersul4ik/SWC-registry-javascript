@@ -102,8 +102,8 @@ if (options.help || options.length < 1) {
 
     if (options.ast && stats.isFile()) {
         const sol_file = new SolFile(options.run);
-        const ast_object = options.ast === "solc" ? sol_file.solcAST : sol_file.antlrAST;
-        const response = JSON.stringify(ast_object, null, 2);
+        const output = options.ast === "solc" ? sol_file.solc_compilation_output.errors : sol_file.antlrAST;
+        const response = JSON.stringify(output, null, 2);
         console.log(response);
     } else {
         const issues = Analyzer.runAllPlugins(repo, config);
