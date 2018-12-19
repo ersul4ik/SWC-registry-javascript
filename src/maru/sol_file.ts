@@ -17,6 +17,9 @@ import Solc from "../parser/solc";
 import SolidityAntlr from "../parser/solidity_antlr";
 import FileUtils from "../utils/file";
 import NodeUtility from "../utils/node";
+import Modifier from "../core/declarations/modifier";
+import logger from "../logger/logger";
+import PlaceHolder from "../core/statements/placeholder";
 
 class SolFile {
     file_name: string;
@@ -160,6 +163,42 @@ class SolFile {
         }
 
         return functions;
+    }
+
+    parseModifier(id?: number): Modifier[] {
+        let modifiers: Modifier[] = [];
+        let filtered_nodes: any[] = [];
+
+        if (id) {
+            filtered_nodes = this.getChildren(id, NodeTypes.ModifierDefinition);
+        } else {
+            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.ModifierDefinition);
+        }
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+
+            const name: string = node.attributes.name;
+            const visibility: string = node.attributes.visibility;
+
+            const variables = this.parseVariables(node.id);
+            const function_parameters: Variable[] = this.parseParameters(variables);
+
+            const c: any[] = this.getParents(node.id, NodeTypes.ContractDefinition);
+
+            // set the default scope to SourceUnit
+            let scope: number = this.parseSourceUnit()[0].id;
+
+            if (c.length != 1) {
+                logger.error("Unexpected result when parsing contracts to get the scope for a modifier");
+            } else {
+                scope = c[0].id;
+            }
+
+            modifiers.push(new Modifier(location, scope, name, visibility, variables, function_parameters));
+        }
+
+        return modifiers;
     }
 
     parseFunctionCalls(id?: number): FunctionCall[] {
@@ -317,6 +356,21 @@ class SolFile {
         }
 
         return uo;
+    }
+
+    parsePlaceHolder(id: number): PlaceHolder[] {
+        let ph: PlaceHolder[] = [];
+        let filtered_nodes: any[] = [];
+
+        filtered_nodes = this.getChildren(id, NodeTypes.PlaceholderStatement);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+
+            ph.push(new PlaceHolder(location));
+        }
+
+        return ph;
     }
 
     parseIfStatement(id: number): IfStatement[] {

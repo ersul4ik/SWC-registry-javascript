@@ -16,7 +16,7 @@ describe("Conditional", () => {
         const contracts: Contract[] = sol_file.contracts_current;
 
         for (const n of sol_file.nodes) {
-            NodeUtility.printNode(n);
+            // NodeUtility.printNode(n);
         }
     });
 });

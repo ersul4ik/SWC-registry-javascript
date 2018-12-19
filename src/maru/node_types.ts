@@ -3,6 +3,8 @@ const NodeTypes = {
     PragmaDirective: "PragmaDirective",
     ContractDefinition: "ContractDefinition",
     FunctionDefinition: "FunctionDefinition",
+    ModifierDefinition: "ModifierDefinition",
+    PlaceholderStatement: "PlaceholderStatement",
     VariableDeclaration: "VariableDeclaration",
     ParameterList: "ParameterList",
     FunctionCall: "FunctionCall",

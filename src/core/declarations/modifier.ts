@@ -1,8 +1,8 @@
-import Location from '../../misc/location';
-import Node from '../../misc/node';
-import Delcaration from './declaration';
-import Parameter from './parameter';
-import Variable from './variable';
+import Location from "../../misc/location";
+import Node from "../../misc/node";
+import Delcaration from "./declaration";
+import Parameter from "./parameter";
+import Variable from "./variable";
 
 class Modifier extends Delcaration {
     name: string;

@@ -6,14 +6,14 @@ contract Proxy {
   address owner;
   uint x=0;
 
-  modifier onlyOwner {
+  modifier onlyOwner(address i) {
     require(msg.sender == owner);
     _;
 
   }
 
 
-modifier doSomething {
+modifier doSomething(address h) {
     _;
     uint[] storage y;
     x++;
@@ -24,7 +24,7 @@ modifier doSomething {
     owner = msg.sender;
   }
 
-  function setCallee(address newCallee) public onlyOwner {
+  function setCallee(address newCallee) public onlyOwner(newCallee) {
     callee = newCallee;
   }
 
