@@ -13,10 +13,12 @@ let LockPragma: Plugin;
 LockPragma = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
 
-    for (const pragma of sol_file.pragmas) {
-        if (pragma.name.match("solidity")) {
-            if (!NodeUtility.isVersionFixed(pragma.value)) {
-                issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], sol_file.pragmas[0].location));
+    for (const source of sol_file.sources) {
+        for (const pragma of source.pragmas) {
+            if (pragma.name.match("solidity")) {
+                if (!NodeUtility.isVersionFixed(pragma.value)) {
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], pragma.location));
+                }
             }
         }
     }

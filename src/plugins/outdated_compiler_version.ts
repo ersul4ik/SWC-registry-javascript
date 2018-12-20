@@ -14,10 +14,12 @@ OutdatedCompilerVersion = function(sol_file: SolFile, plugin_config: PluginConfi
     const issuePointers: IssuePointer[] = [];
     const oldest_recommended_version = "0.4.23";
 
-    for (const pragma of sol_file.pragmas) {
-        if (pragma.name.match("solidity")) {
-            if (semver.lt(sol_file.pragmas[0].value.replace("^", ""), oldest_recommended_version)) {
-                issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], sol_file.pragmas[0].location));
+    for (const source of sol_file.sources) {
+        for (const pragma of source.pragmas) {
+            if (pragma.name.match("solidity")) {
+                if (semver.lt(pragma.value.replace("^", ""), oldest_recommended_version)) {
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], pragma.location));
+                }
             }
         }
     }
