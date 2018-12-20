@@ -1,13 +1,11 @@
-import Location from '../../misc/location';
-import Delcaration from '../declarations/declaration';
+import Location from "../../misc/location";
+import Delcaration from "../declarations/declaration";
 
 class SourceUnit {
     id: number;
-    absolutePath: string;
 
-    constructor(id: number, absolutePath: string) {
+    constructor(id: number) {
         this.id = id;
-        this.absolutePath = absolutePath;
     }
 }
 

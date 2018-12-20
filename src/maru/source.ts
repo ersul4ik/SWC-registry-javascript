@@ -60,7 +60,7 @@ class Source {
         let source_unit: SourceUnit[] = [];
         for (const n of this.nodes) {
             if (NodeUtility.matchString(n.name, NodeTypes.SourceUnit)) {
-                source_unit.push(new SourceUnit(n.id, n.attributes.absolutePath));
+                source_unit.push(new SourceUnit(n.id));
             }
         }
         return source_unit;
