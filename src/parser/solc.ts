@@ -107,7 +107,7 @@ class Solc {
         } else if (PragmaUtils.isVersion05(version)) {
             compilation_output = JSON.parse(compiler.compile(JSON.stringify(input), findImports));
         } else {
-            logger(`What's version is that ${version}? I can't compile this Beep Beep.`);
+            logger.debug(`What version is that ${version} in ${file_name}? I can't compile this Beep Beep.`);
         }
 
         return compilation_output;
