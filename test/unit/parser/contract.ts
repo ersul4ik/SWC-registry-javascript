@@ -10,7 +10,7 @@ describe("Contract", () => {
 
     it(`Test case - parse contract attibutes in  ${file_name1}`, async () => {
         const sol_file = new SolFile(file_name1);
-        const contracts: Contract[] = sol_file.parseContracts();
+        const contracts: Contract[] = sol_file.sources[0].parseContracts();
         expect(contracts[0].name).toEqual("Simple");
         expect(contracts[0].kind).toEqual("contract");
     });
@@ -19,7 +19,7 @@ describe("Contract", () => {
 
     it(`Test case - parse contract attibutes in  ${file_name2}`, async () => {
         const sol_file = new SolFile(file_name2);
-        const contracts: Contract[] = sol_file.parseContracts();
+        const contracts: Contract[] = sol_file.sources[0].parseContracts();
         expect(contracts[0].name).toEqual("TestStorage");
         expect(contracts[0].kind).toEqual("contract");
     });
@@ -28,7 +28,7 @@ describe("Contract", () => {
 
     it(`Test case - parse contract attibutes in  ${file_name3}`, async () => {
         const sol_file = new SolFile(file_name3);
-        const contracts: Contract[] = sol_file.parseContracts();
+        const contracts: Contract[] = sol_file.sources[0].parseContracts();
         //  NodeUtility.printNode(sol_file);
         expect(contracts[0].name).toEqual("A");
         expect(contracts[0].kind).toEqual("contract");

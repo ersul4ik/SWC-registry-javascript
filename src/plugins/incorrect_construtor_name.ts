@@ -12,7 +12,7 @@ let IncorrectConstructorName: Plugin;
 IncorrectConstructorName = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
 
-    for (const c of sol_file.contracts_current) {
+    for (const c of sol_file.contracts) {
         if (!c.hasConstructor()) {
             for (const f of c.functions) {
                 if (NodeUtility.matchRegex(f.name, new RegExp("^" + c.name + "$", "i"))) {

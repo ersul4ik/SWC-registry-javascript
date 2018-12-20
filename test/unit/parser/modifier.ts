@@ -14,9 +14,9 @@ describe("Modifier", () => {
     const sol_file = new SolFile(file_name);
 
     it(`Test case: parse modifiers operators in ${file_name}`, async () => {
-        const contracts: Contract[] = sol_file.contracts_current;
+        const contracts: Contract[] = sol_file.contracts;
 
-        const modifiers: Modifier[] = sol_file.parseModifier();
+        const modifiers: Modifier[] = sol_file.sources[0].parseModifier();
 
         expect(modifiers.length).toEqual(2);
 

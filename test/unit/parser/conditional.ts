@@ -13,10 +13,6 @@ describe("Conditional", () => {
     const sol_file = new SolFile(file_name);
 
     it(`Test case: find binary operators in ${file_name}`, async () => {
-        const contracts: Contract[] = sol_file.contracts_current;
-
-        for (const n of sol_file.nodes) {
-            // NodeUtility.printNode(n);
-        }
+        const contracts: Contract[] = sol_file.contracts;
     });
 });

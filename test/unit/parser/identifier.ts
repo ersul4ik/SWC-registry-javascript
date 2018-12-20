@@ -15,9 +15,9 @@ describe("Identifier", () => {
     const sol_file = new SolFile(file_name);
 
     it(`Test case: identifiers in function lol() of ${file_name}`, async () => {
-        const functions: CFunction[] = sol_file.contracts_current[0].functions;
+        const functions: CFunction[] = sol_file.contracts[0].functions;
 
-        const identifiers: Identifier[] = sol_file.parseIdentifiers(functions[0].location.id);
+        const identifiers: Identifier[] = sol_file.sources[0].parseIdentifiers(functions[0].location.id);
 
         expect(identifiers.length).toEqual(6);
 

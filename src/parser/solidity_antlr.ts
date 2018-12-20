@@ -199,7 +199,7 @@ class SolidityAntlr {
         // ids are not available in the antlr AST
         const id = -1;
 
-        return new Location(id, src, loc.start.line, loc.end.line, loc.start.column, loc.end.column);
+        return new Location(id, "", src, loc.start.line, loc.end.line, loc.start.column, loc.end.column);
     }
 
     /*

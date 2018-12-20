@@ -11,7 +11,7 @@ describe("Inheritance linearization", () => {
     const sol_file = new SolFile(file_name);
 
     it(`Test case - Resolves inheritance in correct order for contracts in ${file_name}`, async () => {
-        let contracts: Contract[] = sol_file.contracts_current;
+        let contracts: Contract[] = sol_file.contracts;
 
         expect(contracts[0].name).toEqual("D");
         expect(contracts[0].linearizedBaseContracts).toEqual([]);
@@ -19,13 +19,13 @@ describe("Inheritance linearization", () => {
         expect(contracts[1].name).toEqual("C");
         expect(contracts[1].linearizedBaseContracts).toEqual([]);
 
-        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 23)).toEqual("C");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts, 23)).toEqual("C");
         expect(contracts[2].name).toEqual("B");
         expect(contracts[2].linearizedBaseContracts).toEqual([23]);
 
-        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 12)).toEqual("D");
-        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 34)).toEqual("B");
-        expect(ContractUtils.getContractNameFromID(sol_file.contracts_current, 23)).toEqual("C");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts, 12)).toEqual("D");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts, 34)).toEqual("B");
+        expect(ContractUtils.getContractNameFromID(sol_file.contracts, 23)).toEqual("C");
         expect(contracts[3].name).toEqual("A");
         expect(contracts[3].linearizedBaseContracts).toEqual([12, 34, 23]);
     });

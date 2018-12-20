@@ -13,9 +13,9 @@ describe("Binary Operator", () => {
     const sol_file = new SolFile(file_name);
 
     it(`Test case: find binary operators in ${file_name}`, async () => {
-        const contracts: Contract[] = sol_file.contracts_current;
+        const contracts: Contract[] = sol_file.contracts;
 
-        const bops: BinaryOperation[] = sol_file.parseBinaryOperation(contracts[0].location.id);
+        const bops: BinaryOperation[] = sol_file.sources[0].parseBinaryOperation(contracts[0].location.id);
 
         expect(bops[0].operator).toEqual("+");
         expect(bops[0].isPure).toEqual(true);

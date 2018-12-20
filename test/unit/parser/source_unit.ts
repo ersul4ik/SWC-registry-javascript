@@ -13,7 +13,7 @@ describe("SourceUnit", () => {
     const sol_file = new SolFile(file_name);
 
     it(`Test case: find source unit in ${file_name}`, async () => {
-        expect(sol_file.source_unit[0].id).toEqual(7);
-        expect(sol_file.source_unit[0].absolutePath).toEqual("./test/sol_files/contracts/simple.sol");
+        expect(sol_file.sources[0].source_unit[0].id).toEqual(7);
+        expect(sol_file.sources[0].source_unit[0].absolutePath).toEqual("./test/sol_files/contracts/simple.sol");
     });
 });

@@ -11,8 +11,8 @@ import NodeTypes from "../../../src/maru/node_types";
 describe("Variables", () => {
     const file_name = "./test/sol_files/variable/statements.sol";
     const sol_file = new SolFile(file_name);
-    const variables_c: Variable[] = sol_file.contracts_current[0].variables;
-    const variables_f: Variable[] = sol_file.contracts_current[0].functions[0].variables;
+    const variables_c: Variable[] = sol_file.contracts[0].variables;
+    const variables_f: Variable[] = sol_file.contracts[0].functions[0].variables;
 
     it(`Test case - get correct number of variables for function lol() in ${file_name}`, async () => {
         expect(variables_f.length).toEqual(8);

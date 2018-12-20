@@ -16,9 +16,9 @@ describe("MemberAccess", () => {
     const sol_file = new SolFile(file_name);
 
     it(`Test case: Memberaccess in function rofl() of ${file_name}`, async () => {
-        const functions: CFunction[] = sol_file.contracts_current[0].functions;
+        const functions: CFunction[] = sol_file.contracts[0].functions;
 
-        const members: MemberAccess[] = sol_file.parseMemberAccess(functions[1].location.id);
+        const members: MemberAccess[] = sol_file.sources[0].parseMemberAccess(functions[1].location.id);
 
         expect(members.length).toEqual(1);
 
