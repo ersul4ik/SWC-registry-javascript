@@ -3,62 +3,20 @@ const expect = require("expect");
 
 import Import from "../../../src/core/declarations/import";
 import SolidityAntlr from "../../../src/parser/solidity_antlr";
+import SolFile from "../../../src/maru/sol_file";
 
 describe("Imports", () => {
     const file_name = "./test/sol_files/imports/A.sol";
-    const ast = SolidityAntlr.generateAST(file_name);
+    const sol_file: SolFile = new SolFile(file_name);
 
-    it(`Test case - should list all expected imports for ${file_name}`, async () => {
-        const imports: Import[] = SolidityAntlr.parseImports(file_name, ast);
-
-        expect(imports[0].path).toEqual("test/sol_files/imports/lib/B.sol");
+    it(`Test case - should contain all imports for ${file_name}`, async () => {
+        expect(sol_file.sources.length).toEqual(4);
     });
 
     it(`Test case - should list all expected imports for ${file_name} and any other imports`, async () => {
-        const imports: Import[] = SolidityAntlr.parseAllImports(file_name, ast);
-
-        expect(imports[0].path).toEqual("test/sol_files/imports/lib/B.sol");
-        expect(imports[1].path).toEqual("test/sol_files/imports/lib2/C.sol");
-        expect(imports[2].path).toEqual("test/sol_files/imports/lib2/D.sol");
+        expect(sol_file.sources[0].file_name).toEqual("./test/sol_files/imports/A.sol");
+        expect(sol_file.sources[1].file_name).toEqual("./test/sol_files/imports/lib/B.sol");
+        expect(sol_file.sources[2].file_name).toEqual("./test/sol_files/imports/lib2/C.sol");
+        expect(sol_file.sources[3].file_name).toEqual("./test/sol_files/imports/lib2/D.sol");
     });
 });
-
-/*
-describe("Contract parsing with imports", () => {
-  const file_name = "./test/sol_files/contract_inherit_complex.sol";
-  const ast = SolidityAntlr.generateAST(file_name);
-
-  it(`Test case - should have all expected contract elements for ${file_name}`, async () => {
-    const current_contracts:Contract[] = SolidityAntlr.parseContracts(ast);
-    const imports:Import[] = SolidityAntlr.parseImports(ast);
-
-    for (const i of imports){
-      const i_ast = SolidityAntlr.generateAST("./test/sol_files/" + i.path);
-      const imported_contracts:Contract[] = SolidityAntlr.parseContracts(i_ast);
-      const all_contracts:Contract[] = current_contracts.concat(imported_contracts);
-
-      expect(all_contracts[2].name).toEqual("SafeMath");
-      expect(all_contracts[2].kind).toEqual("library");
-      expect(all_contracts[2].baseContracts.length).toEqual(0);
-      expect(all_contracts[2].subNodes.branch.length).toEqual(5)
-
-      expect(all_contracts[2].location.lineNumberStart).toEqual(7);
-      expect(all_contracts[2].location.lineNumberEnd).toEqual(65);
-      expect(all_contracts[2].location.columnStart).toEqual(0);
-      expect(all_contracts[2].location.columnEnd).toEqual(0);
-      expect(all_contracts[2].location.src).toEqual("117:1531:0");
-
-      for (const contract of all_contracts){
-        AstUtility.printNode(contract.name)
-        AstUtility.printNode(contract.kind)
-        AstUtility.printNode(contract.baseContracts)
-        AstUtility.printNode(contract.subNodes)
-      } 
-      
-    }
-
-  });
-
-});
-
-*/
