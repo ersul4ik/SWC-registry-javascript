@@ -20,7 +20,7 @@ describe(`Compile Sol File without imports using version 0.4.x for ${no_imports_
     niv.install("solc@0.4.24", { quiet: true });
 
     it(`Extract sources from Solc AST`, async () => {
-        const out = Solc.compile(no_imports_04, "0.4.24", false);
+        const out = Solc.compile(no_imports_04, "0.4.24");
 
         expect(Object.keys(out.sources)[0]).toEqual(no_imports_04);
 
@@ -43,7 +43,7 @@ describe(`Compile Sol File with imports using version 0.4.x for ${imports_04}`, 
     niv.install("solc@0.4.24", { quiet: true });
 
     it(`Extract sources from Solc AST`, async () => {
-        const out = Solc.compile(imports_04, "0.4.24", false);
+        const out = Solc.compile(imports_04, "0.4.24");
 
         expect(Object.keys(out.sources)[0]).toEqual(imports_04);
         expect(Object.keys(out.sources)[1]).toEqual("./test/sol_files/imports/lib/B.sol");
@@ -67,7 +67,7 @@ describe(`Compile Sol File without imports using version 0.5.x for ${no_imports_
     niv.install("solc@0.5.1", { quiet: true });
 
     it(`Extract sources from Solc AST`, async () => {
-        const out = Solc.compile(no_imports_05, "0.5.1", false);
+        const out = Solc.compile(no_imports_05, "0.5.1");
 
         expect(Object.keys(out.sources)[0]).toEqual(no_imports_05);
 
@@ -90,7 +90,7 @@ describe(`Compile Sol File with imports using version 0.5.x for ${imports_05}`, 
     niv.install("solc@0.5.1", { quiet: true });
 
     it(`Extract sources from Solc AST`, async () => {
-        const out = Solc.compile(imports_05, "0.5.1", false);
+        const out = Solc.compile(imports_05, "0.5.1");
 
         expect(Object.keys(out.sources)[1]).toEqual(imports_05);
         expect(Object.keys(out.sources)[0]).toEqual("./test/sol_files/imports/lib/E.sol");

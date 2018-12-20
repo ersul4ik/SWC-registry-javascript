@@ -45,7 +45,7 @@ class Solc {
         return version;
     }
 
-    static compile(file_name: string, version: string, hasImports: boolean): any {
+    static compile(file_name: string, version: string): any {
         //const version = SolcUtility.getPragmaVersion(file_name);
         const solc_version_string: string = "solc@" + version;
 
