@@ -42,7 +42,7 @@ class SolFile {
         this.antlrAST = SolidityAntlr.generateAST(file_name);
 
         const version = SolidityAntlr.getPragmaVersion(this.antlrAST);
-        this.solc_compilation_output = Solc.compile(file_name, version, SolidityAntlr.hasImports(file_name, this.antlrAST));
+        this.solc_compilation_output = Solc.compile(file_name, version);
         this.sources = Solc.walkAST(this.solc_compilation_output, version);
 
         this.nodes = this.sources[0].nodes;
