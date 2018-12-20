@@ -1,4 +1,3 @@
-const c3 = require("c3-linearization");
 const assert = require("assert");
 const expect = require("expect");
 
