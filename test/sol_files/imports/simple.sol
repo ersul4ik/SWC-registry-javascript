@@ -1,7 +1,7 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.5.1;
 
 
-import 'A.sol';
+import './lib/E.sol';
 
 contract B{
   uint a = 1;
