@@ -105,22 +105,31 @@ class SolidityAntlr {
     static getPragmaVersion(ast: any): string {
         let pragmas = SolidityAntlr.parsePragma(ast);
 
-        let default_version: string = "0.4.25";
-
         for (const pragma of pragmas) {
             if (pragma.name.match(/solidity/)) {
                 let extracted_version: string = pragma.value.replace(/\^/, "");
                 if (extracted_version.match(/^(\d+\.\d+\.\d+)$/)) {
                     if (PragmaUtils.isSupportedVersion(extracted_version)) {
+                        logger.debug(`Setting Solidity version ${extracted_version} `);
                         return extracted_version;
+                    } else if (!PragmaUtils.isVersionFixed(pragma.value)) {
+                        logger.debug(`Solidity version ${extracted_version} not supported, trying to switch to another version`);
+                        if (PragmaUtils.isVersion04(extracted_version)) {
+                            let default_version_v04: string = "0.4.25";
+                            logger.debug(`Setting Solidity version ${default_version_v04} `);
+                            return default_version_v04;
+                        } else if (PragmaUtils.isVersion05(extracted_version)) {
+                            let default_version_v05: string = "0.5.2";
+                            logger.debug(`Setting Solidity version ${default_version_v05} `);
+                            return default_version_v05;
+                        }
                     }
                 } else {
-                    logger.error(`Extracting Solidity version failed got: ${extracted_version}`);
                 }
             }
         }
-        logger.debug(`Solidity version string not recognized or not set. Switching to default version ${default_version}`);
-        return default_version;
+        logger.error(`Could not find a supported solc version.`);
+        return "";
     }
 
     static parsePragma(ast: any): Pragma[] {

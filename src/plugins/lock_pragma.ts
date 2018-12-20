@@ -7,6 +7,7 @@ import Logger from "../logger/logger";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 import Pragma from "../core/declarations/pragma";
+import PragmaUtils from "../utils/pragma";
 
 let LockPragma: Plugin;
 
@@ -16,7 +17,7 @@ LockPragma = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePoin
     for (const source of sol_file.sources) {
         for (const pragma of source.pragmas) {
             if (pragma.name.match("solidity")) {
-                if (!NodeUtility.isVersionFixed(pragma.value)) {
+                if (!PragmaUtils.isVersionFixed(pragma.value)) {
                     issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], pragma.location));
                 }
             }

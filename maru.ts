@@ -101,13 +101,12 @@ if (options.help || options.length < 1) {
     }
 
     if (options.ast && stats.isFile()) {
-        const sol_file = new SolFile(options.run);
         let output = {};
 
         if (NodeUtility.matchString(options.ast, "solc")) {
-            output = sol_file.solc_compilation_output.sources;
+            output = repo.sol_files[0].solc_compilation_output.sources;
         } else if (NodeUtility.matchString(options.ast, "antlr")) {
-            output = sol_file.antlrAST;
+            output = repo.sol_files[0].antlrAST;
         }
 
         if (Object.keys(output).length === 0) {
