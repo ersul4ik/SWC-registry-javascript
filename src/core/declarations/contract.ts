@@ -1,11 +1,9 @@
-import Location from '../../misc/location';
-import Node from '../../misc/node';
-import SolidityAntlr from '../../parser/solidity_antlr';
-import Delcaration from './declaration';
-import CFunction from './function';
-import Variable from './variable';
-
-const c3 = require("c3-linearization");
+import Location from "../../misc/location";
+import Node from "../../misc/node";
+import SolidityAntlr from "../../parser/solidity_antlr";
+import Delcaration from "./declaration";
+import CFunction from "./function";
+import Variable from "./variable";
 
 class Contract extends Delcaration {
     name: string;
