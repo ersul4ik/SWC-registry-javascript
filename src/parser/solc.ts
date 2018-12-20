@@ -51,7 +51,7 @@ class Solc {
 
         if (!Solc.isSolcVersionInstalled(version)) {
             logger.debug(`Solc version ${solc_version_string} not installed, trying to do that now.`);
-            niv.install(solc_version_string);
+            niv.install(solc_version_string, { quiet: true });
         }
 
         let compiler = niv.require(solc_version_string, { quiet: true });

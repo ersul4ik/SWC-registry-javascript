@@ -22,6 +22,7 @@ import Throw from "../core/expressions/throw";
 import BinaryOperation from "../core/expressions/binary_operation";
 import Parameter from "../core/declarations/parameter";
 import logger from "../logger/logger";
+import PragmaUtils from "../utils/pragma";
 
 class SolidityAntlr {
     /*
@@ -110,7 +111,9 @@ class SolidityAntlr {
             if (pragma.name.match(/solidity/)) {
                 let extracted_version: string = pragma.value.replace(/\^/, "");
                 if (extracted_version.match(/^(\d+\.\d+\.\d+)$/)) {
-                    return extracted_version;
+                    if (PragmaUtils.isSupportedVersion(extracted_version)) {
+                        return extracted_version;
+                    }
                 } else {
                     logger.error(`Extracting Solidity version failed got: ${extracted_version}`);
                 }

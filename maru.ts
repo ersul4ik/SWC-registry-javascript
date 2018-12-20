@@ -102,9 +102,20 @@ if (options.help || options.length < 1) {
 
     if (options.ast && stats.isFile()) {
         const sol_file = new SolFile(options.run);
-        const output = options.ast === "solc" ? sol_file.solc_compilation_output.errors : sol_file.antlrAST;
-        const response = JSON.stringify(output, null, 2);
-        console.log(response);
+        let output = {};
+
+        if (NodeUtility.matchString(options.ast, "solc")) {
+            output = sol_file.solc_compilation_output.sources;
+        } else if (NodeUtility.matchString(options.ast, "antlr")) {
+            output = sol_file.antlrAST;
+        }
+
+        if (Object.keys(output).length === 0) {
+            console.log("Provide a valid AST option");
+        } else {
+            const response = JSON.stringify(output, null, 4);
+            console.log(response);
+        }
     } else {
         const issues = Analyzer.runAllPlugins(repo, config);
         if (options.output === "json") {
