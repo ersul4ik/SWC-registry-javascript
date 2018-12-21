@@ -30,7 +30,7 @@ class Analyzer {
                             let pc = new PluginConfig(
                                 config.plugins[configPluginName].active,
                                 config.plugins[configPluginName].swcID,
-                                config.plugins[configPluginName].descriptionShort
+                                config.plugins[configPluginName].description
                             );
 
                             Logger.info(`Executing Plugin: ${configPluginName}`);

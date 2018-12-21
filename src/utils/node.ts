@@ -15,10 +15,6 @@ class NodeUtility {
         return node.loc.end.line;
     }
 
-    static isVersionFixed(version: string) {
-        return !version.match(/\^/);
-    }
-
     static matchRegex(node: any, match: RegExp): boolean {
         if (node !== null && node !== undefined) {
             if (node.match(match)) {

@@ -3,97 +3,160 @@
         "InsecureIntegerArithmetic": {
             "active": "false",
             "swcID": "SWC-101",
-            "descriptionShort": [""]
+            "description": [
+                {
+                    "head": "",
+                    "tail": ""
+                }
+            ]
         },
         "LockPragma": {
             "active": "true",
             "swcID": "SWC-103",
-            "descriptionShort": [
-                "It is recommended to make a conscious choice on what version of Solidity is used for compilation."
+            "description": [
+                {
+                    "head": "A floating pragma is set.",
+                    "tail": "It is recommended to make a conscious choice on what version of Solidity is used for compilation."
+                }
             ]
         },
         "OutdatedCompilerVersion": {
             "active": "true",
             "swcID": "SWC-102",
-            "descriptionShort": [
-                "The version of the compiler specified in the Pragma is outdated. It is recommended to use a more recent one (>=0.4.23)."
+            "description": [
+                {
+                    "head": "An outdated compiler version is set.",
+                    "tail": "The version of the compiler specified in the Pragma is outdated. It is recommended to use a more recent one (>=0.4.23)."
+                }
             ]
         },
         "DefaultVisibilityFunction": {
             "active": "true",
             "swcID": "SWC-100",
-            "descriptionShort": [
-                "The function does not have an explicit visibility set. The default visibility is set to public and anyone call the function."
+            "description": [
+                {
+                    "head": "The function visibility is not set.",
+                    "tail": "The function does not have an explicit visibility set. The default visibility is set to public and anyone call the function."
+                }
             ]
         },
         "DefaultVisibilityStateVariable": {
             "active": "true",
             "swcID": "SWC-108",
-            "descriptionShort": [
-                "It is best best practice to set the visibility of state variables explicitly."
+            "description": [
+                {
+                    "head": "The state variable visibility is not set.",
+                    "tail": "It is best best practice to set the visibility of state variables explicitly."
+                }
             ]
         },
+
         "UndeclaredStoragePointer": {
             "active": "true",
             "swcID": "SWC-109",
-            "descriptionShort": [
-                "Uninitialised storage variables of user-defined type can point to unexpected storage locations."
+            "description": [
+                {
+                    "head": "Dangerous use of uninitialised storage variables.",
+                    "tail": "Uninitialised storage variables of user-defined type can point to unexpected storage locations."
+                }
             ]
         },
         "DeprecatedFunctions": {
             "active": "true",
             "swcID": "SWC-111",
-            "descriptionShort": [
-                "Using _constant_ as a function state mutability modifier is disallowed as of Solidity version 0.5.0 use _view_ instead.",
-                "_sha3()_ is disallowed as of Solidity version 0.5.0, use _keccak256()_ instead.",
-                "_suicide()_ is disallowed as of Solidity version 0.5.0, use _selfdestruct()_ instead.",
-                "_callcode()_ is disallowed as of Solidity version 0.5.0, use _delegatecall()_ instead.",
-                "_block.blockhash_ is deprecated and _blockhash()_ should be used instead.",
-                "_gasleft()_ is disallowed as of Solidity version 0.5.0, use _msg.gas_ instead. ",
-                "_throw_ is now disallowed as of Solidity version 0.5.0 in favor of _revert_, _require_ and _assert_"
+            "description": [
+                {
+                    "head": "",
+                    "tail": "Using _constant_ as a function state mutability modifier is disallowed as of Solidity version 0.5.0 use _view_ instead."
+                },
+                {
+                    "head": "",
+                    "tail": "_sha3()_ is disallowed as of Solidity version 0.5.0, use _keccak256()_ instead."
+                },
+                {
+                    "head": "",
+                    "tail": "_suicide()_ is disallowed as of Solidity version 0.5.0, use _selfdestruct()_ instead."
+                },
+                {
+                    "head": "",
+                    "tail": "_callcode()_ is disallowed as of Solidity version 0.5.0, use _delegatecall()_ instead."
+                },
+                {
+                    "head": "",
+                    "tail": "_block.blockhash_ is deprecated and _blockhash()_ should be used instead."
+                },
+                {
+                    "head": "",
+                    "tail": "_gasleft()_ is disallowed as of Solidity version 0.5.0, use _msg.gas_ instead. "
+                },
+                {
+                    "head": "",
+                    "tail": "_throw_ is now disallowed as of Solidity version 0.5.0 in favor of _revert_, _require_ and _assert_"
+                }
             ]
         },
         "UncheckedCallReturnValue": {
             "active": "true",
             "swcID": "SWC-104",
-            "descriptionShort": [
-                "Always check the return value for low level calls like call(), send() and delegatecall()."
+            "description": [
+                {
+                    "head": "",
+                    "tail": "Always check the return value for low level calls like call(), send() and delegatecall()."
+                }
             ]
         },
         "IncorrectConstructorName": {
             "active": "true",
             "swcID": "SWC-118",
-            "descriptionShort": [
-                "Until Solidity version 0.4.22 a constructor can only be defined as a function that has the same name as the contract. It has been discovered that there is a function with a very similar name that only deviates based lower/upper case characters.",
-                "A function is named constructor. The correct way of defining a constructor is without the function delaration."
+            "description": [
+                {
+                    "head": "",
+                    "tail": "Until Solidity version 0.4.22 a constructor can only be defined as a function that has the same name as the contract. It has been discovered that there is a function with a very similar name that only deviates based lower/upper case characters."
+                },
+                {
+                    "head": "",
+                    "tail": "A function is named constructor. The correct way of defining a constructor is without the function delaration."
+                }
             ]
         },
         "AuthorizationTXOrigin": {
             "active": "true",
             "swcID": "SWC-118",
-            "descriptionShort": [
-                "Using tx.origin as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. "
+            "description": [
+                {
+                    "head": "",
+                    "tail": "Using tx.origin as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. "
+                }
             ]
         },
         "WeakRandomnessFunction": {
             "active": "true",
             "swcID": "SWC-120",
-            "descriptionShort": [
-                "Using past or the current block hashes as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
+            "description": [
+                {
+                    "head": "",
+                    "tail": "Using past or the current block hashes as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
+                }
             ]
         },
         "TypoGraphicalErrorFunction": {
             "active": "true",
             "swcID": "SWC-129",
-            "descriptionShort": [
-                "An unary operation was disovered directly after an assignment operation."
+            "description": [
+                {
+                    "head": "",
+                    "tail": "An unary operation was disovered directly after an assignment operation."
+                }
             ]
         },
         "IncorrectInheritanceOrderFunction": {
             "active": "true",
             "swcID": "SWC-125",
-            "descriptionShort": [
-                "The following functions were detected to exist in the contract and its base classes"
+            "description": [
+                {
+                    "head": "",
+                    "tail": "The following functions were detected to exist in the contract and its base classes."
+                }
             ]
         }
     }
