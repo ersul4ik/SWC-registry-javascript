@@ -10,6 +10,7 @@ import Analyzer from "./src/maru/analyzer";
 import Reporter from "./src/maru/reporter";
 import Repository from "./src/maru/repository";
 import NodeUtility from "./src/utils/node";
+import Report from "./src/maru/report";
 import SolFile from "./src/maru/sol_file";
 
 const optionDefinitions = [
@@ -116,11 +117,15 @@ if (options.help || options.length < 1) {
             console.log(response);
         }
     } else {
-        const issues = Analyzer.runAllPlugins(repo, config);
+        let sourceType: string = "text";
+        let sourceFormat: string = "soldity-file";
+
+        let reports: Report[] = Analyzer.runAllPlugins(repo, config, sourceType, sourceFormat);
+
         if (options.output === "json") {
-            Reporter.toJSON(issues);
+            Reporter.toJSON(reports);
         } else {
-            Reporter.toText(issues);
+            Reporter.toText(reports[0].issues);
         }
     }
 } else {

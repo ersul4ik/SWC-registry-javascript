@@ -12,12 +12,17 @@ import FileUtils from "../utils/file";
 import { IssueDetailed, IssuePointer } from "./issue";
 import Repository from "./repository";
 import PluginConfig from "./plugin_config";
+import Report from "./report";
 
 class Analyzer {
-    static runAllPlugins(repo: Repository, config: { [plugins: string]: any }): IssueDetailed[] {
-        let issues: IssueDetailed[] = [];
+    static runAllPlugins(repo: Repository, config: { [plugins: string]: any }, sourceType: string, sourceFormat: string): Report[] {
+        let reports: Report[] = [];
 
         for (const sol_file of repo.sol_files) {
+            let issues: IssueDetailed[] = [];
+            let sourceList: string[] = [];
+            let meta: {} = {};
+
             for (const configPluginName in config.plugins) {
                 if (config.plugins[configPluginName].active === "true") {
                     let pluginFound = false;
@@ -45,12 +50,15 @@ class Analyzer {
                                 Logger.debug(error);
                             }
 
-                            for (const issuePointer of issuePointers) {
-                                const { lineNumberStart, lineNumberEnd } = issuePointer;
-                                const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberEnd);
-                                const issueDetailed = new IssueDetailed(sol_file.file_name, code, issuePointer);
+                            if (issuePointers.length > 0) {
+                                for (const issuePointer of issuePointers) {
+                                    const { lineNumberStart, lineNumberEnd } = issuePointer;
+                                    const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberEnd);
 
-                                issues.push(issueDetailed);
+                                    const issueDetailed = new IssueDetailed(sol_file.file_name, code, issuePointer);
+
+                                    issues.push(issueDetailed);
+                                }
                             }
                         }
                     }
@@ -60,8 +68,14 @@ class Analyzer {
                     }
                 }
             }
+
+            for (const source of sol_file.sources) {
+                sourceList.push(source.file_name);
+            }
+
+            reports.push(new Report(sourceType, sourceFormat, sourceList, issues));
         }
-        return issues;
+        return reports;
     }
 }
 export default Analyzer;

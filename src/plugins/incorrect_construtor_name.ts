@@ -16,9 +16,9 @@ IncorrectConstructorName = function(sol_file: SolFile, plugin_config: PluginConf
         if (!c.hasConstructor()) {
             for (const f of c.functions) {
                 if (NodeUtility.matchRegex(f.name, new RegExp("^" + c.name + "$", "i"))) {
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], f.location));
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.description[0], f.location));
                 } else if (NodeUtility.matchRegex(f.name, new RegExp("^constructor$", "i"))) {
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[1], f.location));
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.description[1], f.location));
                 }
             }
         }

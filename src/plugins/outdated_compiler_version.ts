@@ -18,7 +18,7 @@ OutdatedCompilerVersion = function(sol_file: SolFile, plugin_config: PluginConfi
         for (const pragma of source.pragmas) {
             if (pragma.name.match("solidity")) {
                 if (semver.lt(pragma.value.replace("^", ""), oldest_recommended_version)) {
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], pragma.location));
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.description[0], pragma.location));
                 }
             }
         }

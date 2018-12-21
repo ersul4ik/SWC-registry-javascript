@@ -2,6 +2,8 @@ const path = require("path");
 
 import SWC from "./../swc/swc";
 import Location from "../misc/location";
+import Description from "./description";
+import { MythXIssue, MythXLocation } from "./mythX";
 
 const SWC_REGISTRY_DOC = "https://smartcontractsecurity.github.io/SWC-registry/docs";
 
@@ -46,25 +48,15 @@ class IssueDetailed {
         console.log(`Filename: ${this.file_name}`);
         console.log(`Title: ${this.issuePointer.swc.getTitle()}`);
         console.log(`SWC-Link: ${this.swcURL}`);
-        console.log(`Description-Short: ${this.issuePointer.descriptionShort}`);
+        console.log(`Description-Head: ${this.issuePointer.description.head}`);
+        console.log(`Description-Tail: ${this.issuePointer.description.tail}`);
         console.log(`Code: \n${this.code}`);
     }
 
     jsonValue() {
         const { id } = this.issuePointer;
         const { lineNumberStart, lineNumberEnd, columnStart, columnEnd, src } = this.issuePointer;
-        return {
-            "swc-id": id,
-            "swc-title": this.issuePointer.swc.getTitle(),
-            "description-short": this.issuePointer.descriptionShort,
-            filename: this.file_name,
-            lineNumberStart: lineNumberStart,
-            lineNumberEnd: lineNumberEnd,
-            columnStart: columnStart,
-            columnEnd: columnEnd,
-            src: src,
-            "swc-link": this.swcURL
-        };
+        return new MythXIssue(id, this.issuePointer.swc.getTitle(), this.issuePointer.description, new MythXLocation(src));
     }
 
     jsonPrint() {
@@ -75,17 +67,17 @@ class IssueDetailed {
 class IssuePointer {
     swc: SWC;
     id: string;
-    descriptionShort: string;
+    description: Description;
     lineNumberStart: number;
     lineNumberEnd: number;
     columnStart: number;
     columnEnd: number;
     src: string;
 
-    constructor(id: string, descriptionShort: string, location: Location) {
+    constructor(id: string, description: Description, location: Location) {
         this.swc = new SWC(id);
         this.id = id;
-        this.descriptionShort = descriptionShort;
+        this.description = description;
         this.lineNumberStart = location.lineNumberStart;
         this.lineNumberEnd = location.lineNumberEnd;
         this.columnStart = location.columnStart;
@@ -105,7 +97,7 @@ class IssuePointer {
     jsonValue() {
         return {
             id: this.id,
-            descriptionShort: this.descriptionShort,
+            description: this.description,
             lineNumberStart: this.lineNumberStart,
             lineNumberEnd: this.lineNumberEnd,
             columnStart: this.columnStart,
