@@ -1,6 +1,6 @@
 {
     "name": "maru",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "description": "A simple, rule based static code analyzer for Solidity smart contracts. ",
     "bin": "./maru",
     "dependencies": {
