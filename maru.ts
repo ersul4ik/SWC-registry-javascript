@@ -117,8 +117,8 @@ if (options.help || options.length < 1) {
             console.log(response);
         }
     } else {
-        let sourceType: string = "text";
-        let sourceFormat: string = "soldity-file";
+        let sourceType: string = "solidity-file";
+        let sourceFormat: string = "text";
 
         let reports: Report[] = Analyzer.runAllPlugins(repo, config, sourceType, sourceFormat);
 

@@ -1,16 +1,21 @@
 import Description from "./description";
 
 class MythXIssue {
-    "swc-id": string;
-    "swc-title": string;
+    "swcID": string;
+    "swcTitle": string;
     description: Description;
     locations: MythXLocation[] = [];
+    severity: string;
+    extra: {};
 
     constructor(id: string, title: string, description: Description, location: MythXLocation) {
-        this["swc-id"] = id;
-        this["swc-title"] = title;
+        this["swcID"] = id;
+        this["swcTitle"] = title;
         this.description = description;
         this.locations.push(location);
+        // Fix me
+        this.severity = "Low";
+        this.extra = {};
     }
 }
 

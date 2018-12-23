@@ -21,6 +21,8 @@ class Analyzer {
         for (const sol_file of repo.sol_files) {
             let issues: IssueDetailed[] = [];
             let sourceList: string[] = [];
+
+            // add errors in there, also the solidity compiler would be good
             let meta: {} = {};
 
             for (const configPluginName in config.plugins) {
@@ -73,7 +75,7 @@ class Analyzer {
                 sourceList.push(source.file_name);
             }
 
-            reports.push(new Report(sourceType, sourceFormat, sourceList, issues));
+            reports.push(new Report(sourceType, sourceFormat, sourceList, issues, meta));
         }
         return reports;
     }

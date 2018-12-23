@@ -2,14 +2,14 @@ import { IssueDetailed } from "./issue";
 
 class Report {
     sourceType: string;
-    sourceValue: string;
+    sourceFormat: string;
     sourceList: string[];
     meta: {};
     issues: IssueDetailed[];
 
-    constructor(sourceType: string, sourceValue: string, sourceList: string[], issues: IssueDetailed[]) {
+    constructor(sourceType: string, sourceFormat: string, sourceList: string[], issues: IssueDetailed[], meta: {}) {
         this.sourceType = sourceType;
-        this.sourceValue = sourceValue;
+        this.sourceFormat = sourceFormat;
         this.sourceList = sourceList;
         this.meta = {};
         this.issues = issues;

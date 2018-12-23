@@ -19,8 +19,8 @@ class Reporter {
             let found: boolean = false;
             for (let y: number = 0; y < filtered_issues.length; y++) {
                 if (
-                    NodeUtility.matchString(issues[x]["swc-id"], filtered_issues[y]["swc-id"]) &&
-                    NodeUtility.matchString(issues[x]["swc-title"], filtered_issues[y]["swc-title"]) &&
+                    NodeUtility.matchString(issues[x]["swcID"], filtered_issues[y]["swcID"]) &&
+                    NodeUtility.matchString(issues[x]["swcTitle"], filtered_issues[y]["swcTitle"]) &&
                     NodeUtility.matchString(issues[x].description.head, filtered_issues[y].description.head) &&
                     NodeUtility.matchString(issues[x].description.tail, filtered_issues[y].description.tail)
                 ) {
@@ -35,7 +35,13 @@ class Reporter {
 
         console.log(
             JSON.stringify(
-                { sourceType: report.sourceType, sourceValue: report.sourceValue, sourceList: report.sourceList, issues: filtered_issues },
+                {
+                    sourceType: report.sourceType,
+                    sourceFormat: report.sourceFormat,
+                    sourceList: report.sourceList,
+                    issues: filtered_issues,
+                    meta: report.meta
+                },
                 null,
                 4
             )
