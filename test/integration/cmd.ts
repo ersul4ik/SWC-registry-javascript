@@ -28,6 +28,16 @@ describe("CMD commands", () => {
             expect(report.sourceList.length).toEqual(2);
             expect(report.issues.length).toEqual(1);
             expect(report.meta).toEqual({});
+
+            const issue = <MythXIssue>(<unknown>report.issues[0]);
+
+            expect(issue.locations.length).toEqual(2);
+            expect(issue.swcID).toEqual("SWC-103");
+            expect(issue.swcTitle).toEqual("Floating Pragma");
+            expect(issue.description.head.length).toBeGreaterThan(0);
+            expect(issue.description.tail.length).toBeGreaterThan(0);
+            expect(issue.severity.length).toBeGreaterThan(0);
+            expect(issue.extra).toBeGreaterThan({});
         });
     });
 });
