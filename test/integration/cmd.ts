@@ -29,7 +29,7 @@ describe("CMD commands", () => {
             expect(report.sourceType).toEqual("solidity-file");
             expect(report.sourceFormat).toEqual("text");
             expect(report.sourceList.length).toEqual(2);
-            expect(report.issues.length).toEqual(1);
+            expect(report.issues.length).toEqual(2);
             expect(report.meta).toEqual({});
 
             const issue = <MythXIssue>(<unknown>report.issues[0]);
