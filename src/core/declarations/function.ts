@@ -1,10 +1,10 @@
-import Location from '../../misc/location';
-import Node from '../../misc/node';
-import Delcaration from './declaration';
-import Parameter from './parameter';
-import Variable from './variable';
+import Location from "../../misc/location";
+import Node from "../../misc/node";
+import Declaration from "./declaration";
+import Parameter from "./parameter";
+import Variable from "./variable";
 
-class CFunction extends Delcaration {
+class CFunction extends Declaration {
     name: string;
     isConstructor: boolean;
     visibility: string;

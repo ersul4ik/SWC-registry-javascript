@@ -1,11 +1,11 @@
 import Location from "../../misc/location";
 import Node from "../../misc/node";
 import SolidityAntlr from "../../parser/solidity_antlr";
-import Delcaration from "./declaration";
+import Declaration from "./declaration";
 import CFunction from "./function";
 import Variable from "./variable";
 
-class Contract extends Delcaration {
+class Contract extends Declaration {
     name: string;
     kind: string;
     linearizedBaseContracts: number[];

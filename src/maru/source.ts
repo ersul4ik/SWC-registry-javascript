@@ -21,6 +21,7 @@ import Modifier from "../core/declarations/modifier";
 import logger from "../logger/logger";
 import PlaceHolder from "../core/statements/placeholder";
 import Node from "../misc/node";
+import Throw from "../core/expressions/throw";
 
 class Source {
     file_name: string;
@@ -111,7 +112,8 @@ class Source {
             const isConstructor: boolean = node.attributes.isConstructor;
             const visibility: string = node.attributes.visibility;
             let stateMutability: string = node.attributes.stateMutability;
-            const isImplemented = node.attributes.implemented;
+            const isImplemented: boolean = node.attributes.implemented;
+            const constant: boolean = node.attributes.constant;
 
             // rename constructor consistenly
             if (isConstructor) {
@@ -121,6 +123,8 @@ class Source {
             // stateMutability is null if it is not set specifically
             if (stateMutability === null) {
                 stateMutability = "nonpayable";
+            } else if (constant) {
+                stateMutability = "constant";
             }
 
             const variables = this.parseVariables(node.id);
@@ -354,6 +358,21 @@ class Source {
         return ph;
     }
 
+    parseThrow(id: number): Throw[] {
+        let th: Throw[] = [];
+        let filtered_nodes: any[] = [];
+
+        filtered_nodes = this.getChildren(id, NodeTypes.Throw);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+
+            th.push(new Throw(location));
+        }
+
+        return th;
+    }
+
     parseIfStatement(id: number): IfStatement[] {
         let if_s: IfStatement[] = [];
         let filtered_nodes: any[] = [];
@@ -496,12 +515,21 @@ class Source {
         }
     }
 
+    isInternalReferencedIdentifier(node: any, source_unit_id: number): boolean {
+        if (NodeUtility.hasProperty(node.attributes, "referencedDeclaration")) {
+            if (node.attributes.referencedDeclaration > source_unit_id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     getInternalReferencedIdentifiers(): any[] {
         let su: SourceUnit[] = this.parseSourceUnit();
         let external_references: any[] = [];
 
         for (const n of this.nodes) {
-            if (NodeUtility.hasProperty(n.attributes, "referencedDeclaration") && n.attributes.referencedDeclaration > su[0].id) {
+            if (this.isInternalReferencedIdentifier(n, su[0].id)) {
                 external_references.push(n);
             }
         }

@@ -16,7 +16,8 @@ const NodeTypes = {
     BinaryOperation: "BinaryOperation",
     UnaryOperation: "UnaryOperation",
     IfStatement: "IfStatement",
-    Literal: "Literal"
+    Literal: "Literal",
+    Throw: "Throw"
 };
 
 export default NodeTypes;

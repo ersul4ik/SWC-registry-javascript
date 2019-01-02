@@ -1,10 +1,10 @@
 import Location from "../../misc/location";
 import Node from "../../misc/node";
-import Delcaration from "./declaration";
+import Declaration from "./declaration";
 import Parameter from "./parameter";
 import Variable from "./variable";
 
-class Modifier extends Delcaration {
+class Modifier extends Declaration {
     name: string;
     visibility: string;
     variables: Variable[];

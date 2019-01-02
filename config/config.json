@@ -66,32 +66,32 @@
             "swcID": "SWC-111",
             "description": [
                 {
-                    "head": "",
-                    "tail": "Using _constant_ as a function state mutability modifier is disallowed as of Solidity version 0.5.0 use _view_ instead."
+                    "head": "Use of disallowed state mutability modifier \"constant\".",
+                    "tail": "Using \"constant\" as a state mutability modifier in function {0} is disallowed as of Solidity version 0.5.0. Use \"view\" instead."
                 },
                 {
-                    "head": "",
-                    "tail": "_sha3()_ is disallowed as of Solidity version 0.5.0, use _keccak256()_ instead."
+                    "head": "Use of disallowed function \"sha3()\".",
+                    "tail": "\"sha3()\" is disallowed as of Solidity version 0.5.0, use \"keccak256()\" instead."
                 },
                 {
-                    "head": "",
-                    "tail": "_suicide()_ is disallowed as of Solidity version 0.5.0, use _selfdestruct()_ instead."
+                    "head": "Use of disallowed function \"selfdestruct()\"",
+                    "tail": "\"suicide()\" is disallowed as of Solidity version 0.5.0, use \"selfdestruct()\" instead."
                 },
                 {
-                    "head": "",
-                    "tail": "_callcode()_ is disallowed as of Solidity version 0.5.0, use _delegatecall()_ instead."
+                    "head": "Use of disallowed function \"callcode()\"",
+                    "tail": "\"callcode()\" is disallowed as of Solidity version 0.5.0, use \"delegatecall()\" instead."
                 },
                 {
-                    "head": "",
-                    "tail": "_block.blockhash_ is deprecated and _blockhash()_ should be used instead."
+                    "head": "Use of disallowed function \"block.blockhash()\".",
+                    "tail": "\"block.blockhash()\" is deprecated and \"blockhash()\" should be used instead."
                 },
                 {
-                    "head": "",
-                    "tail": "_gasleft()_ is disallowed as of Solidity version 0.5.0, use _msg.gas_ instead. "
+                    "head": "Use of disallowed global variable \"msg.gas\"",
+                    "tail": "\"msg.gas()\" is disallowed as of Solidity version 0.5.0, use \"gasleft()\" instead. "
                 },
                 {
-                    "head": "",
-                    "tail": "_throw_ is now disallowed as of Solidity version 0.5.0 in favor of _revert_, _require_ and _assert_"
+                    "head": "Use of disallowed function \"throw()\".",
+                    "tail": "\"throw\" is disallowed as of Solidity version 0.5.0 in favor of \"revert()\", \"require()\" and \"assert()\""
                 }
             ]
         },

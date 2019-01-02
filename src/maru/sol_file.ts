@@ -43,12 +43,22 @@ class SolFile {
         this.contracts = this.getContracts();
     }
 
-    getContracts() {
+    getContracts(): Contract[] {
         let contracts: Contract[] = [];
         for (const source of this.sources) {
             contracts = contracts.concat(source.parseContracts());
         }
         return contracts;
+    }
+
+    getFunctions(): CFunction[] {
+        let functions: CFunction[] = [];
+        for (const contract of this.contracts) {
+            for (const cfunction of contract.functions) {
+                functions.push(cfunction);
+            }
+        }
+        return functions;
     }
 }
 

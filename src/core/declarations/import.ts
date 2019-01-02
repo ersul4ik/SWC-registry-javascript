@@ -1,8 +1,8 @@
-import Location from '../../misc/location';
-import Delcaration from './declaration';
+import Location from "../../misc/location";
+import Declaration from "./declaration";
 
 const fs = require("fs");
-class Import extends Delcaration {
+class Import extends Declaration {
     path: string;
 
     constructor(location: Location, path: string) {

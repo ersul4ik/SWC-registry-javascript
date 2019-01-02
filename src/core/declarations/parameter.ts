@@ -1,10 +1,10 @@
-import Location from '../../misc/location';
-import Node from '../../misc/node';
-import ElementaryType from '../types/elementary_type';
-import Type from '../types/type';
-import Delcaration from './declaration';
+import Location from "../../misc/location";
+import Node from "../../misc/node";
+import ElementaryType from "../types/elementary_type";
+import Type from "../types/type";
+import Declaration from "./declaration";
 
-class Parameter extends Delcaration {
+class Parameter extends Declaration {
     name: string;
     type: Type;
     isStateVar: boolean;
