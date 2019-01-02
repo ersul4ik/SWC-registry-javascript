@@ -16,7 +16,7 @@
             "description": [
                 {
                     "head": "A floating pragma is set.",
-                    "tail": "It is recommended to make a conscious choice on what version of Solidity is used for compilation."
+                    "tail": "It is recommended to make a conscious choice on what version of Solidity is used for compilation. Currently any version equal or grater than {0} is allowed."
                 }
             ]
         },
@@ -56,8 +56,8 @@
             "swcID": "SWC-109",
             "description": [
                 {
-                    "head": "Dangerous use of uninitialised storage variables.",
-                    "tail": "Uninitialised storage variables of user-defined type can point to unexpected storage locations."
+                    "head": "Dangerous use of uninitialized storage variables.",
+                    "tail": "Uninitialized storage variables of user-defined type can point to unexpected storage locations."
                 }
             ]
         },

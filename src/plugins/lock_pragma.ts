@@ -8,6 +8,8 @@ import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 import Pragma from "../core/declarations/pragma";
 import PragmaUtils from "../utils/pragma";
+import Description from "../maru/description";
+import DescriptionUtils from "../utils/description";
 
 let LockPragma: Plugin;
 
@@ -18,7 +20,10 @@ LockPragma = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePoin
         for (const pragma of source.pragmas) {
             if (pragma.name.match("solidity")) {
                 if (!PragmaUtils.isVersionFixed(pragma.value)) {
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.description[0], pragma.location));
+                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
+                        pragma.value.replace(/\^/, "")
+                    ]);
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, pragma.location));
                 }
             }
         }
