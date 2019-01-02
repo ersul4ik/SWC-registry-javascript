@@ -1,6 +1,6 @@
-import Location from '../../misc/location';
+import Location from "../../misc/location";
 
-class Delcaration {
+class Declaration {
     location: Location;
     scope: number;
 
@@ -10,4 +10,4 @@ class Delcaration {
     }
 }
 
-export default Delcaration;
+export default Declaration;

@@ -46,7 +46,7 @@
             "description": [
                 {
                     "head": "The state variable visibility is not set.",
-                    "tail": "It is best best practice to set the visibility of state variables explicitly."
+                    "tail": "It is best best practice to set the visibility of state variables explicitly. The default visibility for {0} is internal. Other possible visibility values are public and private."
                 }
             ]
         },

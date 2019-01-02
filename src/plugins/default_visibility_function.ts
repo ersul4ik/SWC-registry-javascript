@@ -23,7 +23,7 @@ DefaultVisibilityFunction = function(sol_file: SolFile, plugin_config: PluginCon
     const functions: CFunction[] = SolidityAntlr.parseFunction(new Node(sol_file.antlrAST));
 
     for (const f of functions) {
-        if (f.visibility.match(/default/)) {
+        if (NodeUtility.matchString(f.visibility, "default")) {
             const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [f.name]);
             issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, f.location));
         }
