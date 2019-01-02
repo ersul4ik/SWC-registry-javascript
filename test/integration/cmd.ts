@@ -1,6 +1,7 @@
 import logger from "../../src/logger/logger";
 import Report from "../../src/maru/report";
 import { MythXIssue } from "../../src/maru/mythX";
+import NodeUtility from "../../src/utils/node";
 
 const { spawn } = require("child_process");
 const assert = require("assert");
@@ -13,7 +14,7 @@ describe("CMD commands", () => {
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
             const str = data.toString();
-            logger.debug(str);
+            // logger.debug(str);
             expect(str.includes(`Maru version ${version}`));
         });
     });
@@ -22,7 +23,9 @@ describe("CMD commands", () => {
         const prc = spawn("./maru", ["-r", "./test/sol_files/imports/simple.sol", "-o", "json"]);
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
+            NodeUtility.printNode(data);
             const report: Report = JSON.parse(data.toString());
+
             expect(report.sourceType).toEqual("solidity-file");
             expect(report.sourceFormat).toEqual("text");
             expect(report.sourceList.length).toEqual(2);
@@ -37,7 +40,7 @@ describe("CMD commands", () => {
             expect(issue.description.head.length).toBeGreaterThan(0);
             expect(issue.description.tail.length).toBeGreaterThan(0);
             expect(issue.severity.length).toBeGreaterThan(0);
-            expect(issue.extra).toBeGreaterThan({});
+            expect(issue.extra).toEqual({});
         });
     });
 });

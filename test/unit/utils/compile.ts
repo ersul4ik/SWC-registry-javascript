@@ -44,7 +44,6 @@ describe(`Compile Sol File with imports using version 0.4.x for ${imports_04}`, 
 
     it(`Extract sources from Solc AST`, async () => {
         const out = Solc.compile(imports_04, "0.4.24");
-        NodeUtility.printNode(out);
         expect(Object.keys(out.sources)[0]).toEqual(imports_04);
         expect(Object.keys(out.sources)[1]).toEqual("./test/sol_files/imports/lib/B.sol");
         expect(Object.keys(out.sources)[2]).toEqual("./test/sol_files/imports/lib2/C.sol");
