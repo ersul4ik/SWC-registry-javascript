@@ -240,14 +240,12 @@ class SolidityAntlr {
     }
     */
 
-    /*
     static parseFunction(parent_node: Node): CFunction[] {
         let functions: CFunction[] = [];
         parser.visit(parent_node.branch, {
             FunctionDefinition(node: any) {
                 let name: string = node.name;
-                const function_parameters: Parameter[] = SolidityAntlr.parseParameter(new Node(node.parameters));
-                const return_parameters: Parameter[] = SolidityAntlr.parseParameter(new Node(node.returnParameters));
+                const function_parameters: Variable[] = [];
                 const visibility: string = node.visibility;
                 const modifiers: any = node.modifiers;
                 const variables: Variable[] = [];
@@ -280,7 +278,6 @@ class SolidityAntlr {
                         isImplemented,
                         variables,
                         function_parameters,
-                        return_parameters,
                         modifiers
                     )
                 );
@@ -288,7 +285,7 @@ class SolidityAntlr {
         });
 
         return functions;
-    }*/
+    }
 
     static parseParameter(parent_node: Node): Parameter[] {
         let parameters: Parameter[] = [];

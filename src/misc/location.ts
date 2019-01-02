@@ -23,7 +23,6 @@ class Location {
         this.lineNumberEnd = lineNumberEnd;
         this.columnStart = columnStart;
         this.columnEnd = columnEnd;
-        this.src = src;
     }
 }
 

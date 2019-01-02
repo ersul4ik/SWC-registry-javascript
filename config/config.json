@@ -36,7 +36,7 @@
             "description": [
                 {
                     "head": "The function visibility is not set.",
-                    "tail": "The function does not have an explicit visibility set. The default visibility is set to public and anyone call the function."
+                    "tail": "The function {0} does not have an explicit visibility set. The default visibility is set to public and anyone call the function."
                 }
             ]
         },

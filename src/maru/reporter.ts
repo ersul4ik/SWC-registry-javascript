@@ -2,6 +2,7 @@ import { IssueDetailed } from "./issue";
 import Report from "./report";
 import NodeUtility from "../utils/node";
 import { MythXIssue } from "./mythX";
+import logger from "../logger/logger";
 
 class Reporter {
     static toText(issues: IssueDetailed[]) {
@@ -15,8 +16,10 @@ class Reporter {
         const issues = report.issues.map(item => item.jsonValue());
         let filtered_issues: MythXIssue[] = [];
 
+        logger.debug(`Converting ${issues.length} issues to MythX standard issues.`);
         for (let x: number = 0; x < issues.length; x++) {
             let found: boolean = false;
+
             for (let y: number = 0; y < filtered_issues.length; y++) {
                 if (
                     NodeUtility.matchString(issues[x]["swcID"], filtered_issues[y]["swcID"]) &&
@@ -25,7 +28,7 @@ class Reporter {
                     NodeUtility.matchString(issues[x].description.tail, filtered_issues[y].description.tail)
                 ) {
                     found = true;
-                    filtered_issues[y].locations.push(issues[x].locations[y]);
+                    filtered_issues[y].locations.push(issues[x].locations[0]);
                 }
             }
             if (!found) {
