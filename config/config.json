@@ -25,8 +25,8 @@
             "swcID": "SWC-102",
             "description": [
                 {
-                    "head": "An outdated compiler version is set.",
-                    "tail": "The version of the compiler specified in the Pragma is outdated. It is recommended to use a more recent one (>=0.4.23)."
+                    "head": "An outdated compiler version is used.",
+                    "tail": "The version of the compiler specified in the Pragma {0} is outdated. It is recommended to use a more recent version (>=0.4.23). For more information on Solidity compiler bug reports and fixes check https://github.com/ethereum/solidity/releases."
                 }
             ]
         },
@@ -111,11 +111,11 @@
             "description": [
                 {
                     "head": "",
-                    "tail": "Until Solidity version 0.4.22 a constructor can only be defined as a function that has the same name as the contract. It has been discovered that there is a function with a very similar name that only deviates based lower/upper case characters."
+                    "tail": "Until Solidity version 0.4.21 a constructor can only be defined as a function that has the same name as the contract {0}. It has been found that there is a function with a very similar name {1} that only deviates based lower/upper case characters."
                 },
                 {
                     "head": "",
-                    "tail": "A function is named constructor. The correct way of defining a constructor is without the function delaration."
+                    "tail": "Since Solidity version 0.4.22 there is a special constructor keyword available that explicitly declares the constructor of a contract. It has been found that a function definition incorrectly uses the constructor keyword which indicates an incorrect constructor declaration. "
                 }
             ]
         },

@@ -21,7 +21,7 @@ LockPragma = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePoin
             if (pragma.name.match("solidity")) {
                 if (!PragmaUtils.isVersionFixed(pragma.value)) {
                     const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
-                        pragma.value.replace(/\^/, "")
+                        PragmaUtils.getVersionWithoutCaret(pragma.value)
                     ]);
                     issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, pragma.location));
                 }

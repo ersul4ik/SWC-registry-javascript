@@ -17,6 +17,7 @@ describe("Description", () => {
 
     it(`Test case - format a description with parameters`, async () => {
         let description_lock_pragma: Description = config.plugins["LockPragma"].description[0];
+
         const description_lock_pragma_formatted: Description = DescriptionUtils.formatParameters(description_lock_pragma, ["0.4.10"]);
 
         expect(description_lock_pragma_formatted.tail).toContain("0.4.10");

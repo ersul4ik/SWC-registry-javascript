@@ -40,6 +40,10 @@ class PragmaUtils {
     static isVersionFixed(version: string): boolean {
         return !version.match(/\^/);
     }
+
+    static getVersionWithoutCaret(version: string): string {
+        return version.replace(/\^/, "");
+    }
 }
 
 export default PragmaUtils;
