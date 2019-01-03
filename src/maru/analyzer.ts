@@ -72,7 +72,11 @@ class Analyzer {
                 sourceList.push(source.file_name);
             }
 
-            let meta = { error: sol_file.getErrors(), selected_compiler: sol_file.selected_compiler_version };
+            let meta = {
+                selected_compiler: sol_file.selected_compiler_version,
+                error: sol_file.getErrors(),
+                warning: sol_file.getWarnings()
+            };
 
             reports.push(new Report(sourceType, sourceFormat, sourceList, issues, meta));
         }

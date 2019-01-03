@@ -66,15 +66,31 @@ class SolFile {
         let errors: string[] = [];
 
         for (const e of this.solc_compilation_output.errors) {
-            errors.push(`Antlr:${e}`);
+            if (!String(e).match("Warning")) {
+                errors.push(`Solc:${e}`);
+            }
         }
+
         if (NodeUtility.hasProperty(this.antlrAST, "errors")) {
             for (const e of this.antlrAST.errors) {
-                errors.push(`Solc:${this.file_name}:${e.line}:${e.column}: ${e.message}`);
+                if (!String(e).match("Warning")) {
+                    errors.push(`Antlr:${this.file_name}:${e.line}:${e.column}: ${e.message}`);
+                }
             }
         }
 
         return errors;
+    }
+
+    getWarnings(): string[] {
+        let warnings: string[] = [];
+
+        for (const e of this.solc_compilation_output.errors) {
+            if (String(e).match("Warning")) {
+                warnings.push(`Solc:${e}`);
+            }
+        }
+        return warnings;
     }
 }
 

@@ -6,23 +6,22 @@ import NodeUtility from "../../../src/utils/node";
 import path from "path";
 
 const expect = require("expect");
-const fs = require("fs");
-
-const niv = require("npm-install-version");
 
 const error = "./test/sol_files/errors/error.sol";
+const warning = "./test/sol_files/errors/warning.sol";
 
 describe(`Compile invalid SolFile ${error}`, () => {
-    niv.install("solc@0.4.24", { quiet: true });
-
-    it(`For Solc AST`, async () => {
-        const out = Solc.compile(error, "0.4.24");
-        expect(out.contracts).toEqual({});
-        expect(out.errors.length).toEqual(1);
+    it(`Get errors for Solc and Antlr `, async () => {
+        const sol_file = new SolFile(error);
+        const errors = sol_file.getErrors();
+        expect(errors.length).toEqual(2);
     });
+});
 
-    it(`For Antlr AST`, async () => {
-        const out = SolidityAntlr.generateAST(error);
-        expect(out.errors.length).toEqual(1);
+describe(`Compile SolFile ${warning} with warnings`, () => {
+    it(`Get warnings for Solc`, async () => {
+        const sol_file = new SolFile(warning);
+        const warnings = sol_file.getWarnings();
+        expect(warnings.length).toEqual(2);
     });
 });
