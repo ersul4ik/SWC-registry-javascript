@@ -22,6 +22,7 @@ import logger from "../logger/logger";
 import PlaceHolder from "../core/statements/placeholder";
 import Node from "../misc/node";
 import Throw from "../core/expressions/throw";
+import Assignment from "../core/expressions/assignment";
 
 class Source {
     file_name: string;
@@ -338,6 +339,24 @@ class Source {
             const isPure: boolean = node.attributes.isPure;
 
             uo.push(new UnaryOperation(location, operator, type, isPure));
+        }
+
+        return uo;
+    }
+
+    parseAssignment(id: number): Assignment[] {
+        let uo: Assignment[] = [];
+        let filtered_nodes: any[] = [];
+
+        filtered_nodes = this.getChildren(id, NodeTypes.Assignment);
+
+        for (const node of filtered_nodes) {
+            const location: Location = this.parseLocation(node.id, node.src);
+            const operator: string = node.attributes.operator;
+            const type: string = node.attributes.type;
+            const isPure: boolean = node.attributes.isPure;
+
+            uo.push(new Assignment(location, operator, type, isPure));
         }
 
         return uo;

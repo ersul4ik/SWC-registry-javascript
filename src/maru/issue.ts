@@ -50,6 +50,11 @@ class IssueDetailed {
         console.log(`SWC-Link: ${this.swcURL}`);
         console.log(`Description-Head: ${this.issuePointer.description.head}`);
         console.log(`Description-Tail: ${this.issuePointer.description.tail}`);
+        console.log(
+            `Location: ${this.issuePointer.lineNumberStart}:${this.issuePointer.columnStart}:${this.issuePointer.lineNumberEnd}:${
+                this.issuePointer.columnEnd
+            }`
+        );
         console.log(`Code: \n${this.code}`);
     }
 

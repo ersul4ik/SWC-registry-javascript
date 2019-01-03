@@ -144,8 +144,8 @@
             "swcID": "SWC-129",
             "description": [
                 {
-                    "head": "",
-                    "tail": "An unary operation was disovered directly after an assignment operation."
+                    "head": "Unary operation directly after an assignment.",
+                    "tail": "An unary operation was discovered directly after an assignment operation {0}. Check if this is intentional. "
                 }
             ]
         },

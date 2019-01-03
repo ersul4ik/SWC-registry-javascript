@@ -15,6 +15,7 @@ const NodeTypes = {
     MemberAccess: "MemberAccess",
     BinaryOperation: "BinaryOperation",
     UnaryOperation: "UnaryOperation",
+    Assignment: "Assignment",
     IfStatement: "IfStatement",
     Literal: "Literal",
     Throw: "Throw"
