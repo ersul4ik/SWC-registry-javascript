@@ -17,6 +17,10 @@
                 {
                     "head": "A floating pragma is set.",
                     "tail": "It is recommended to make a conscious choice on what version of Solidity is used for compilation. Currently any version equal or grater than {0} is allowed."
+                },
+                {
+                    "head": "No pragma is set.",
+                    "tail": "It is recommended to make a conscious choice on what version of Solidity is used for compilation. Currently no version is set in the Solidity file."
                 }
             ]
         },
