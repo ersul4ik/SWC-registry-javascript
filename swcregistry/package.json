@@ -1,6 +1,6 @@
 {
     "name": "@ersul4ik/test-swc-registry",
-    "version": "1.0.15",
+    "version": "1.0.16",
     "description": " python library for accessing SWC-registry content.",
     "license": "MIT",
     "repository": "SmartContractSecurity/SWC-registry-javascript",
