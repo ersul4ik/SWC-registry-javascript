@@ -378,7 +378,7 @@ class SolidityAntlr {
         const file_content = FileUtils.getFileContent(file_name);
         let ast;
         try {
-            ast = parser.parse(file_content, { loc: true, range: true });
+            ast = parser.parse(file_content, { loc: true, range: true, tolerant: true });
         } catch (e) {
             Logger.error("Exception during AST parsing for " + file_name);
             Logger.error(e);

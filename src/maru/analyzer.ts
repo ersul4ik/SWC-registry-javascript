@@ -22,9 +22,6 @@ class Analyzer {
             let issues: IssueDetailed[] = [];
             let sourceList: string[] = [];
 
-            // add errors in there, also the solidity compiler would be good
-            let meta: {} = {};
-
             for (const configPluginName in config.plugins) {
                 if (config.plugins[configPluginName].active === "true") {
                     let pluginFound = false;
@@ -74,6 +71,8 @@ class Analyzer {
             for (const source of sol_file.sources) {
                 sourceList.push(source.file_name);
             }
+
+            let meta = { error: sol_file.getErrors(), selected_compiler: sol_file.selected_compiler_version };
 
             reports.push(new Report(sourceType, sourceFormat, sourceList, issues, meta));
         }

@@ -23,22 +23,12 @@ TypoGraphicalErrorFunction = function(sol_file: SolFile, plugin_config: PluginCo
         for (const a of ass) {
             const unops: UnaryOperation[] = source.parseUnaryOperation(a.location.id);
             if (unops.length > 0) {
-                let found: boolean = false;
                 const bops: BinaryOperation[] = source.parseBinaryOperation(a.location.id);
-                if (bops.length > 0) {
-                    if (bops[0].location.id < unops[0].location.id) {
-                        found = true;
-                    }
-                } else {
-                    found = true;
-                }
 
-                if (found) {
-                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
-                        a.operator + unops[0].operator
-                    ]);
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, unops[0].location));
-                }
+                const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
+                    a.operator + unops[0].operator
+                ]);
+                issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, unops[0].location));
             }
         }
     }

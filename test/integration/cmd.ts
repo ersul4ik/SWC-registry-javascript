@@ -2,6 +2,7 @@ import logger from "../../src/logger/logger";
 import Report from "../../src/maru/report";
 import { MythXIssue } from "../../src/maru/mythX";
 import NodeUtility from "../../src/utils/node";
+import SolFile from "../../src/maru/sol_file";
 
 const { spawn } = require("child_process");
 const assert = require("assert");
@@ -9,7 +10,7 @@ const expect = require("expect");
 const { version } = require("../../package.json");
 
 describe("CMD commands", () => {
-    it("should return maru version", () => {
+    it("-v: should return maru version", () => {
         const prc = spawn("./maru", ["-v"]);
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
@@ -19,11 +20,10 @@ describe("CMD commands", () => {
         });
     });
 
-    it("should return MythX formatted JSON output", () => {
+    it("-r: should return MythX formatted JSON output", () => {
         const prc = spawn("./maru", ["-r", "./test/sol_files/imports/simple.sol", "-o", "json"]);
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
-            NodeUtility.printNode(data);
             const report: Report = JSON.parse(data.toString());
 
             expect(report.sourceType).toEqual("solidity-file");
@@ -41,6 +41,17 @@ describe("CMD commands", () => {
             expect(issue.description.tail.length).toBeGreaterThan(0);
             expect(issue.severity.length).toBeGreaterThan(0);
             expect(issue.extra).toEqual({});
+        });
+    });
+
+    it("-r: running on an invalid Solidity file should return an error in the JSON output", () => {
+        const error = "./test/sol_files/errors/error.sol";
+
+        const prc = spawn("./maru", ["-r", error, "-o", "json"]);
+        prc.stdout.setEncoding("utf8");
+        prc.stdout.on("data", (data: string) => {
+            NodeUtility.printNode(data);
+            const report: Report = JSON.parse(data.toString());
         });
     });
 });

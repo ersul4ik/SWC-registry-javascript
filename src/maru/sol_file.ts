@@ -30,15 +30,16 @@ class SolFile {
     sources: Source[];
     contracts: Contract[];
     solc_compilation_output: any;
+    selected_compiler_version: string;
 
     constructor(file_name: string) {
         this.file_name = file_name;
         this.file_content = FileUtils.getFileContent(file_name);
         this.antlrAST = SolidityAntlr.generateAST(file_name);
 
-        const version = SolidityAntlr.getPragmaVersion(this.antlrAST);
-        this.solc_compilation_output = Solc.compile(file_name, version);
-        this.sources = Solc.walkAST(this.solc_compilation_output, version);
+        this.selected_compiler_version = SolidityAntlr.getPragmaVersion(this.antlrAST);
+        this.solc_compilation_output = Solc.compile(file_name, this.selected_compiler_version);
+        this.sources = Solc.walkAST(this.solc_compilation_output, this.selected_compiler_version);
 
         this.contracts = this.getContracts();
     }
@@ -59,6 +60,21 @@ class SolFile {
             }
         }
         return functions;
+    }
+
+    getErrors(): string[] {
+        let errors: string[] = [];
+
+        for (const e of this.solc_compilation_output.errors) {
+            errors.push(`Antlr:${e}`);
+        }
+        if (NodeUtility.hasProperty(this.antlrAST, "errors")) {
+            for (const e of this.antlrAST.errors) {
+                errors.push(`Solc:${this.file_name}:${e.line}:${e.column}: ${e.message}`);
+            }
+        }
+
+        return errors;
     }
 }
 

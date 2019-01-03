@@ -11,7 +11,7 @@ class Report {
         this.sourceType = sourceType;
         this.sourceFormat = sourceFormat;
         this.sourceList = sourceList;
-        this.meta = {};
+        this.meta = meta;
         this.issues = issues;
     }
 }
