@@ -28,6 +28,9 @@ jobs:
             - run:
                 name: Publish to npmjs
                 command: cd swcregistry && npm run 2npm
+            - run:
+                name: Push changes
+                command: cd swcregistry && git add . && git commmit -am "Changed the package version [skip ci]" && git push fork master
 workflows:
   version: 2
   test-and-publish:
