@@ -30,7 +30,10 @@ jobs:
                 command: cd swcregistry && npm run 2npm
             - run:
                 name: Push changes
-                command: cd swcregistry && git add . && git commit -am "Changed the package version [skip ci]" && git push fork master
+                command: |
+                    git config --global user.email "$GIT_USER_EMAIL"
+                    git config --global user.name "$GIT_USER"
+                    cd swcregistry && git add . && git commit -am "Changed the package version [skip ci]" && git push fork master
 workflows:
   version: 2
   test-and-publish:
