@@ -199,21 +199,29 @@ class Source {
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
-            const member_access: MemberAccess[] = this.parseMemberAccess(node.id);
-            const identifier: Identifier[] = this.parseIdentifiers(node.id);
+            const next_node: any = this.getRelativeNode(node.id, +1);
 
-            if (identifier.length !== 0) {
-                let identifier_name: string = identifier[0].name;
-                let identifier_type: string = identifier[0].type;
-                let member_name: string = "";
-                let member_type: string = "";
+            const member_access: MemberAccess[] = this.parseMemberAccess(undefined, [next_node.id]);
 
-                if (member_access.length !== 0) {
-                    member_name = member_access[0].member_name;
-                    member_type = member_access[0].type;
-                }
-                function_calls.push(new FunctionCall(location, identifier_name, identifier_type, member_name, member_type));
+            let identifier_name: string = "";
+            let identifier_type: string = "";
+            let member_name: string = "";
+            let member_type: string = "";
+
+            if (member_access.length > 0) {
+                const next_next_node: any = this.getRelativeNode(node.id, +2);
+                const identifier: Identifier[] = this.parseIdentifiers(undefined, [next_next_node.id]);
+                identifier_name = identifier[0].name;
+                identifier_type = identifier[0].type;
+                member_name = member_access[0].member_name;
+                member_type = member_access[0].type;
+            } else {
+                const identifier: Identifier[] = this.parseIdentifiers(undefined, [next_node.id]);
+                identifier_name = identifier[0].name;
+                identifier_type = identifier[0].type;
             }
+
+            function_calls.push(new FunctionCall(location, identifier_name, identifier_type, member_name, member_type));
         }
 
         return function_calls;
@@ -259,14 +267,16 @@ class Source {
         return parameters;
     }
 
-    parseIdentifiers(id?: number): Identifier[] {
+    parseIdentifiers(parent_id?: number, selected_ids?: number[]): Identifier[] {
         let identifiers: Identifier[] = [];
         let filtered_nodes: any[] = [];
 
-        if (id) {
-            filtered_nodes = this.getChildren(id, NodeTypes.Identifier);
-        } else {
-            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.Identifier);
+        if (parent_id) {
+            filtered_nodes = this.getChildren(parent_id, NodeTypes.Identifier);
+        } else if (selected_ids) {
+            for (const selected_id of selected_ids) {
+                filtered_nodes.push(this.getNode(selected_id));
+            }
         }
 
         for (const node of filtered_nodes) {
@@ -286,15 +296,16 @@ class Source {
         return identifiers;
     }
 
-    parseMemberAccess(id?: number): MemberAccess[] {
+    parseMemberAccess(parent_id?: number, selected_ids?: number[]): MemberAccess[] {
         let memberAccess: MemberAccess[] = [];
-
         let filtered_nodes: any[] = [];
 
-        if (id) {
-            filtered_nodes = this.getChildren(id, NodeTypes.MemberAccess);
-        } else {
-            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.MemberAccess);
+        if (parent_id) {
+            filtered_nodes = this.getChildren(parent_id, NodeTypes.MemberAccess);
+        } else if (selected_ids) {
+            for (const selected_id of selected_ids) {
+                filtered_nodes.push(this.getNode(selected_id));
+            }
         }
 
         for (const node of filtered_nodes) {
@@ -524,6 +535,14 @@ class Source {
         for (const n of this.nodes) {
             if (id === n.id) {
                 return n;
+            }
+        }
+    }
+
+    getRelativeNode(id: number, offset: number): any {
+        for (let x = 0; this.nodes.length; x++) {
+            if (id === this.nodes[x].id) {
+                return this.nodes[x + offset];
             }
         }
     }

@@ -23,6 +23,8 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
     const issuePointers: IssuePointer[] = [];
 
     for (const source of sol_file.sources) {
+        source.printNodes();
+
         const f_cs: FunctionCall[] = source.parseFunctionCalls(source.source_unit[0].id);
 
         for (const f_c of f_cs) {

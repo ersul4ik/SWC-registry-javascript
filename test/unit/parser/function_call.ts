@@ -23,5 +23,8 @@ describe("Function call parsing ", () => {
 
         expect(fcs[1].member_name).toEqual("blockhash");
         expect(fcs[1].identifier_name).toEqual("block");
+
+        expect(fcs[2].member_name).toEqual(undefined);
+        expect(fcs[2].identifier_name).toEqual("a");
     });
 });
