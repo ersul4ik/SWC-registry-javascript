@@ -4,6 +4,7 @@ const NodeTypes = {
     ContractDefinition: "ContractDefinition",
     FunctionDefinition: "FunctionDefinition",
     ModifierDefinition: "ModifierDefinition",
+    ExpressionStatement: "ExpressionStatement",
     PlaceholderStatement: "PlaceholderStatement",
     VariableDeclaration: "VariableDeclaration",
     ParameterList: "ParameterList",

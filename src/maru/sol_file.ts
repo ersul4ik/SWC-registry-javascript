@@ -64,10 +64,11 @@ class SolFile {
 
     getErrors(): string[] {
         let errors: string[] = [];
-
-        for (const e of this.solc_compilation_output.errors) {
-            if (!String(e).match("Warning")) {
-                errors.push(`Solc:${e}`);
+        if (NodeUtility.hasProperty(this.solc_compilation_output, "errors")) {
+            for (const e of this.solc_compilation_output.errors) {
+                if (!String(e).match("Warning")) {
+                    errors.push(`Solc:${e}`);
+                }
             }
         }
 
@@ -84,10 +85,11 @@ class SolFile {
 
     getWarnings(): string[] {
         let warnings: string[] = [];
-
-        for (const e of this.solc_compilation_output.errors) {
-            if (String(e).match("Warning")) {
-                warnings.push(`Solc:${e}`);
+        if (NodeUtility.hasProperty(this.solc_compilation_output, "errors")) {
+            for (const e of this.solc_compilation_output.errors) {
+                if (String(e).match("Warning")) {
+                    warnings.push(`Solc:${e}`);
+                }
             }
         }
         return warnings;
