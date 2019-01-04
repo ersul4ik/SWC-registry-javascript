@@ -37,8 +37,6 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
             ) {
                 const parents: any[] = source.getParents(f_c.location.id);
 
-                NodeUtility.printNode(parents[0].name);
-                NodeUtility.printNode(f_c);
                 if (NodeUtility.matchRegex(parents[0].name, new RegExp(NodeTypes.ExpressionStatement))) {
                     const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
                         f_c.member_name
