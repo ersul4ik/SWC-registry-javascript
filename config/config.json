@@ -114,11 +114,11 @@
             "swcID": "SWC-118",
             "description": [
                 {
-                    "head": "",
+                    "head": "Potential incorrect constructor name ${1}.",
                     "tail": "Until Solidity version 0.4.21 a constructor can only be defined as a function that has the same name as the contract {0}. It has been found that there is a function with a very similar name {1} that only deviates based lower/upper case characters."
                 },
                 {
-                    "head": "",
+                    "head": "Potential incorrect constructor name.",
                     "tail": "Since Solidity version 0.4.22 there is a special constructor keyword available that explicitly declares the constructor of a contract. It has been found that a function definition incorrectly uses the constructor keyword which indicates an incorrect constructor declaration. "
                 }
             ]
@@ -142,8 +142,8 @@
             "swcID": "SWC-120",
             "description": [
                 {
-                    "head": "",
-                    "tail": "Using past or the current block hashes as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
+                    "head": "Potential use of a weak source of randomness.",
+                    "tail": "Using past or the current block hashes through {0} as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
                 }
             ]
         },
