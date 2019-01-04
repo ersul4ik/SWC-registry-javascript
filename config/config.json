@@ -128,8 +128,12 @@
             "swcID": "SWC-118",
             "description": [
                 {
-                    "head": "",
-                    "tail": "Using tx.origin as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. "
+                    "head": "Use of \"tx.origin\" can be dangerous.",
+                    "tail": "Using \"tx.origin\" as a security control can lead to authorization bypass vulnerabilities. Consider using \"msg.sender\" unless you really know what you are doing."
+                },
+                {
+                    "head": "Use of \"tx.origin\" as a part of authorization control.",
+                    "tail": "Using \"tx.origin\" as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. It is recommended to use \"msg.sender\" instead."
                 }
             ]
         },
