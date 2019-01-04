@@ -104,8 +104,8 @@
             "swcID": "SWC-104",
             "description": [
                 {
-                    "head": "",
-                    "tail": "Always check the return value for low level calls like call(), send() and delegatecall()."
+                    "head": "Unchecked return value from low level call.",
+                    "tail": "Return value for {0} is not checked. Always check the return value for low level calls like call(), send() and delegatecall() as they can fail."
                 }
             ]
         },

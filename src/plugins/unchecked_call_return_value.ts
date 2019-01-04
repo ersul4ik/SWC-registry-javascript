@@ -38,8 +38,16 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
                 const parents: any[] = source.getParents(f_c.location.id);
 
                 if (NodeUtility.matchRegex(parents[0].name, new RegExp(NodeTypes.ExpressionStatement))) {
+                    let function_name: string = "";
+                    NodeUtility.printNode(f_c);
+                    if (f_c.identifier_name) {
+                        function_name = `${f_c.identifier_name}.${f_c.member_name}`;
+                    } else {
+                        function_name = `${f_c.identifier_name}`;
+                    }
+
                     const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
-                        f_c.member_name
+                        `${function_name}`
                     ]);
                     issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, f_c.location));
                 }
