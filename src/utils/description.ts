@@ -8,7 +8,10 @@ class DescriptionUtils {
             params[x] = `"${params[x]}"`;
         }
 
-        return new Description(description_unformatted.head, string_template(description_unformatted.tail, params));
+        return new Description(
+            string_template(description_unformatted.head, params),
+            string_template(description_unformatted.tail, params)
+        );
     }
 }
 

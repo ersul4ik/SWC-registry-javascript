@@ -12,9 +12,9 @@ import Description from "../maru/description";
 import DescriptionUtils from "../utils/description";
 import NodeUtility from "../utils/node";
 
-let TypoGraphicalErrorFunction: Plugin;
+let TypoGraphicalError: Plugin;
 
-TypoGraphicalErrorFunction = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
+TypoGraphicalError = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
 
     for (const source of sol_file.sources) {
@@ -36,4 +36,4 @@ TypoGraphicalErrorFunction = function(sol_file: SolFile, plugin_config: PluginCo
     return issuePointers;
 };
 
-exports.TypoGraphicalErrorFunction = TypoGraphicalErrorFunction;
+exports.TypoGraphicalError = TypoGraphicalError;

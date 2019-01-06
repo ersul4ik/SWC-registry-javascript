@@ -78,10 +78,12 @@ if (options.help || options.length < 1) {
     let config: { [plugins: string]: any } = {};
     config = Config;
     if (options.plugin != null) {
-        const usingPlugins: { [plugins: string]: any } = {};
+        let usingPlugins: { [plugins: string]: any } = {};
         options.plugin.split(",").forEach((plugin: string) => {
             if (config.plugins[plugin] != null && config.plugins[plugin].swcID != null) {
                 usingPlugins[plugin] = config.plugins[plugin];
+                // enable deactivated plugins
+                usingPlugins[plugin].active = "true";
             } else {
                 console.log(`${plugin} does not exist.`);
                 return;

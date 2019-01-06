@@ -5,12 +5,12 @@ import { Plugin } from "../maru/plugin";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
 
-let IncorrectInheritanceOrderFunction: Plugin;
+let IncorrectInheritanceOrder: Plugin;
 
-IncorrectInheritanceOrderFunction = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
+IncorrectInheritanceOrder = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
 
     return issuePointers;
 };
 
-exports.IncorrectInheritanceOrderFunction = IncorrectInheritanceOrderFunction;
+exports.IncorrectInheritanceOrder = IncorrectInheritanceOrder;

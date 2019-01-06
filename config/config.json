@@ -147,7 +147,7 @@
                 }
             ]
         },
-        "TypoGraphicalErrorFunction": {
+        "TypoGraphicalError": {
             "active": "true",
             "swcID": "SWC-129",
             "description": [
@@ -157,13 +157,27 @@
                 }
             ]
         },
-        "IncorrectInheritanceOrderFunction": {
+        "IncorrectInheritanceOrder": {
             "active": "true",
             "swcID": "SWC-125",
             "description": [
                 {
                     "head": "",
                     "tail": "The following functions were detected to exist in the contract and its base classes."
+                }
+            ]
+        },
+        "UnusedVariable": {
+            "active": "false",
+            "swcID": "SWC-000",
+            "description": [
+                {
+                    "head": "Unused state variable {0}",
+                    "tail": "The state variable {0} is created within the contract but does not seem to be used anywhere. "
+                },
+                {
+                    "head": "Unused local variable {0}",
+                    "tail": "The local variable {0} is created within the contract but does not seem to be used anywhere. "
                 }
             ]
         }
