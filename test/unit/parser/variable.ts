@@ -25,7 +25,6 @@ describe("Variables", () => {
         expect(var_r.name).toEqual("r");
         expect(var_r.scope).toEqual(76);
         expect(var_r.storageLocation).toEqual("default");
-        expect(var_r.type).toEqual("uint8");
         expect(var_r.visibility).toEqual("internal");
     });
 
@@ -36,7 +35,6 @@ describe("Variables", () => {
         expect(gamesPlayed.name).toEqual("gamesPlayed");
         expect(gamesPlayed.scope).toEqual(76);
         expect(gamesPlayed.storageLocation).toEqual("default");
-        expect(gamesPlayed.type).toEqual("struct TestStorage.Game[]");
         expect(gamesPlayed.visibility).toEqual("internal");
     });
 
@@ -51,7 +49,6 @@ describe("Variables", () => {
         expect(var_t.name).toEqual("t");
         expect(var_t.scope).toEqual(96);
         expect(var_t.storageLocation).toEqual("default");
-        expect(var_t.type).toEqual("uint256");
         expect(var_t.visibility).toEqual("internal");
     });
 });

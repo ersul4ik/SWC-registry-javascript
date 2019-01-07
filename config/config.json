@@ -61,7 +61,7 @@
             "description": [
                 {
                     "head": "Dangerous use of uninitialized storage variables.",
-                    "tail": "Uninitialized storage variables of user-defined type can point to unexpected storage locations."
+                    "tail": "Uninitialized storage variables of user-defined type can point to unexpected storage locations. Initialize variable {0} or set the storage attribute \"memory\"."
                 }
             ]
         },
