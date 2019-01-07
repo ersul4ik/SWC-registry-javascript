@@ -9,6 +9,7 @@ const NodeTypes = {
     VariableDeclaration: "VariableDeclaration",
     ParameterList: "ParameterList",
     FunctionCall: "FunctionCall",
+    InheritanceSpecifier: "InheritanceSpecifier",
     ElementaryTypeName: "ElementaryTypeName",
     ArrayTypeName: "ArrayTypeName",
     Mapping: "Mapping",

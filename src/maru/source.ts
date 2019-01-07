@@ -29,6 +29,7 @@ import { type } from "os";
 import ArrayType from "../core/types/array_type";
 import UserDefinedType from "../core/types/user_defined_type";
 import Mapping from "../core/types/mapping";
+import InheritanceSpecifier from "../core/expressions/inheritance_specifier";
 
 class Source {
     file_name: string;
@@ -88,6 +89,7 @@ class Source {
             const linearizedBaseContracts: number[] = node.attributes.linearizedBaseContracts;
             // remove the contract itself from the linearizedBaseContracts array
             linearizedBaseContracts.shift();
+            const inheritedContracts: UserDefinedType[] = this.parseInheritanceSpecifier(node.id);
 
             const scope: number = node.attributes.scope;
             const isImplemented: boolean = node.attributes.fullyImplemented;
@@ -95,10 +97,24 @@ class Source {
             const functions: CFunction[] = this.parseFunction(node.id);
             const variables: Variable[] = this.parseVariables(undefined, this.getScopedChildren(node.id, NodeTypes.VariableDeclaration));
 
-            contracts.push(new Contract(location, scope, name, kind, isImplemented, linearizedBaseContracts, functions, variables));
+            contracts.push(
+                new Contract(location, scope, name, kind, isImplemented, linearizedBaseContracts, inheritedContracts, functions, variables)
+            );
         }
 
         return contracts;
+    }
+
+    parseInheritanceSpecifier(id: number): UserDefinedType[] {
+        let udt: UserDefinedType[] = [];
+        let filtered_nodes = this.getChildren(id, NodeTypes.InheritanceSpecifier);
+
+        for (const node of filtered_nodes) {
+            const next_node: any = this.getRelativeNode(node.id, 1);
+            const type: UserDefinedType = this.parseUserDefinedType(next_node);
+            udt.push(type);
+        }
+        return udt.reverse();
     }
 
     parseFunction(id?: number): CFunction[] {
@@ -466,7 +482,7 @@ class Source {
 
     parseUserDefinedType(node: any): UserDefinedType {
         const location: Location = this.parseLocation(node.id, node.src);
-        const type: string = node.attributes.type;
+        const type: string = node.attributes.name;
         const referencedDeclaration: number = node.attributes.referencedDeclaration;
 
         return new UserDefinedType(location, type, referencedDeclaration);

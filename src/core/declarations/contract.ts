@@ -4,11 +4,13 @@ import SolidityAntlr from "../../parser/solidity_antlr";
 import Declaration from "./declaration";
 import CFunction from "./function";
 import Variable from "./variable";
+import UserDefinedType from "../types/user_defined_type";
 
 class Contract extends Declaration {
     name: string;
     kind: string;
     linearizedBaseContracts: number[];
+    inheritedContracts: UserDefinedType[];
     isImplemented: boolean;
     functions: CFunction[];
     variables: Variable[];
@@ -20,6 +22,7 @@ class Contract extends Declaration {
         kind: string,
         isImplemented: boolean,
         linearizedBaseContracts: number[],
+        inheritedContracts: UserDefinedType[],
         functions: CFunction[],
         variables: Variable[]
     ) {
@@ -27,6 +30,7 @@ class Contract extends Declaration {
         this.name = name;
         this.kind = kind;
         this.linearizedBaseContracts = linearizedBaseContracts;
+        this.inheritedContracts = inheritedContracts;
         this.isImplemented = isImplemented;
         this.functions = functions;
         this.variables = variables;
