@@ -11,6 +11,7 @@ const NodeTypes = {
     FunctionCall: "FunctionCall",
     ElementaryTypeName: "ElementaryTypeName",
     ArrayTypeName: "ArrayTypeName",
+    Mapping: "Mapping",
     UserDefinedTypeName: "UserDefinedTypeName",
     Identifier: "Identifier",
     MemberAccess: "MemberAccess",

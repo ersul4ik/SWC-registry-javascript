@@ -6,7 +6,7 @@ import Declaration from "./declaration";
 
 class Variable extends Declaration {
     name: string;
-    type: string;
+    type: Type;
     visibility: string;
     storageLocation: string;
     isStateVar: boolean;
@@ -16,7 +16,7 @@ class Variable extends Declaration {
         location: Location,
         scope: number,
         name: string,
-        type: string,
+        type: Type,
         visibility: string,
         storageLocation: string,
         isStateVar: boolean,

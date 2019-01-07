@@ -23,6 +23,12 @@ import PlaceHolder from "../core/statements/placeholder";
 import Node from "../misc/node";
 import Throw from "../core/expressions/throw";
 import Assignment from "../core/expressions/assignment";
+import Type from "../core/types/type";
+import ElementaryType from "../core/types/elementary_type";
+import { type } from "os";
+import ArrayType from "../core/types/array_type";
+import UserDefinedType from "../core/types/user_defined_type";
+import Mapping from "../core/types/mapping";
 
 class Source {
     file_name: string;
@@ -199,7 +205,7 @@ class Source {
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
-            const next_node: any = this.getRelativeNode(node.id, +1);
+            const next_node: any = this.getRelativeNode(node.id, 1);
 
             const member_access: MemberAccess[] = this.parseMemberAccess(undefined, [next_node.id]);
 
@@ -209,7 +215,7 @@ class Source {
             let member_type: string = "";
 
             if (member_access.length > 0) {
-                const next_next_node: any = this.getRelativeNode(node.id, +2);
+                const next_next_node: any = this.getRelativeNode(node.id, 2);
                 const identifier: Identifier[] = this.parseIdentifiers(undefined, [next_next_node.id]);
                 identifier_name = identifier[0].name;
                 identifier_type = identifier[0].type;
@@ -243,7 +249,7 @@ class Source {
             const location: Location = this.parseLocation(node.id, node.src);
             const scope: number = node.attributes.scope;
             const function_name: string = node.attributes.name;
-            const type: string = node.attributes.type;
+            const type: Type = this.parseType(node.id);
             const visibility: string = node.attributes.visibility;
             const storageLocation: string = node.attributes.storageLocation;
             const isStateVar: boolean = node.attributes.stateVariable;
@@ -429,6 +435,62 @@ class Source {
         return new Location(id, this.file_name, src, start.line, end.line, start.column, end.column);
     }
 
+    parseType(id: number): Type {
+        let type: Type;
+
+        const next_node: any = this.getRelativeNode(id, 1);
+        const next_next_node: any = this.getRelativeNode(id, 2);
+
+        if (NodeUtility.matchString(next_node.name, NodeTypes.ElementaryTypeName)) {
+            type = this.parseElementaryType(next_node);
+        } else if (NodeUtility.matchString(next_node.name, NodeTypes.UserDefinedTypeName)) {
+            type = this.parseUserDefinedType(next_node);
+        } else if (NodeUtility.matchString(next_node.name, NodeTypes.ArrayTypeName)) {
+            type = this.parseArrayType(next_node);
+        } else if (NodeUtility.matchString(next_node.name, NodeTypes.Mapping)) {
+            type = this.parseMapping(next_node, next_next_node);
+        } else {
+            const location: Location = this.parseLocation(next_node.id, next_node.src);
+            const dummy: Type = new Type(location);
+            return dummy;
+        }
+
+        return type;
+    }
+
+    parseElementaryType(node: any): ElementaryType {
+        const location: Location = this.parseLocation(node.id, node.src);
+        const type: string = node.attributes.type;
+        return new ElementaryType(location, type);
+    }
+
+    parseUserDefinedType(node: any): UserDefinedType {
+        const location: Location = this.parseLocation(node.id, node.src);
+        const type: string = node.attributes.type;
+        const referencedDeclaration: number = node.attributes.referencedDeclaration;
+
+        return new UserDefinedType(location, type, referencedDeclaration);
+    }
+
+    parseArrayType(node: any): ArrayType {
+        const location_node: Location = this.parseLocation(node.id, node.src);
+
+        let length: string = "null";
+
+        if (NodeUtility.hasProperty(node.attributes.length, "number")) {
+            length = node.attributes.length;
+        }
+
+        return new ArrayType(location_node, this.parseType(node.id), length);
+    }
+
+    parseMapping(node: any, next_node: any): Mapping {
+        const location_node: Location = this.parseLocation(node.id, node.src);
+        const key: ElementaryType = this.parseElementaryType(next_node);
+        const value: Type = this.parseType(next_node.id);
+        return new Mapping(location_node, key, value);
+    }
+
     /*
      * Check if a node has a parent node of a particular type
      */
@@ -572,10 +634,6 @@ class Source {
             }
         }
         return external_references;
-    }
-
-    parseType(node: any) {
-        // implement me
     }
 }
 

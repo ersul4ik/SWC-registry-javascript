@@ -318,12 +318,16 @@ class SolidityAntlr {
             if (NodeUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
                 return new ArrayType(location, new ElementaryType(location, node.baseTypeName.name), length);
             } else if (NodeUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
-                return new ArrayType(location, new UserDefinedType(location, node.baseTypeName.namePath), length);
+                return new ArrayType(
+                    location,
+                    new UserDefinedType(location, node.baseTypeName.namePath, node.baseTypeName.referencedDeclaration),
+                    length
+                );
             } else {
                 Logger.error("Array type not recognised at");
             }
         } else if (NodeUtility.matchString(node.type, "UserDefinedTypeName")) {
-            return new UserDefinedType(location, node.namePath);
+            return new UserDefinedType(location, node.namePath, node.baseTypeName.referencedDeclaration);
         }
         return type;
     }
@@ -360,7 +364,7 @@ class SolidityAntlr {
                             location,
                             -1,
                             node.name,
-                            "type",
+                            type,
                             node.visibility,
                             node.storageLocation,
                             node.isStateVar,
