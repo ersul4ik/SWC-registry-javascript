@@ -23,12 +23,9 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
     const issuePointers: IssuePointer[] = [];
 
     for (const source of sol_file.sources) {
-        source.printNodes();
-
         const f_cs: FunctionCall[] = source.parseFunctionCalls(source.source_unit[0].id);
 
         for (const f_c of f_cs) {
-            NodeUtility.printNode(f_c.member_name);
             if (
                 NodeUtility.matchRegex(f_c.member_name, new RegExp("^call$")) ||
                 NodeUtility.matchRegex(f_c.member_name, new RegExp("^delegatecall$")) ||
@@ -39,7 +36,6 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
 
                 if (NodeUtility.matchRegex(parents[0].name, new RegExp(NodeTypes.ExpressionStatement))) {
                     let function_name: string = "";
-                    NodeUtility.printNode(f_c);
                     if (f_c.identifier_name) {
                         function_name = `${f_c.identifier_name}.${f_c.member_name}`;
                     } else {
