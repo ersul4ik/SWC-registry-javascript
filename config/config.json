@@ -1,95 +1,199 @@
 {
-	"plugins": {
-		"InsecureIntegerArithmetic": {
-			"active": "false",
-			"swcID": "SWC-101",
-			"descriptionShort": [
-				""
-			]
-		},
-		"LockPragma": {
-			"active": "true",
-			"swcID": "SWC-103",
-			"descriptionShort": [
-				"It is recommended to make a conscious choice on what version of Solidity is used for compilation."
-			]
-		},
-		"OutdatedCompilerVersion": {
-			"active": "true",
-			"swcID": "SWC-102",
-			"descriptionShort": [
-				"The version of the compiler specified in the Pragma is outdated. It is recommended to use a more recent one (>=0.4.23)."
-			]
-		},
-		"DefaultVisibilityFunction": {
-			"active": "true",
-			"swcID": "SWC-100",
-			"descriptionShort": [
-				"The function does not have an explicit visibility set. The default visibility is set to public and anyone call the function."
-			]
-		},
-		"DefaultVisibilityStateVariable": {
-			"active": "true",
-			"swcID": "SWC-108",
-			"descriptionShort": [
-				"It is best best practice to set the visibility of state variables explicitly."
-			]
-		},
-		"UndeclaredStoragePointer": {
-			"active": "true",
-			"swcID": "SWC-109",
-			"descriptionShort": [
-				"Uninitialised storage variables of user-defined type can point to unexpected storage locations."
-			]
-		},
-		"DeprecatedFunctions": {
-			"active": "true",
-			"swcID": "SWC-111",
-			"descriptionShort": [
-				"Using _constant_ as a function state mutability modifier is disallowed as of Solidity version 0.5.0 use _view_ instead.",
-				"_sha3()_ is disallowed as of Solidity version 0.5.0, use _keccak256()_ instead.",
-				"_suicide()_ is disallowed as of Solidity version 0.5.0, use _selfdestruct()_ instead.",
-				"_callcode()_ is disallowed as of Solidity version 0.5.0, use _delegatecall()_ instead.",
-				"_block.blockhash_ is deprecated and _blockhash()_ should be used instead.",
-				"_gasleft()_ is disallowed as of Solidity version 0.5.0, use _msg.gas_ instead. ",
-				"_throw_ is now disallowed as of Solidity version 0.5.0 in favor of _revert_, _require_ and _assert_"
-			]
-		},
-		"UncheckedCallReturnValue": {
-			"active": "true",
-			"swcID": "SWC-104",
-			"descriptionShort": [
-				"Always check the return value for low level calls like call(), send() and delegatecall()."
-			]
-		},
-		"IncorrectConstructorName": {
-			"active": "true",
-			"swcID": "SWC-118",
-			"descriptionShort": [
-				"Until Solidity version 0.4.22 a constructor can only be defined as a function that has the same name as the contract. It has been discovered that there is a function with a very similar name that only deviates based lower/upper case characters.",
-				"A function is named constructor. The correct way of defining a constructor is without the function delaration."
-			]
-		},
-		"AuthorizationTXOrigin": {
-			"active": "true",
-			"swcID": "SWC-118",
-			"descriptionShort": [
-				"Using tx.origin as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. "
-			]
-		},
-		"WeakRandomnessFunction": {
-			"active": "true",
-			"swcID": "SWC-120",
-			"descriptionShort": [
-				"Using past or the current block hashes as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
-			]
-		},
-		"TypoGraphicalErrorFunction": {
-			"active": "true",
-			"swcID": "SWC-129",
-			"descriptionShort": [
-				"An unary operation was disovered directly after an assignment operation."
-			]
-		}
-	}
+    "plugins": {
+        "InsecureIntegerArithmetic": {
+            "active": "false",
+            "swcID": "SWC-101",
+            "description": [
+                {
+                    "head": "",
+                    "tail": ""
+                }
+            ]
+        },
+        "LockPragma": {
+            "active": "true",
+            "swcID": "SWC-103",
+            "description": [
+                {
+                    "head": "A floating pragma is set.",
+                    "tail": "It is recommended to make a conscious choice on what version of Solidity is used for compilation. Currently any version equal or grater than {0} is allowed."
+                },
+                {
+                    "head": "No pragma is set.",
+                    "tail": "It is recommended to make a conscious choice on what version of Solidity is used for compilation. Currently no version is set in the Solidity file."
+                }
+            ]
+        },
+        "OutdatedCompilerVersion": {
+            "active": "true",
+            "swcID": "SWC-102",
+            "description": [
+                {
+                    "head": "An outdated compiler version is used.",
+                    "tail": "The version of the compiler specified in the Pragma {0} is outdated. It is recommended to use a more recent version (>=0.4.23). For more information on Solidity compiler bug reports and fixes check https://github.com/ethereum/solidity/releases."
+                }
+            ]
+        },
+        "DefaultVisibilityFunction": {
+            "active": "true",
+            "swcID": "SWC-100",
+            "description": [
+                {
+                    "head": "The function visibility is not set.",
+                    "tail": "The function {0} does not have an explicit visibility set. The default visibility is set to public and anyone call the function."
+                }
+            ]
+        },
+        "DefaultVisibilityStateVariable": {
+            "active": "true",
+            "swcID": "SWC-108",
+            "description": [
+                {
+                    "head": "The state variable visibility is not set.",
+                    "tail": "It is best best practice to set the visibility of state variables explicitly. The default visibility for {0} is internal. Other possible visibility values are public and private."
+                }
+            ]
+        },
+
+        "UndeclaredStoragePointer": {
+            "active": "true",
+            "swcID": "SWC-109",
+            "description": [
+                {
+                    "head": "Dangerous use of uninitialized storage variables.",
+                    "tail": "Uninitialized storage variables of user-defined type can point to unexpected storage locations. Initialize variable {0} or set the storage attribute \"memory\"."
+                }
+            ]
+        },
+        "DeprecatedFunctions": {
+            "active": "true",
+            "swcID": "SWC-111",
+            "description": [
+                {
+                    "head": "Use of disallowed state mutability modifier \"constant\".",
+                    "tail": "Using \"constant\" as a state mutability modifier in function {0} is disallowed as of Solidity version 0.5.0. Use \"view\" instead."
+                },
+                {
+                    "head": "Use of disallowed function \"sha3()\".",
+                    "tail": "\"sha3()\" is disallowed as of Solidity version 0.5.0, use \"keccak256()\" instead."
+                },
+                {
+                    "head": "Use of disallowed function \"selfdestruct()\"",
+                    "tail": "\"suicide()\" is disallowed as of Solidity version 0.5.0, use \"selfdestruct()\" instead."
+                },
+                {
+                    "head": "Use of disallowed function \"callcode()\"",
+                    "tail": "\"callcode()\" is disallowed as of Solidity version 0.5.0, use \"delegatecall()\" instead."
+                },
+                {
+                    "head": "Use of disallowed function \"block.blockhash()\".",
+                    "tail": "\"block.blockhash()\" is deprecated and \"blockhash()\" should be used instead."
+                },
+                {
+                    "head": "Use of disallowed global variable \"msg.gas\"",
+                    "tail": "\"msg.gas()\" is disallowed as of Solidity version 0.5.0, use \"gasleft()\" instead. "
+                },
+                {
+                    "head": "Use of disallowed function \"throw()\".",
+                    "tail": "\"throw\" is disallowed as of Solidity version 0.5.0 in favor of \"revert()\", \"require()\" and \"assert()\""
+                }
+            ]
+        },
+        "UncheckedCallReturnValue": {
+            "active": "true",
+            "swcID": "SWC-104",
+            "description": [
+                {
+                    "head": "Unchecked return value from low level call.",
+                    "tail": "Return value for {0} is not checked. Always check the return value for low level calls like call(), send() and delegatecall() as they can fail."
+                }
+            ]
+        },
+        "IncorrectConstructorName": {
+            "active": "true",
+            "swcID": "SWC-118",
+            "description": [
+                {
+                    "head": "Potential incorrect constructor name ${1}.",
+                    "tail": "Until Solidity version 0.4.21 a constructor can only be defined as a function that has the same name as the contract {0}. It has been found that there is a function with a very similar name {1} that only deviates based lower/upper case characters."
+                },
+                {
+                    "head": "Potential incorrect constructor name.",
+                    "tail": "Since Solidity version 0.4.22 there is a special constructor keyword available that explicitly declares the constructor of a contract. It has been found that a function definition incorrectly uses the constructor keyword which indicates an incorrect constructor declaration. "
+                }
+            ]
+        },
+        "AuthorizationTXOrigin": {
+            "active": "true",
+            "swcID": "SWC-118",
+            "description": [
+                {
+                    "head": "Use of \"tx.origin\" can be dangerous.",
+                    "tail": "Using \"tx.origin\" as a security control can lead to authorization bypass vulnerabilities. Consider using \"msg.sender\" unless you really know what you are doing."
+                },
+                {
+                    "head": "Use of \"tx.origin\" as a part of authorization control.",
+                    "tail": "Using \"tx.origin\" as a security control can lead to authorization bypass vulnerabilities. Accessing the origin information has been discovered in a conditional statement. It is recommended to use \"msg.sender\" instead."
+                }
+            ]
+        },
+        "WeakRandomnessFunction": {
+            "active": "true",
+            "swcID": "SWC-120",
+            "description": [
+                {
+                    "head": "Potential use of a weak source of randomness.",
+                    "tail": "Using past or the current block hashes through {0} as a source of randomness is predictable. The issue can be ignored if this is unrelated to randomness or if the usage is related to a secure implementation of a commit/reveal scheme."
+                }
+            ]
+        },
+        "TypoGraphicalError": {
+            "active": "true",
+            "swcID": "SWC-129",
+            "description": [
+                {
+                    "head": "Unary operation directly after an assignment.",
+                    "tail": "An unary operation was discovered directly after an assignment operation {0}. Check if this is intentional. "
+                }
+            ]
+        },
+        "IncorrectInheritanceOrder": {
+            "active": "true",
+            "swcID": "SWC-125",
+            "description": [
+                {
+                    "head": "",
+                    "tail": "The following functions were detected to exist in the contract and its base classes."
+                }
+            ]
+        },
+        "ShadowingStateVariables": {
+            "active": "true",
+            "swcID": "SWC-119",
+            "description": [
+                {
+                    "head": "State variable shadows another state variable.",
+                    "tail": "The state variable {0} in contract {1} shadows another state variable with the same name {2} in contract {3}."
+                },
+                {
+                    "head": "Local variable shadows a state variable.",
+                    "tail": "The local variable {0} in contract {1} shadows the state variable with the same name {2} in contract {3}."
+                }
+            ]
+        },
+        "UnusedVariable": {
+            "active": "true",
+            "swcID": "SWC-000",
+            "description": [
+                {
+                    "head": "Unused state variable {0}",
+                    "tail": "The state variable {0} is created within the contract but does not seem to be used anywhere. "
+                },
+                {
+                    "head": "Unused local variable {0}",
+                    "tail": "The local variable {0} is created within the contract but does not seem to be used anywhere. "
+                }
+            ]
+        }
+    }
 }

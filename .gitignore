@@ -12,3 +12,5 @@ deps/solidity-parser-antlr
 ast_dump/
 dist/
 src/swc-definition.json
+.pyenv
+.python-version

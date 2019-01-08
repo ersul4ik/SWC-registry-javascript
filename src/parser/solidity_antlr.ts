@@ -1,53 +1,47 @@
 const parser = require("solidity-parser-antlr");
 const path = require("path");
 
-import CFunction from '../declarations/cfunction';
-import Contract from '../declarations/contract';
-import Import from '../declarations/import';
-import Location from '../misc/location';
-import Node from '../misc/node';
-import Pragma from '../declarations/pragma';
-import Variable from '../declarations/variable';
-import Identifier from '../expressions/identifier';
-import ElementaryType from '../types/elementary_type';
-import Logger from '../logger/logger';
-import FileUtils from '../utils/file';
-import Type from '../types/type';
-import AstUtility from '../utils/ast';
-import ArrayType from '../types/array_type';
-import UserDefinedType from '../types/user_defined_type';
-import FunctionCall from '../expressions/function_call';
-import MemberAccess from '../expressions/member_access';
-import Throw from '../expressions/throw';
-import BinaryOperation from '../expressions/binary_operation';
+import CFunction from "../core/declarations/function";
+import Contract from "../core/declarations/contract";
+import Import from "../core/declarations/import";
+import Location from "../misc/location";
+import Node from "../misc/node";
+import Pragma from "../core/declarations/pragma";
+import Variable from "../core/declarations/variable";
+import Identifier from "../core/expressions/identifier";
+import ElementaryType from "../core/types/elementary_type";
+import Logger from "../logger/logger";
+import FileUtils from "../utils/file";
+import Type from "../core/types/type";
+import NodeUtility from "../utils/node";
+import ArrayType from "../core/types/array_type";
+import UserDefinedType from "../core/types/user_defined_type";
+import FunctionCall from "../core/expressions/function_call";
+import MemberAccess from "../core/expressions/member_access";
+import Throw from "../core/expressions/throw";
+import BinaryOperation from "../core/expressions/binary_operation";
+import Parameter from "../core/declarations/parameter";
+import logger from "../logger/logger";
+import PragmaUtils from "../utils/pragma";
 
 class SolidityAntlr {
-
+    /*
     static parseContracts(parent_node: Node): Contract[] {
         let contracts: Contract[] = [];
         parser.visit(parent_node.branch, {
             ContractDefinition(node: any) {
-
                 const name: string = node.name;
                 const kind: string = node.kind;
                 const baseContracts: string[] = SolidityAntlr.parseInheritance(node.baseContracts);
                 const subNodes: Node = new Node(node.subNodes);
-                const location = SolidityAntlr.parseLocation(node.loc, node.range)
+                const location = SolidityAntlr.parseLocation(node.loc, node.range);
 
-                contracts.push(
-                    new Contract(
-                        name,
-                        kind,
-                        baseContracts,
-                        subNodes,
-                        location
-                    )
-                );
-
+                contracts.push(new Contract(name, kind, baseContracts, subNodes, location));
             }
         });
         return contracts;
     }
+
 
     static parseImportedContracts(file_name: string, subNodes: Node): Contract[] {
         let imports: Import[] = SolidityAntlr.parseAllImports(file_name, subNodes);
@@ -59,11 +53,12 @@ class SolidityAntlr {
         }
         return imported_contracts;
     }
+        */
 
     static parseAllImports(file_name: string, ast: any): Import[] {
-        file_name = path.normalize(file_name)
+        file_name = path.normalize(file_name);
         let imports_all: Import[] = [];
-        let imports_work: Import[] = SolidityAntlr.parseImports(file_name, ast)
+        let imports_work: Import[] = SolidityAntlr.parseImports(file_name, ast);
 
         while (imports_work.length != 0) {
             let imp: any = imports_work.pop();
@@ -73,7 +68,7 @@ class SolidityAntlr {
             for (let i = imports_all.length - 1; i >= 0; i--) {
                 for (let j = _imports.length - 1; j >= 0; j--) {
                     if (imports_all[i].path === _imports[j].path || file_name === _imports[j].path) {
-                        _imports.splice(j, 1)
+                        _imports.splice(j, 1);
                     }
                 }
             }
@@ -84,7 +79,7 @@ class SolidityAntlr {
         return imports_all;
     }
 
-    // TODO: handle URLs 
+    // TODO: handle URLs
     static parseImports(file_name: string, ast: any): Import[] {
         let imports: Import[] = [];
         parser.visit(ast, {
@@ -98,22 +93,56 @@ class SolidityAntlr {
         return imports;
     }
 
-    static parsePragma(parent_node: Node): Pragma {
-        let pragma: any;
-        parser.visit(parent_node.branch, {
-            PragmaDirective(node: any) {
-                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
-                pragma = new Pragma(
-                    location,
-                    node.name,
-                    node.value
-                );
-            }
-        });
-        return pragma;
-
+    static hasImports(file_name: string, ast: any): boolean {
+        let imports: Import[] = this.parseImports(file_name, ast);
+        if (imports.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    static getPragmaVersion(ast: any): string {
+        let pragmas = SolidityAntlr.parsePragma(ast);
+        let default_version_v05: string = "0.5.2";
+        let default_version_v04: string = "0.4.25";
+
+        for (const pragma of pragmas) {
+            if (pragma.name.match(/solidity/)) {
+                let extracted_version: string = pragma.value.replace(/\^/, "");
+                if (extracted_version.match(/^(\d+\.\d+\.\d+)$/)) {
+                    if (PragmaUtils.isSupportedVersion(extracted_version)) {
+                        logger.debug(`Setting Solidity version ${extracted_version} `);
+                        return extracted_version;
+                    } else if (!PragmaUtils.isVersionFixed(pragma.value)) {
+                        logger.debug(`Solidity version ${extracted_version} not supported, trying to switch to another version`);
+                        if (PragmaUtils.isVersion04(extracted_version)) {
+                            logger.debug(`Setting Solidity version ${default_version_v04} `);
+                            return default_version_v04;
+                        } else if (PragmaUtils.isVersion05(extracted_version)) {
+                            logger.debug(`Setting Solidity version ${default_version_v05} `);
+                            return default_version_v05;
+                        }
+                    }
+                }
+            }
+        }
+        logger.error(`Could not find a supported solc version. Setting version ${default_version_v04} `);
+        return default_version_v04;
+    }
+
+    static parsePragma(ast: any): Pragma[] {
+        let pragmas: Pragma[] = [];
+        parser.visit(ast, {
+            PragmaDirective(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                pragmas.push(new Pragma(location, node.name, node.value));
+            }
+        });
+        return pragmas;
+    }
+
+    /*
     static parseInheritance(parent_node: any): string[] {
         let baseContracts: string[] = [];
         parser.visit(parent_node, {
@@ -130,12 +159,7 @@ class SolidityAntlr {
         parser.visit(parent_node.branch, {
             Identifier(node: any) {
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
-                identifiers.push(
-                    new Identifier(
-                        node.name,
-                        location
-                    )
-                );
+                identifiers.push(new Identifier(node.name, location));
             }
         });
         return identifiers;
@@ -146,14 +170,7 @@ class SolidityAntlr {
         parser.visit(parent_node.branch, {
             BinaryOperation(node: any) {
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
-                bop.push(
-                    new BinaryOperation(
-                        location,
-                        node.operator,
-                        new Node(node.left),
-                        new Node(node.right)
-                    )
-                )
+                bop.push(new BinaryOperation(location, node.operator, new Node(node.left), new Node(node.right)));
             }
         });
         return bop;
@@ -165,13 +182,7 @@ class SolidityAntlr {
         parser.visit(parent_node.branch, {
             MemberAccess(node: any) {
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
-                memberAccess.push(
-                    new MemberAccess(
-                        location,
-                        node.memberName,
-                        new Node(node.expression)
-                    )
-                )
+                memberAccess.push(new MemberAccess(location, node.memberName, new Node(node.expression)));
             }
         });
         return memberAccess;
@@ -183,30 +194,27 @@ class SolidityAntlr {
         parser.visit(parent_node.branch, {
             ThrowStatement(node: any) {
                 const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
-                _throw.push(
-                    new Throw(location)
-                )
+                _throw.push(new Throw(location));
             }
         });
         return _throw;
     }
+    */
 
     static parseLocation(loc: any, range: any): Location {
         const r_start: number = range[0];
         const r_end: number = range[1];
         let src_2: number = r_end - r_start + 1;
-        let src = `${r_start}:${src_2}:0`
+        let src = `${r_start}:${src_2}:0`;
 
-        return new Location(
-            loc.start.line,
-            loc.end.line,
-            loc.start.column,
-            loc.end.column,
-            src
-        );
+        // ids are not available in the antlr AST
+        const id = -1;
+
+        return new Location(id, "", src, loc.start.line, loc.end.line, loc.start.column, loc.end.column);
     }
 
-    // TODO: Need to parse nested expressions 
+    /*
+    // TODO: Need to parse nested expressions
     static parseFunctionCalls(parent_node: Node): FunctionCall[] {
         let function_calls: FunctionCall[] = [];
 
@@ -221,56 +229,56 @@ class SolidityAntlr {
                 if (identifier.length !== 0) {
                     let f_name: string = identifier[0].name;
                     if (member_access.length !== 0) {
-                        f_name = `${f_name}.${member_access[0].name}`
+                        f_name = `${f_name}.${member_access[0].name}`;
                     }
-                    function_calls.push(
-                        new FunctionCall(
-                            location,
-                            f_name,
-                            expression,
-                            args,
-                            "TODO"
-                        )
-                    );
+                    function_calls.push(new FunctionCall(location, f_name, expression, args, "TODO"));
                 }
-
             }
         });
 
         return function_calls;
-
     }
+    */
 
-    static parseCFunction(parent_node: Node): CFunction[] {
-
+    static parseFunction(parent_node: Node): CFunction[] {
         let functions: CFunction[] = [];
         parser.visit(parent_node.branch, {
             FunctionDefinition(node: any) {
                 let name: string = node.name;
-                const parameters: any = node.parameters;
-                const block: Node = new Node(node.body);
+                const function_parameters: Variable[] = [];
                 const visibility: string = node.visibility;
                 const modifiers: any = node.modifiers;
+                const variables: Variable[] = [];
                 const isConstructor: boolean = node.isConstructor;
-                let stateMutability: string = node.stateMutability
-                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+                let stateMutability: string = node.stateMutability;
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
 
-                // rename constructor consistenly 
-                if (isConstructor) { name = "constructor"; }
+                // those params do not exist in the antlr AST, stubbing them
+                const scope: number = -1;
+                const isImplemented: boolean = true;
 
-                // stateMutability is null if it is not set specifically 
-                if (stateMutability === null) { stateMutability = "nonpayable" }
+                // rename constructor consistenly
+                if (isConstructor) {
+                    name = "constructor";
+                }
+
+                // stateMutability is null if it is not set specifically
+                if (stateMutability === null) {
+                    stateMutability = "nonpayable";
+                }
 
                 functions.push(
                     new CFunction(
+                        location,
+                        scope,
                         name,
-                        parameters,
-                        block,
-                        visibility,
-                        modifiers,
                         isConstructor,
+                        visibility,
                         stateMutability,
-                        location
+                        isImplemented,
+                        variables,
+                        function_parameters,
+                        modifiers
                     )
                 );
             }
@@ -279,75 +287,68 @@ class SolidityAntlr {
         return functions;
     }
 
+    static parseParameter(parent_node: Node): Parameter[] {
+        let parameters: Parameter[] = [];
+        parser.visit(parent_node.branch, {
+            Parameter(node: any) {
+                const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                if (node.typeName !== undefined) {
+                    const type: Type = SolidityAntlr.parseType(node.typeName);
+
+                    parameters.push(new Parameter(location, node.name, type, node.isStateVar, node.storageLocation));
+                }
+            }
+        });
+        return parameters;
+    }
+
     static parseType(node: any) {
         let type: any;
-        const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
+        const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
 
-        if (AstUtility.matchString(node.type, "ElementaryTypeName")) {
-            return new ElementaryType(
-                location,
-                node.name
-            )
-        } else if (AstUtility.matchString(node.type, "ArrayTypeName")) {
-            let length: string = "null"
+        if (NodeUtility.matchString(node.type, "ElementaryTypeName")) {
+            return new ElementaryType(location, node.name);
+        } else if (NodeUtility.matchString(node.type, "ArrayTypeName")) {
+            let length: string = "null";
 
-            if (AstUtility.hasProperty(node.length, "number")) {
+            if (NodeUtility.hasProperty(node.length, "number")) {
                 length = node.length.number;
             }
 
-            if (AstUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
+            if (NodeUtility.matchString(node.baseTypeName.type, "ElementaryTypeName")) {
+                return new ArrayType(location, new ElementaryType(location, node.baseTypeName.name), length);
+            } else if (NodeUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
                 return new ArrayType(
                     location,
-                    new ElementaryType(
-                        location,
-                        node.baseTypeName.name,
-                    ),
+                    new UserDefinedType(location, node.baseTypeName.namePath, node.baseTypeName.referencedDeclaration),
                     length
-                )
-            } else if (AstUtility.matchString(node.baseTypeName.type, "UserDefinedTypeName")) {
-                return new ArrayType(
-                    location,
-                    new UserDefinedType(
-                        location,
-                        node.baseTypeName.namePath,
-                    ),
-                    length
-                )
+                );
             } else {
-                Logger.error("Array type not recognised at")
+                Logger.error("Array type not recognised at");
             }
-
-        } else if (AstUtility.matchString(node.type, "UserDefinedTypeName")) {
-            return new UserDefinedType(
-                location,
-                node.namePath
-            )
+        } else if (NodeUtility.matchString(node.type, "UserDefinedTypeName")) {
+            return new UserDefinedType(location, node.namePath, node.baseTypeName.referencedDeclaration);
         }
         return type;
     }
 
     static parseVariables(parent_node: Node): Variable[] {
-
         let var_declarations: any[] = [];
         parser.visit(parent_node.branch, {
             VariableDeclarationStatement(node: any) {
-                var_declarations.push(
-                    {
-                        "variables": node.variables,
-                        "initialValue": node.initialValue
-                    }
-                );
+                var_declarations.push({
+                    variables: node.variables,
+                    initialValue: node.initialValue
+                });
             }
         });
 
         parser.visit(parent_node.branch, {
             StateVariableDeclaration(node: any) {
-                var_declarations.push(
-                    {
-                        "variables": node.variables,
-                        "initialValue": node.initialValue
-                    }
-                );
+                var_declarations.push({
+                    variables: node.variables,
+                    initialValue: node.initialValue
+                });
             }
         });
 
@@ -355,41 +356,39 @@ class SolidityAntlr {
         for (const var_declaration of var_declarations) {
             parser.visit(var_declaration.variables, {
                 VariableDeclaration(node: any) {
-                    const location: Location = SolidityAntlr.parseLocation(node.loc, node.range)
-                    const type: Type = SolidityAntlr.parseType(node.typeName)
+                    const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
+                    const type: Type = SolidityAntlr.parseType(node.typeName);
 
                     variables.push(
                         new Variable(
                             location,
+                            -1,
                             node.name,
                             type,
-                            node.expression,
-                            var_declaration.initialValue,
                             node.visibility,
+                            node.storageLocation,
                             node.isStateVar,
-                            node.isDeclaredConst,
-                            node.storageLocation
+                            node.isDeclaredConst
                         )
                     );
                 }
-            })
+            });
         }
 
         return variables;
     }
 
-    static generateAST(file_name: string): Node {
+    static generateAST(file_name: string): any {
         const file_content = FileUtils.getFileContent(file_name);
         let ast;
         try {
-            ast = parser.parse(file_content, { loc: true, range: true });
+            ast = parser.parse(file_content, { loc: true, range: true, tolerant: true });
         } catch (e) {
             Logger.error("Exception during AST parsing for " + file_name);
             Logger.error(e);
         }
         return ast;
     }
-
 }
 
 export default SolidityAntlr;

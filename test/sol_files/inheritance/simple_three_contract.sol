@@ -1,4 +1,4 @@
-pragma solidity ^0.4.5;
+pragma solidity ^0.4.15;
 
 contract D {
   uint public u;

@@ -1,8 +1,7 @@
-
-// contains all AST sub nodes 
+// contains all AST sub nodes
 
 class Node {
-    branch: any
+    branch: any;
     constructor(branch: any) {
         this.branch = branch;
     }

@@ -1,20 +1,35 @@
 const parser = require("solidity-parser-antlr");
 
 import { IssuePointer } from "../maru/issue";
-import { Plugin } from '../maru/plugin';
+import { Plugin } from "../maru/plugin";
 import SolFile from "../maru/sol_file";
 import PluginConfig from "../maru/plugin_config";
+import SolidityAntlr from "../parser/solidity_antlr";
+import CFunction from "../core/declarations/function";
+import NodeUtility from "../utils/node";
+import Node from "../misc/node";
+import Description from "../maru/description";
+import DescriptionUtils from "../utils/description";
 
 let DefaultVisibilityFunction: Plugin;
 
-DefaultVisibilityFunction = function (sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
-  const issuePointers: IssuePointer[] = [];
-  for (const f of sol_file.getContractFunctions()) {
-    if (f.visibility.match(/default/)) {
-      issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.descriptionShort[0], f.location));
+/*
+ * The module relies on the deprecated Antlr AST as the solc AST makes no distinction between default and explicitly defined visibility
+ */
+
+DefaultVisibilityFunction = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
+    const issuePointers: IssuePointer[] = [];
+
+    const functions: CFunction[] = SolidityAntlr.parseFunction(new Node(sol_file.antlrAST));
+
+    for (const f of functions) {
+        if (NodeUtility.matchString(f.visibility, "default")) {
+            const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [f.name]);
+            issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, f.location));
+        }
     }
-  }
-  return issuePointers;
+
+    return issuePointers;
 };
 
 exports.DefaultVisibilityFunction = DefaultVisibilityFunction;
