@@ -245,9 +245,9 @@ class Source {
 
             if (member_access.length > 0) {
                 const next_next_node: any = this.getRelativeNode(node.id, 2);
-                const identifier: Identifier[] = this.parseIdentifiers(undefined, [next_next_node.id]);
-                identifier_name = identifier[0].name;
-                identifier_type = identifier[0].type;
+                const identifiers: Identifier[] = this.parseIdentifiers(undefined, [next_next_node.id]);
+                identifier_name = identifiers[0].name;
+                identifier_type = identifiers[0].type;
                 member_name = member_access[0].member_name;
                 member_type = member_access[0].type;
             } else {
@@ -310,7 +310,10 @@ class Source {
             filtered_nodes = this.getChildren(parent_id, NodeTypes.Identifier);
         } else if (selected_ids) {
             for (const selected_id of selected_ids) {
-                filtered_nodes.push(this.getNode(selected_id));
+                const node: any = this.getNode(selected_id);
+                if (NodeUtility.matchString(node.name, NodeTypes.Identifier)) {
+                    filtered_nodes.push(node);
+                }
             }
         }
 
@@ -339,7 +342,10 @@ class Source {
             filtered_nodes = this.getChildren(parent_id, NodeTypes.MemberAccess);
         } else if (selected_ids) {
             for (const selected_id of selected_ids) {
-                filtered_nodes.push(this.getNode(selected_id));
+                const node: any = this.getNode(selected_id);
+                if (NodeUtility.matchString(node.name, NodeTypes.MemberAccess)) {
+                    filtered_nodes.push(node);
+                }
             }
         }
 

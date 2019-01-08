@@ -127,7 +127,7 @@ class SolidityAntlr {
                 }
             }
         }
-        logger.error(`Could not find a supported solc version. Setting version ${default_version_v04} `);
+        logger.debug(`Could not find a supported solc version. Setting version ${default_version_v04} `);
         return default_version_v04;
     }
 
@@ -286,7 +286,7 @@ class SolidityAntlr {
 
         return functions;
     }
-
+    /*
     static parseParameter(parent_node: Node): Parameter[] {
         let parameters: Parameter[] = [];
         parser.visit(parent_node.branch, {
@@ -301,7 +301,8 @@ class SolidityAntlr {
         });
         return parameters;
     }
-
+    */
+    /*
     static parseType(node: any) {
         let type: any;
         const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
@@ -331,6 +332,7 @@ class SolidityAntlr {
         }
         return type;
     }
+*/
 
     static parseVariables(parent_node: Node): Variable[] {
         let var_declarations: any[] = [];
@@ -357,7 +359,7 @@ class SolidityAntlr {
             parser.visit(var_declaration.variables, {
                 VariableDeclaration(node: any) {
                     const location: Location = SolidityAntlr.parseLocation(node.loc, node.range);
-                    const type: Type = SolidityAntlr.parseType(node.typeName);
+                    const type: Type = new Type(location);
 
                     variables.push(
                         new Variable(

@@ -6,6 +6,7 @@ contract ParentFunctionCalls {
 }
 
 contract FunctionCalls is ParentFunctionCalls{
+
     function lol(){
         uint a = now;
         uint b = super.addOne(1);
@@ -13,6 +14,11 @@ contract FunctionCalls is ParentFunctionCalls{
         bytes32 d = blockhash(a);
         uint e = msg.value;
         address f = block.coinbase;
+        rofl();
 
     }
+    function rofl(){
+        uint gg = 1;
+    }
+
 }
