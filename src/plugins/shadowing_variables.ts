@@ -11,6 +11,7 @@ import Node from "../misc/node";
 import NodeUtility from "../utils/node";
 import Description from "../maru/description";
 import DescriptionUtils from "../utils/description";
+import NodeTypes from "../maru/node_types";
 
 let ShadowingStateVariables: Plugin;
 
@@ -19,18 +20,20 @@ ShadowingStateVariables = function(sol_file: SolFile, plugin_config: PluginConfi
 
     let vars: { var: Variable; contract_name: string }[] = [];
 
-    for (const c of sol_file.contracts) {
-        for (const v of c.variables) {
-            if (v.isStateVar === true) {
+    for (const source of sol_file.sources) {
+        const contracts: Contract[] = source.parseContracts();
+        for (const c of contracts) {
+            for (const v of source.parseVariables(c.location.id)) {
                 vars.push({ var: v, contract_name: c.name });
             }
-        }
-        if (c.inheritedContracts.length > 0) {
-            for (const inherited_contract_type of c.inheritedContracts) {
-                const inherited_contract: Contract[] = ContractUtils.getBaseContract(inherited_contract_type.name, sol_file.getContracts());
-                if (inherited_contract.length === 0) {
-                    for (const v of inherited_contract[0].variables) {
-                        if (v.isStateVar === true) {
+            if (c.inheritedContracts.length > 0) {
+                for (const inherited_contract_type of c.inheritedContracts) {
+                    const inherited_contract: Contract[] = ContractUtils.getBaseContract(
+                        inherited_contract_type.name,
+                        sol_file.getContracts()
+                    );
+                    if (inherited_contract.length === 0) {
+                        for (const v of source.parseVariables(inherited_contract[0].location.id)) {
                             vars.push({ var: v, contract_name: inherited_contract[0].name });
                         }
                     }
@@ -41,15 +44,29 @@ ShadowingStateVariables = function(sol_file: SolFile, plugin_config: PluginConfi
 
     for (let x = 0; x < vars.length; x++) {
         for (let y = 0; y < vars.length; y++) {
-            if (x < y) {
+            NodeUtility.printNode(vars[x]["var"].name + "-" + vars[x]["var"].location.id);
+            NodeUtility.printNode(vars[y]["var"].name + "-" + vars[y]["var"].location.id);
+            if (vars[x]["var"].isStateVar === true && vars[y]["var"].isStateVar === true) {
+                if (x < y) {
+                    if (vars[x]["var"].name === vars[y]["var"].name) {
+                        const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
+                            vars[x]["var"].name,
+                            vars[x]["contract_name"],
+                            vars[y]["var"].name,
+                            vars[y]["contract_name"]
+                        ]);
+                        issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, vars[x]["var"].location));
+                    }
+                }
+            } else if (vars[x]["var"].isStateVar === true && vars[y]["var"].isStateVar === false) {
                 if (vars[x]["var"].name === vars[y]["var"].name) {
-                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
+                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[1], [
+                        vars[y]["var"].name,
+                        vars[y]["contract_name"],
                         vars[x]["var"].name,
-                        vars[x]["contract_name"],
-                        vars[x]["var"].name,
-                        vars[y]["contract_name"]
+                        vars[x]["contract_name"]
                     ]);
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, vars[x]["var"].location));
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, vars[y]["var"].location));
                 }
             }
         }

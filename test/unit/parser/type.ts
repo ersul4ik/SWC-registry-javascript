@@ -16,7 +16,7 @@ import UserDefinedType from "../../../src/core/types/user_defined_type";
 describe("Types", () => {
     const file_name = "./test/sol_files/type/storage.sol";
     const sol_file = new SolFile(file_name);
-    const variables_f: Variable[] = sol_file.contracts[0].variables;
+    const variables_f: Variable[] = sol_file.contracts[0].state_variables;
 
     it(`Test case - get correct number of variables in the contract in ${file_name}`, async () => {
         expect(variables_f.length).toEqual(11);

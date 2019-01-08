@@ -13,7 +13,7 @@ class Contract extends Declaration {
     inheritedContracts: UserDefinedType[];
     isImplemented: boolean;
     functions: CFunction[];
-    variables: Variable[];
+    state_variables: Variable[];
 
     constructor(
         location: Location,
@@ -33,7 +33,7 @@ class Contract extends Declaration {
         this.inheritedContracts = inheritedContracts;
         this.isImplemented = isImplemented;
         this.functions = functions;
-        this.variables = variables;
+        this.state_variables = variables;
     }
 
     hasConstructor(): boolean {

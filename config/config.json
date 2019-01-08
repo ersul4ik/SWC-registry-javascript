@@ -172,8 +172,12 @@
             "swcID": "SWC-119",
             "description": [
                 {
-                    "head": "State variable {0} shadows another state variable.",
+                    "head": "State variable shadows another state variable.",
                     "tail": "The state variable {0} in contract {1} shadows another state variable with the same name {2} in contract {3}."
+                },
+                {
+                    "head": "Local variable shadows a state variable.",
+                    "tail": "The local variable {0} in contract {1} shadows the state variable with the same name {2} in contract {3}."
                 }
             ]
         },

@@ -13,5 +13,5 @@ npm install
 npm run build
 cd -
 
-echo "Insalling package"
+echo "Installing package"
 npm install ${DST_DIR} --no-save

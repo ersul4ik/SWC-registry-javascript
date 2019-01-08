@@ -95,10 +95,23 @@ class Source {
             const isImplemented: boolean = node.attributes.fullyImplemented;
 
             const functions: CFunction[] = this.parseFunction(node.id);
-            const variables: Variable[] = this.parseVariables(undefined, this.getScopedChildren(node.id, NodeTypes.VariableDeclaration));
+            const state_variables: Variable[] = this.parseVariables(
+                undefined,
+                this.getScopedChildren(node.id, NodeTypes.VariableDeclaration)
+            );
 
             contracts.push(
-                new Contract(location, scope, name, kind, isImplemented, linearizedBaseContracts, inheritedContracts, functions, variables)
+                new Contract(
+                    location,
+                    scope,
+                    name,
+                    kind,
+                    isImplemented,
+                    linearizedBaseContracts,
+                    inheritedContracts,
+                    functions,
+                    state_variables
+                )
             );
         }
 
