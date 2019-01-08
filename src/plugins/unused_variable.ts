@@ -19,8 +19,6 @@ UnusedVariable = function(sol_file: SolFile, plugin_config: PluginConfig): Issue
     let vars: Variable[] = [];
     let identifiers: Identifier[] = [];
 
-    // TODO: Check if state variables are referenced in imported contracts
-
     for (const source of sol_file.sources) {
         vars = vars.concat(source.parseVariables(source.source_unit[0].id));
         identifiers = identifiers.concat(source.parseIdentifiers(source.source_unit[0].id));

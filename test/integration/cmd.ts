@@ -11,7 +11,7 @@ const { version } = require("../../package.json");
 
 describe("CMD commands", () => {
     it("-v: should return maru version", () => {
-        const prc = spawn("./maru", ["-v"]);
+        const prc = spawn("maru", ["-v"]);
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
             const str = data.toString();
@@ -21,7 +21,7 @@ describe("CMD commands", () => {
     });
 
     it("-r: should return MythX formatted JSON output", () => {
-        const prc = spawn("./maru", ["-r", "./test/sol_files/imports/simple.sol", "-o", "json"]);
+        const prc = spawn("maru", ["-r", "./test/sol_files/imports/simple.sol", "-o", "json"]);
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
             const report: Report = JSON.parse(data.toString());
@@ -48,7 +48,7 @@ describe("CMD commands", () => {
     it("-r: running on an invalid Solidity file should return an error in the JSON output", () => {
         const error = "./test/sol_files/errors/error.sol";
 
-        const prc = spawn("./maru", ["-r", error, "-o", "json"]);
+        const prc = spawn("maru", ["-r", error, "-o", "json"]);
         prc.stdout.setEncoding("utf8");
         prc.stdout.on("data", (data: string) => {
             NodeUtility.printNode(data.toString());

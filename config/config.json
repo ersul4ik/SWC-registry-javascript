@@ -182,7 +182,7 @@
             ]
         },
         "UnusedVariable": {
-            "active": "false",
+            "active": "true",
             "swcID": "SWC-000",
             "description": [
                 {
