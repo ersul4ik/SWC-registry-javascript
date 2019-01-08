@@ -20,6 +20,7 @@ jobs:
                   key: node-modules-{{ checksum "package.json" }}
                   paths:
                       - node_modules
+            - run: sudo npm -g install .
             - run: npm run test -- --bail --ci
 
     edelweiss:
