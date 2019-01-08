@@ -73,11 +73,7 @@ if (options.help || options.length < 1) {
     const usage = commandLineUsage(sections);
     console.log(usage);
 } else if (options.version) {
-<<<<<<< HEAD
-  console.log(`Maru version v${pkg.version}`);
-=======
     console.log(`Maru version ${pkg.version}`);
->>>>>>> remix-libs
 } else if (options.run) {
     let config: { [plugins: string]: any } = {};
     config = Config;
