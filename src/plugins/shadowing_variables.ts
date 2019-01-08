@@ -44,8 +44,6 @@ ShadowingStateVariables = function(sol_file: SolFile, plugin_config: PluginConfi
 
     for (let x = 0; x < vars.length; x++) {
         for (let y = 0; y < vars.length; y++) {
-            NodeUtility.printNode(vars[x]["var"].name + "-" + vars[x]["var"].location.id);
-            NodeUtility.printNode(vars[y]["var"].name + "-" + vars[y]["var"].location.id);
             if (vars[x]["var"].isStateVar === true && vars[y]["var"].isStateVar === true) {
                 if (x < y) {
                     if (vars[x]["var"].name === vars[y]["var"].name) {
