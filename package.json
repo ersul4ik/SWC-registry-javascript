@@ -21,7 +21,7 @@
     "scripts": {
         "dev": "tsc -w",
         "clean": "rm -rf node_modules/ && rm -rf package-lock.json && rm -rf dist/*",
-        "build:prod": "npm run clean && npm install && npm run updateswc && npm run tsc && chmod +x dist/maru.js && cp package.json dist/",
+        "build:prod": "npm run clean && npm install && npm run install_supported_solc_versions && npm run updateswc && npm run tsc && chmod +x dist/maru.js && cp package.json dist/",
         "build:dev": "npm run clean && npm run install:solidity-parser-antlr && npm install && npm run updateswc && npm run tsc && chmod +x dist/maru.js && cp package.json dist/",
         "install:solidity-parser-antlr": "deps/solidity-parser-antlr.sh",
         "test": "./node_modules/.bin/nyc mocha  --timeout 1000000 'test/**/*.ts' -r ts-node/register || exit 1",
@@ -29,6 +29,7 @@
         "test:integration": "./node_modules/.bin/nyc mocha --timeout 1000000 test/integration/*.ts -r ts-node/register || exit 1",
         "lint": "tslint -c tslint.json  -p .",
         "updateswc": "curl https://raw.githubusercontent.com/SmartContractSecurity/SWC-registry/master/export/swc-definition.json > src/swc-definition.json",
+        "install_supported_solc_versions": "./node_modules/.bin/nyc ts-node ./src/setup/install_solc.ts",
         "tsc": "tsc"
     },
     "devDependencies": {
