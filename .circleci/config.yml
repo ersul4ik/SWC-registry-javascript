@@ -20,7 +20,7 @@ jobs:
                   key: node-modules-{{ checksum "package.json" }}
                   paths:
                       - node_modules
-            - run: npm -g install .
+            - run: sudo npm -g install .
             - run: npm run test -- --bail --ci
 
     release:
