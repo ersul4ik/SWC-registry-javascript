@@ -20,70 +20,69 @@ jobs:
                   key: node-modules-{{ checksum "package.json" }}
                   paths:
                       - node_modules
-            - run: sudo npm -g install .
             - run: npm run test -- --bail --ci
-  edelweiss:
-    docker:
-      - image: ubuntu:bionic
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - "de:c2:66:ff:2b:86:c7:d6:33:09:2d:52:e4:dc:d4:06"
-      - run:
-          name: "Clone Edelweiss"
-          command: |
-            apt update
-            apt-get install -y curl git build-essential python3-dev libssl-dev software-properties-common python3-venv
-            GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_de:c2:66:ff:2b:86:c7:d6:33:09:2d:52:e4:dc:d4:06' git clone --recurse-submodules git@github.com:Consensys/Edelweiss.git
-      
-      - run:
-          name: "Build maru"
-          command: |
-            curl -sL https://deb.nodesource.com/setup_8.x | bash -
-            apt-get install -y nodejs
-            npm run build:prod
-            npm i -g .
-      
-      - run:
-          name: "Setup and run Edelweiss"
-          command: |
-            cd Edelweiss/
-            python3 -m venv venv
-            source venv/bin/activate
 
-            pip install wheel
-            pip install -r requirements.txt
-            export LC_ALL=C.UTF-8
-            export LANG=C.UTF-8
-            export AWS_DEFAULT_REGION=us-east-1
-            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-            python3 edelweiss/cli.py -p maru -o html --output-dir ~/ --s3
-  release:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: npm publish
+    edelweiss:
+        docker:
+            - image: ubuntu:bionic
+        steps:
+            - checkout
+            - add_ssh_keys:
+                  fingerprints:
+                      - "de:c2:66:ff:2b:86:c7:d6:33:09:2d:52:e4:dc:d4:06"
+            - run:
+                  name: "Clone Edelweiss"
+                  command: |
+                      apt update
+                      apt-get install -y curl git build-essential python3-dev libssl-dev software-properties-common python3-venv
+                      GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_de:c2:66:ff:2b:86:c7:d6:33:09:2d:52:e4:dc:d4:06' git clone --recurse-submodules git@github.com:Consensys/Edelweiss.git
+
+            - run:
+                  name: "Build maru"
+                  command: |
+                      curl -sL https://deb.nodesource.com/setup_8.x | bash -
+                      apt-get install -y nodejs
+                      npm run build:prod
+                      npm i -g .
+
+            - run:
+                  name: "Setup and run Edelweiss"
+                  command: |
+                      cd Edelweiss/
+                      python3 -m venv venv
+                      source venv/bin/activate
+                      pip install wheel
+                      pip install -r requirements.txt
+                      export LC_ALL=C.UTF-8
+                      export LANG=C.UTF-8
+                      export AWS_DEFAULT_REGION=us-east-1
+                      export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                      export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                      python3 edelweiss/cli.py -p maru -o html --output-dir ~/ --s3
+    release:
+        <<: *defaults
+        steps:
+            - checkout
+            - attach_workspace:
+                  at: .
+            - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+            - run: npm publish
 
 workflows:
-  version: 2
-  build:
-    jobs:
-      - test:
-          filters:
-            tags:
-              only: /.*/
-      - release:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              # Match tags of from v0.1.2
-              only: /^v(0\.1\.[2-9]|0\.1\.\d{2,}|0\.[2-9]\.\d+|0\.\d{2,}\.\d+|[1-9]\d*\.\d+.\d+).*/
-          requires:
-            - test
-      - edelweiss
+    version: 2
+    build:
+        jobs:
+            - test:
+                  filters:
+                      tags:
+                          only: /.*/
+            - release:
+                  filters:
+                      branches:
+                          ignore: /.*/
+                      tags:
+                          # Match tags of from v0.1.2
+                          only: /^v(0\.1\.[2-9]|0\.1\.\d{2,}|0\.[2-9]\.\d+|0\.\d{2,}\.\d+|[1-9]\d*\.\d+.\d+).*/
+                  requires:
+                      - test
+            - edelweiss
