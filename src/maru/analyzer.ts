@@ -37,7 +37,7 @@ class Analyzer {
                                 config.plugins[configPluginName].description
                             );
 
-                            Logger.info(`Executing Plugin: ${configPluginName}`);
+                            Logger.info(`Executing Plugin: ${configPluginName} on ${sol_file}`);
 
                             try {
                                 issuePointers = plugins[plugin][configPluginName](sol_file, pc);
@@ -45,7 +45,7 @@ class Analyzer {
                                     `Plugin ${configPluginName} discovered ${issuePointers.length} issue(s) in ${sol_file.file_name}`
                                 );
                             } catch (error) {
-                                Logger.debug(`Something went during plugin execution for: ${configPluginName}`);
+                                Logger.debug(`Something went wrong during plugin execution for: ${configPluginName}`);
                                 Logger.debug(error);
                             }
 
