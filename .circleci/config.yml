@@ -22,7 +22,6 @@ jobs:
                       - node_modules
             - run: sudo npm -g install .
             - run: npm run test -- --bail --ci
-
   edelweiss:
     docker:
       - image: ubuntu:bionic
@@ -61,6 +60,14 @@ jobs:
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             python3 edelweiss/cli.py -p maru -o html --output-dir ~/ --s3
+  release:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: npm publish
 
 workflows:
   version: 2
@@ -70,4 +77,13 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              # Match tags of from v0.1.2
+              only: /^v(0\.1\.[2-9]|0\.1\.\d{2,}|0\.[2-9]\.\d+|0\.\d{2,}\.\d+|[1-9]\d*\.\d+.\d+).*/
+          requires:
+            - test
       - edelweiss
