@@ -40,10 +40,10 @@ DeprecatedFunctions = function(sol_file: SolFile, plugin_config: PluginConfig): 
 
             if (NodeUtility.matchRegex(f_c.identifier_name, new RegExp("^suicide$"))) {
                 issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.description[2], f_c.location));
-            } else if (NodeUtility.matchRegex(f_c.member_name, new RegExp("callcode$"))) {
+            } else if (NodeUtility.matchRegex(f_c.member_name1, new RegExp("callcode$"))) {
                 issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.description[3], f_c.location));
             } else if (
-                NodeUtility.matchRegex(f_c.member_name, new RegExp("^blockhash$")) &&
+                NodeUtility.matchRegex(f_c.member_name1, new RegExp("^blockhash$")) &&
                 NodeUtility.matchRegex(f_c.identifier_name, new RegExp("^block$"))
             ) {
                 issuePointers.push(new IssuePointer(plugin_config.swcID, plugin_config.description[4], f_c.location));

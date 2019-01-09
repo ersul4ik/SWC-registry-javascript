@@ -27,17 +27,17 @@ UncheckedCallReturnValue = function(sol_file: SolFile, plugin_config: PluginConf
 
         for (const f_c of f_cs) {
             if (
-                NodeUtility.matchRegex(f_c.member_name, new RegExp("^call$")) ||
-                NodeUtility.matchRegex(f_c.member_name, new RegExp("^delegatecall$")) ||
-                NodeUtility.matchRegex(f_c.member_name, new RegExp("^send$")) ||
-                NodeUtility.matchRegex(f_c.member_name, new RegExp("^callcode$"))
+                NodeUtility.matchRegex(f_c.member_name1, new RegExp("^call$")) ||
+                NodeUtility.matchRegex(f_c.member_name1, new RegExp("^delegatecall$")) ||
+                NodeUtility.matchRegex(f_c.member_name1, new RegExp("^send$")) ||
+                NodeUtility.matchRegex(f_c.member_name1, new RegExp("^callcode$"))
             ) {
                 const parents: any[] = source.getParents(f_c.location.id);
 
                 if (NodeUtility.matchRegex(parents[0].name, new RegExp(NodeTypes.ExpressionStatement))) {
                     let function_name: string = "";
                     if (f_c.identifier_name) {
-                        function_name = `${f_c.identifier_name}.${f_c.member_name}`;
+                        function_name = `${f_c.identifier_name}.${f_c.member_name1}`;
                     } else {
                         function_name = `${f_c.identifier_name}`;
                     }

@@ -222,6 +222,10 @@ class Source {
         return modifiers;
     }
 
+    /*
+     * Todo: This parsing function is fairly hackish. Fix it.
+     */
+
     parseFunctionCalls(id?: number): FunctionCall[] {
         let function_calls: FunctionCall[] = [];
         let filtered_nodes: any[] = [];
@@ -234,29 +238,41 @@ class Source {
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
-            const next_node: any = this.getRelativeNode(node.id, 1);
-
-            const member_access: MemberAccess[] = this.parseMemberAccess(undefined, [next_node.id]);
 
             let identifier_name: string = "";
             let identifier_type: string = "";
-            let member_name: string = "";
-            let member_type: string = "";
+            let member_name1: string = "";
+            let member_type1: string = "";
+            let member_name2: string = "";
+            let member_type2: string = "";
+            let member_count: number = 0;
 
-            if (member_access.length > 0) {
-                const next_next_node: any = this.getRelativeNode(node.id, 2);
-                const identifiers: Identifier[] = this.parseIdentifiers(undefined, [next_next_node.id]);
-                identifier_name = identifiers[0].name;
-                identifier_type = identifiers[0].type;
-                member_name = member_access[0].member_name;
-                member_type = member_access[0].type;
-            } else {
-                const identifier: Identifier[] = this.parseIdentifiers(undefined, [next_node.id]);
-                identifier_name = identifier[0].name;
-                identifier_type = identifier[0].type;
+            for (let position = 1; position <= 3; position++) {
+                const next_node: any = this.getRelativeNode(node.id, position);
+                const identifiers: Identifier[] = this.parseIdentifiers(undefined, [next_node.id]);
+                const member_access: MemberAccess[] = this.parseMemberAccess(undefined, [next_node.id]);
+
+                if (identifiers.length > 0) {
+                    identifier_name = identifiers[0].name;
+                    identifier_type = identifiers[0].type;
+                    break;
+                } else if (member_access.length > 0) {
+                    if (member_count == 0) {
+                        member_name1 = member_access[0].member_name;
+                        member_type1 = member_access[0].type;
+                        member_count++;
+                    } else if (member_count == 1) {
+                        member_name2 = member_access[0].member_name;
+                        member_type2 = member_access[0].type;
+                    }
+                } else {
+                    break;
+                }
             }
 
-            function_calls.push(new FunctionCall(location, identifier_name, identifier_type, member_name, member_type));
+            function_calls.push(
+                new FunctionCall(location, identifier_name, identifier_type, member_name1, member_type1, member_name2, member_type2)
+            );
         }
 
         return function_calls;
@@ -637,7 +653,7 @@ class Source {
     }
 
     getRelativeNode(id: number, offset: number): any {
-        for (let x = 0; this.nodes.length; x++) {
+        for (let x = 0; this.nodes.length > x; x++) {
             if (id === this.nodes[x].id) {
                 return this.nodes[x + offset];
             }
@@ -645,8 +661,8 @@ class Source {
     }
 
     printNodes() {
-        for (const n of this.nodes) {
-            NodeUtility.printNode(n.id + " - " + n.name);
+        for (let x = 0; this.nodes.length > x; x++) {
+            NodeUtility.printNode(this.nodes[x].id + " - " + this.nodes[x].name);
         }
     }
 

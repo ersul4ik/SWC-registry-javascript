@@ -20,7 +20,7 @@ WeakRandomnessFunction = function(sol_file: SolFile, plugin_config: PluginConfig
 
         for (const f_c of f_cs) {
             if (
-                NodeUtility.matchRegex(f_c.member_name, new RegExp("^blockhash$")) &&
+                NodeUtility.matchRegex(f_c.member_name1, new RegExp("^blockhash$")) &&
                 NodeUtility.matchRegex(f_c.identifier_name, new RegExp("^block$"))
             ) {
                 const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
