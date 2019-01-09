@@ -16,39 +16,42 @@ let TypoGraphicalError: Plugin;
 
 TypoGraphicalError = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
-    /*
+
     for (const source of sol_file.sources) {
         const ass: Assignment[] = source.parseAssignment(source.source_unit[0].id);
 
         for (const a of ass) {
-            const unops: UnaryOperation[] = source.parseUnaryOperation(a.location.id);
-            if (unops.length > 0) {
-                const bops: BinaryOperation[] = source.parseBinaryOperation(a.location.id);
-                let found_op: BinaryOperation;
+            //const l_node: any = source.getRelativeNode(a.location.id, 1);
+            const r_node: any = source.getRelativeNode(a.location.id, 2);
 
-                for (const unop of unops) {
-                    if (bops.length > 0) {
-                        for (const bop of bops) {
-                            let found_bop_with_no_unop: boolean = true;
-                            const bop_children: UnaryOperation[] = source.parseUnaryOperation(bop.location.id);
-                            for (const bop_child of bop_children) {
-                                if (bop_child.location.id === unop.location.id) {
-                                }
-                            }
-                        }
-                    } else {
-                        found_op = unop;
-                        break;
-                    }
-                }
+            let unop: UnaryOperation[] = source.parseUnaryOperation(undefined, [r_node.id]);
 
+            if (unop.length > 0) {
                 const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
-                    a.operator + unops[0].operator
+                    a.operator + unop[0].operator
                 ]);
-                issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, found_op.location));
+                issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, unop[0].location));
+            }
+
+            let bop: BinaryOperation[] = source.parseBinaryOperation(undefined, [r_node.id]);
+
+            if (bop.length > 0) {
+                const l_node: any = source.getRelativeNode(bop[0].location.id, 1);
+                unop = source.parseUnaryOperation(undefined, [l_node.id]);
+
+                if (unop.length > 0) {
+                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
+                        a.operator + unop[0].operator
+                    ]);
+                    issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, unop[0].location));
+                }
             }
         }
-    }*/
+
+        /*
+  
+                */
+    }
 
     return issuePointers;
 };

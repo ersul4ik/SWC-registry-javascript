@@ -376,11 +376,20 @@ class Source {
         return memberAccess;
     }
 
-    parseBinaryOperation(id: number): BinaryOperation[] {
+    parseBinaryOperation(parent_id?: number, selected_ids?: number[]): BinaryOperation[] {
         let bo: BinaryOperation[] = [];
         let filtered_nodes: any[] = [];
 
-        filtered_nodes = this.getChildren(id, NodeTypes.BinaryOperation);
+        if (parent_id) {
+            filtered_nodes = this.getChildren(parent_id, NodeTypes.BinaryOperation);
+        } else if (selected_ids) {
+            for (const selected_id of selected_ids) {
+                const node: any = this.getNode(selected_id);
+                if (NodeUtility.matchString(node.name, NodeTypes.BinaryOperation)) {
+                    filtered_nodes.push(node);
+                }
+            }
+        }
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
@@ -394,11 +403,20 @@ class Source {
         return bo;
     }
 
-    parseUnaryOperation(id: number): UnaryOperation[] {
+    parseUnaryOperation(parent_id?: number, selected_ids?: number[]): UnaryOperation[] {
         let uo: UnaryOperation[] = [];
         let filtered_nodes: any[] = [];
 
-        filtered_nodes = this.getChildren(id, NodeTypes.UnaryOperation);
+        if (parent_id) {
+            filtered_nodes = this.getChildren(parent_id, NodeTypes.UnaryOperation);
+        } else if (selected_ids) {
+            for (const selected_id of selected_ids) {
+                const node: any = this.getNode(selected_id);
+                if (NodeUtility.matchString(node.name, NodeTypes.UnaryOperation)) {
+                    filtered_nodes.push(node);
+                }
+            }
+        }
 
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);

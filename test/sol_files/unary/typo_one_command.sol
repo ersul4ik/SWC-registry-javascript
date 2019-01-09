@@ -4,7 +4,7 @@ contract TypoOneCommand {
     int numberOne = 1;
 
     function alwaysOne() public {
-        numberOne = 1337 + + 2; 
+        numberOne =+ 1337 + + 2; 
         uint z = 1; alwaysTwo();
         uint r = 1;
         r += 1;

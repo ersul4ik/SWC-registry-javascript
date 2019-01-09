@@ -20,7 +20,5 @@ describe("Binary Operator", () => {
 
         expect(bops[0].operator).toEqual("+");
         expect(bops[0].isPure).toEqual(true);
-
-        sol_file.sources[0].printNodes();
     });
 });
