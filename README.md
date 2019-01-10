@@ -29,7 +29,14 @@ Run Maru with `--plugin` to run specific plugins (find the list [here](https://g
 maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol --plugin OutdatedCompilerVersion
 ```
 
-Define logging level for maru:
+Print solc or antlr AST:
+
+```
+maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol -a solc
+
+```
+
+Define logging level for Maru:
 
 ```
 DEBUG_LEVEL=info maru --run test/SWC-registry/test_cases/uninitialised_storage_pointer/crypto_roulette.sol
@@ -58,7 +65,3 @@ The preferred IDE for developing Maru is [Visual Studio Code](https://code.visua
 ```
 
 The project also uses fairly strict compiler rules, for more information see [tsconfig.json](./tsconfig.json).
-
-## Credits
-
-Maru uses the excellent 3rd party Solidity grammar in [solidity-antlr4](https://github.com/solidityj/solidity-antlr4) and AST abstraction in [solidity-parser-antlr](https://github.com/thec00n/solidity-parser-antlr) from @federicobond.

@@ -29,7 +29,7 @@ describe("CMD commands", () => {
             expect(report.sourceType).toEqual("solidity-file");
             expect(report.sourceFormat).toEqual("text");
             expect(report.sourceList.length).toEqual(2);
-            expect(report.issues.length).toEqual(5);
+            expect(report.issues.length).toEqual(4);
             // Fix me:
             // expect(report.meta).toEqual({});
 
@@ -40,7 +40,7 @@ describe("CMD commands", () => {
             expect(issue.swcTitle).toEqual("Floating Pragma");
             expect(issue.description.head.length).toBeGreaterThan(0);
             expect(issue.description.tail.length).toBeGreaterThan(0);
-            expect(issue.severity.length).toBeGreaterThan(0);
+            expect(issue.severity).toEqual("");
             expect(issue.extra).toEqual({});
         });
     });

@@ -14,7 +14,7 @@ class MythXIssue {
         this.description = description;
         this.locations.push(location);
         // Fix me
-        this.severity = "Low";
+        this.severity = "";
         this.extra = {};
     }
 }
