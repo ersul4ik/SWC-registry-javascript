@@ -9,14 +9,27 @@ class Reporter {
         let issues: IssueDetailed[] = [];
 
         for (const report of reports) {
-            issues = issues.concat(report.issues);
-        }
+            for (const issue of report.issues) {
+                let source_index: number = parseInt(issue.issuePointer.src.split(":")[2]);
 
-        for (const issue of issues) {
-            console.log("----------------------------------");
-            issue.print();
+                console.log("----------------------------------");
+                const { id } = issue.issuePointer;
+                console.log(`Filename: ${issue.file_name}`);
+                console.log(`Source: ${report.sourceList[source_index]}`);
+                console.log(`Title: ${issue.issuePointer.swc.getTitle()}`);
+                console.log(`SWC-Link: ${issue.swcURL}`);
+                console.log(`Description-Head: ${issue.issuePointer.description.head}`);
+                console.log(`Description-Tail: ${issue.issuePointer.description.tail}`);
+                console.log(
+                    `Location: ${issue.issuePointer.lineNumberStart}:${issue.issuePointer.columnStart}:${
+                        issue.issuePointer.lineNumberEnd
+                    }:${issue.issuePointer.columnEnd}`
+                );
+                console.log(`Code: \n${issue.code}`);
+            }
         }
     }
+
     static toJSON(reports: Report[]) {
         for (const report of reports) {
             const issues = report.issues.map(item => item.jsonValue());

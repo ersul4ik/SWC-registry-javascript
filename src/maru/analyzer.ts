@@ -22,6 +22,10 @@ class Analyzer {
             let issues: IssueDetailed[] = [];
             let sourceList: string[] = [];
 
+            for (const source of sol_file.sources) {
+                sourceList.push(source.file_name);
+            }
+
             for (const configPluginName in config.plugins) {
                 if (config.plugins[configPluginName].active === "true") {
                     let pluginFound = false;
@@ -54,8 +58,8 @@ class Analyzer {
                             if (issuePointers.length > 0) {
                                 for (const issuePointer of issuePointers) {
                                     const { lineNumberStart, lineNumberEnd } = issuePointer;
-                                    const code = FileUtils.getCodeAtLine(sol_file.file_name, lineNumberStart, lineNumberEnd);
-
+                                    const source_index: number = parseInt(issuePointer.src.split(":")[2]);
+                                    const code = FileUtils.getCodeAtLine(sourceList[source_index], lineNumberStart, lineNumberEnd);
                                     const issueDetailed = new IssueDetailed(sol_file.file_name, code, issuePointer);
 
                                     issues.push(issueDetailed);
@@ -68,10 +72,6 @@ class Analyzer {
                         Logger.debug(`Implementation missing for ${configPluginName}`);
                     }
                 }
-            }
-
-            for (const source of sol_file.sources) {
-                sourceList.push(source.file_name);
             }
 
             let meta = {

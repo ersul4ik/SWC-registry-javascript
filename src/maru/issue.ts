@@ -90,15 +90,6 @@ class IssuePointer {
         this.src = location.src;
     }
 
-    print() {
-        console.log(`SWC ID: ${this.id}`);
-        if (this.lineNumberStart !== this.lineNumberEnd) {
-            console.log(`linenumber: ${this.lineNumberStart} - ${this.lineNumberEnd}`);
-        } else {
-            console.log(`linenumber: ${this.lineNumberStart}`);
-        }
-    }
-
     jsonValue() {
         return {
             id: this.id,

@@ -11,6 +11,7 @@ import SolidityAntlr from "../parser/solidity_antlr";
 import Node from "../misc/node";
 import Description from "../maru/description";
 import DescriptionUtils from "../utils/description";
+import PragmaUtils from "../utils/pragma";
 
 let DefaultVisibilityStateVariable: Plugin;
 
@@ -25,6 +26,8 @@ DefaultVisibilityStateVariable = function(sol_file: SolFile, plugin_config: Plug
     for (const v of vars) {
         if (NodeUtility.matchString(v.visibility, "default") && v.isConstant === false) {
             const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [v.name]);
+
+            v.location.src = SolidityAntlr.fixSource(sol_file, v.location.src);
             issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
         }
     }

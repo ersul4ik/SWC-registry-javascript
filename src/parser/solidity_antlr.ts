@@ -23,6 +23,7 @@ import BinaryOperation from "../core/expressions/binary_operation";
 import Parameter from "../core/declarations/parameter";
 import logger from "../logger/logger";
 import PragmaUtils from "../utils/pragma";
+import SolFile from "../maru/sol_file";
 
 class SolidityAntlr {
     /*
@@ -205,7 +206,7 @@ class SolidityAntlr {
         const r_start: number = range[0];
         const r_end: number = range[1];
         let src_2: number = r_end - r_start + 1;
-        let src = `${r_start}:${src_2}:0`;
+        let src = `${r_start}:${src_2}`;
 
         // ids are not available in the antlr AST
         const id = -1;
@@ -333,6 +334,14 @@ class SolidityAntlr {
         return type;
     }
 */
+
+    static fixSource(sol_file: SolFile, src: string): string {
+        if (PragmaUtils.isVersion04(sol_file.selected_compiler_version)) {
+            return `${src}:0`;
+        } else {
+            return `${src}:${sol_file.sources.length - 1}`;
+        }
+    }
 
     static parseVariables(parent_node: Node): Variable[] {
         let var_declarations: any[] = [];
