@@ -10,7 +10,7 @@ import Analyzer from "./src/maru/analyzer";
 import Reporter from "./src/maru/reporter";
 import Repository from "./src/maru/repository";
 import NodeUtility from "./src/utils/node";
-import Report from "./src/maru/report";
+import { Report } from "./src/maru/report";
 import SolFile from "./src/maru/sol_file";
 
 const optionDefinitions = [

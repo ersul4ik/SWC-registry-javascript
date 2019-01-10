@@ -1,5 +1,5 @@
 import { IssueDetailed } from "./issue";
-import Report from "./report";
+import { Report, MythXReport } from "./report";
 import NodeUtility from "../utils/node";
 import { MythXIssue } from "./mythX";
 import logger from "../logger/logger";
@@ -31,6 +31,8 @@ class Reporter {
     }
 
     static toJSON(reports: Report[]) {
+        let reports_mythx: MythXReport[] = [];
+
         for (const report of reports) {
             const issues = report.issues.map(item => item.jsonValue());
             let filtered_issues: MythXIssue[] = [];
@@ -54,21 +56,10 @@ class Reporter {
                     filtered_issues.push(issues[x]);
                 }
             }
-
-            console.log(
-                JSON.stringify(
-                    {
-                        sourceType: report.sourceType,
-                        sourceFormat: report.sourceFormat,
-                        sourceList: report.sourceList,
-                        issues: filtered_issues,
-                        meta: report.meta
-                    },
-                    null,
-                    4
-                )
-            );
+            reports_mythx.push(new MythXReport(report.sourceType, report.sourceFormat, report.sourceList, filtered_issues, report.meta));
         }
+
+        console.log(JSON.stringify(reports_mythx, null, 4));
     }
 }
 

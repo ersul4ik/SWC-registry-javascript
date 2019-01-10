@@ -12,7 +12,7 @@ import FileUtils from "../utils/file";
 import { IssueDetailed, IssuePointer } from "./issue";
 import Repository from "./repository";
 import PluginConfig from "./plugin_config";
-import Report from "./report";
+import { Report } from "./report";
 
 class Analyzer {
     static runAllPlugins(repo: Repository, config: { [plugins: string]: any }, sourceType: string, sourceFormat: string): Report[] {
