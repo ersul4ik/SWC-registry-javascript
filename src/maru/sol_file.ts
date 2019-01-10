@@ -62,6 +62,28 @@ class SolFile {
         return functions;
     }
 
+    getNode(id: number): any {
+        for (const source of this.sources) {
+            for (const n of source.nodes) {
+                if (id === n.id) {
+                    return n;
+                }
+            }
+        }
+    }
+
+    getSourceOfNode(id: number): Source[] {
+        let sources: Source[] = [];
+        for (const source of this.sources) {
+            for (const n of source.nodes) {
+                if (id === n.id) {
+                    sources.push(source);
+                }
+            }
+        }
+        return sources;
+    }
+
     getErrors(): string[] {
         let errors: string[] = [];
         if (NodeUtility.hasProperty(this.solc_compilation_output, "errors")) {

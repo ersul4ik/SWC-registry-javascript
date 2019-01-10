@@ -11,16 +11,20 @@ import Description from "../maru/description";
 import DescriptionUtils from "../utils/description";
 import Variable from "../core/declarations/variable";
 import Identifier from "../core/expressions/identifier";
+import Contract from "../core/declarations/contract";
+import Source from "../maru/source";
+import Node from "../misc/node";
+import CFunction from "../core/declarations/function";
 
 let UnusedVariable: Plugin;
 
 UnusedVariable = function(sol_file: SolFile, plugin_config: PluginConfig): IssuePointer[] {
     const issuePointers: IssuePointer[] = [];
-    let vars: Variable[] = [];
     let identifiers: Identifier[] = [];
 
     for (const source of sol_file.sources) {
-        vars = vars.concat(source.parseVariables(source.source_unit[0].id));
+        let vars: Variable[] = [];
+        vars = vars.concat(source.parseVariables());
         identifiers = identifiers.concat(source.parseIdentifiers(source.source_unit[0].id));
 
         for (const v of vars) {
@@ -31,11 +35,20 @@ UnusedVariable = function(sol_file: SolFile, plugin_config: PluginConfig): Issue
                 }
             }
             if (!found) {
+                let source_of_var: Source = sol_file.getSourceOfNode(v.scope)[0];
                 if (v.isStateVar) {
-                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [v.name]);
+                    const c: Contract = source_of_var.parseContracts(undefined, [v.scope])[0];
+                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
+                        v.name,
+                        c.name
+                    ]);
                     issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
                 } else {
-                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[1], [v.name]);
+                    const f: CFunction = source_of_var.parseFunction(undefined, [v.scope])[0];
+                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[1], [
+                        v.name,
+                        f.name
+                    ]);
                     issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
                 }
             }

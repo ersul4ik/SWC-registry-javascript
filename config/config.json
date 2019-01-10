@@ -50,7 +50,7 @@
             "description": [
                 {
                     "head": "The state variable visibility is not set.",
-                    "tail": "It is best best practice to set the visibility of state variables explicitly. The default visibility for {0} is internal. Other possible visibility values are public and private."
+                    "tail": "It is best practice to set the visibility of state variables explicitly. The default visibility for {0} is internal. Other possible visibility values are public and private."
                 }
             ]
         },
@@ -187,11 +187,11 @@
             "description": [
                 {
                     "head": "Unused state variable {0}",
-                    "tail": "The state variable {0} is created within the contract but does not seem to be used anywhere. "
+                    "tail": "The state variable {0} is created within the contract {1} but does not seem to be used anywhere. "
                 },
                 {
                     "head": "Unused local variable {0}",
-                    "tail": "The local variable {0} is created within the contract but does not seem to be used anywhere. "
+                    "tail": "The local variable {0} is created within the contract {1} but does not seem to be used anywhere. "
                 }
             ]
         }

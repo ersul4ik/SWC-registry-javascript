@@ -127,7 +127,7 @@ if (options.help || options.length < 1) {
         if (options.output === "json") {
             Reporter.toJSON(reports);
         } else {
-            Reporter.toText(reports[0].issues);
+            Reporter.toText(reports);
         }
     }
 } else {

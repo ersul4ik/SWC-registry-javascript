@@ -75,10 +75,22 @@ class Source {
         return source_unit;
     }
 
-    parseContracts(): Contract[] {
+    parseContracts(parent_id?: number, selected_ids?: number[]): Contract[] {
         let contracts: Contract[] = [];
+        let filtered_nodes: any[] = [];
 
-        let filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.ContractDefinition);
+        if (parent_id) {
+            filtered_nodes = this.getChildren(parent_id, NodeTypes.ContractDefinition);
+        } else if (selected_ids) {
+            for (const selected_id of selected_ids) {
+                const node: any = this.getNode(selected_id);
+                if (NodeUtility.matchString(node.name, NodeTypes.ContractDefinition)) {
+                    filtered_nodes.push(node);
+                }
+            }
+        } else {
+            filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.ContractDefinition);
+        }
 
         for (const node of filtered_nodes) {
             const location = this.parseLocation(node.id, node.src);
@@ -130,12 +142,19 @@ class Source {
         return udt.reverse();
     }
 
-    parseFunction(id?: number): CFunction[] {
+    parseFunction(id?: number, selected_ids?: number[]): CFunction[] {
         let functions: CFunction[] = [];
         let filtered_nodes: any[] = [];
 
         if (id) {
             filtered_nodes = this.getChildren(id, NodeTypes.FunctionDefinition);
+        } else if (selected_ids) {
+            for (const selected_id of selected_ids) {
+                const node: any = this.getNode(selected_id);
+                if (NodeUtility.matchString(node.name, NodeTypes.FunctionDefinition)) {
+                    filtered_nodes.push(node);
+                }
+            }
         } else {
             filtered_nodes = this.getChildren(this.source_unit[0].id, NodeTypes.FunctionDefinition);
         }
