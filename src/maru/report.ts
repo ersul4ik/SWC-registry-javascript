@@ -5,10 +5,10 @@ class Report {
     sourceType: string;
     sourceFormat: string;
     sourceList: string[];
-    meta: {};
+    meta: Meta;
     issues: IssueDetailed[];
 
-    constructor(sourceType: string, sourceFormat: string, sourceList: string[], issues: IssueDetailed[], meta: {}) {
+    constructor(sourceType: string, sourceFormat: string, sourceList: string[], issues: IssueDetailed[], meta: Meta) {
         this.sourceType = sourceType;
         this.sourceFormat = sourceFormat;
         this.sourceList = sourceList;
@@ -21,10 +21,10 @@ class MythXReport {
     sourceType: string;
     sourceFormat: string;
     sourceList: string[];
-    meta: {};
+    meta: Meta;
     issues: MythXIssue[];
 
-    constructor(sourceType: string, sourceFormat: string, sourceList: string[], issues: MythXIssue[], meta: {}) {
+    constructor(sourceType: string, sourceFormat: string, sourceList: string[], issues: MythXIssue[], meta: Meta) {
         this.sourceType = sourceType;
         this.sourceFormat = sourceFormat;
         this.sourceList = sourceList;
@@ -33,4 +33,16 @@ class MythXReport {
     }
 }
 
-export { MythXReport, Report };
+class Meta {
+    selected_compiler: string;
+    error: string[];
+    warning: string[];
+
+    constructor(selected_compiler: string, error: string[], warning: string[]) {
+        this.selected_compiler = selected_compiler;
+        this.error = error;
+        this.warning = warning;
+    }
+}
+
+export { MythXReport, Report, Meta };

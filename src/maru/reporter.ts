@@ -1,5 +1,5 @@
 import { IssueDetailed } from "./issue";
-import { Report, MythXReport } from "./report";
+import { Report, MythXReport, Meta } from "./report";
 import NodeUtility from "../utils/node";
 import { MythXIssue } from "./mythX";
 import logger from "../logger/logger";
@@ -56,6 +56,7 @@ class Reporter {
                     filtered_issues.push(issues[x]);
                 }
             }
+
             reports_mythx.push(new MythXReport(report.sourceType, report.sourceFormat, report.sourceList, filtered_issues, report.meta));
         }
 
