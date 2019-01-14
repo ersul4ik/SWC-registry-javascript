@@ -112,8 +112,9 @@ if (options.help || options.length < 1) {
             output = repo.sol_files[0].antlrAST;
         }
 
-        if (Object.keys(output).length === 0) {
-            console.log("Provide a valid AST option");
+        if (repo.sol_files[0].errors.length > 0) {
+            console.log(`Compilation error occurred, check ${repo.sol_files[0].file_name}`);
+            console.log(repo.sol_files[0].errors);
         } else {
             const response = JSON.stringify(output, null, 4);
             console.log(response);

@@ -19,7 +19,6 @@ describe("Run Maru against all files in the SWC-registry", () => {
     for (const file_name of file_names) {
         it(`Test Cases: should return MythX formatted JSON output and no errors for ${file_name}`, () => {
             const sol_file: SolFile = new SolFile(file_name);
-            NodeUtility.printNode(sol_file.sources[0].file_name);
             const prc = spawnSync("./maru", ["-r", file_name, "-o", "json"]);
             let reports: Report[] = JSON.parse(prc.stdout.toString());
 
