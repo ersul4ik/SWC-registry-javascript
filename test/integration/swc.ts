@@ -13,7 +13,7 @@ const expect = require("expect");
 const { version } = require("../../package.json");
 
 describe("Run Maru against all files in the SWC-registry", () => {
-    const directory: string = "./test/SWC-registry/test_cases/";
+    const directory: string = "../SWC-registry/test_cases/";
     const pattern: string = ".sol";
     const file_names = FileUtils.searchRecursive(directory, pattern);
     for (const file_name of file_names) {

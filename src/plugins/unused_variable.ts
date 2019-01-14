@@ -48,8 +48,6 @@ UnusedVariable = function(sol_file: SolFile, plugin_config: PluginConfig): Issue
                             ]);
                             issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
                         } else {
-                            NodeUtility.printNode(v);
-                            NodeUtility.printNode(f);
                             const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[1], [
                                 v.name,
                                 f[0].name

@@ -58,9 +58,5 @@ describe("Variables", () => {
 
     it(`Test case - get attributes for variable t in contract TestStorage  in ${file_name2}`, async () => {
         const functions: CFunction[] = sol_file2.contracts[0].functions;
-
-        for (const f of functions) {
-            NodeUtility.printNode(f.variables);
-        }
     });
 });
