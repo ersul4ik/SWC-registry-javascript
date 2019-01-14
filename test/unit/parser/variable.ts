@@ -52,11 +52,4 @@ describe("Variables", () => {
         expect(var_t.storageLocation).toEqual("default");
         expect(var_t.visibility).toEqual("internal");
     });
-
-    const file_name2 = "./test/sol_files/variable/FunctionTypes.sol";
-    const sol_file2 = new SolFile(file_name2);
-
-    it(`Test case - get attributes for variable t in contract TestStorage  in ${file_name2}`, async () => {
-        const functions: CFunction[] = sol_file2.contracts[0].functions;
-    });
 });
