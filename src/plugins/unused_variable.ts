@@ -36,20 +36,28 @@ UnusedVariable = function(sol_file: SolFile, plugin_config: PluginConfig): Issue
             }
             if (!found) {
                 let source_of_var: Source = sol_file.getSourceOfNode(v.scope)[0];
-                if (v.isStateVar) {
-                    const c: Contract = source_of_var.parseContracts(undefined, [v.scope])[0];
-                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
-                        v.name,
-                        c.name
-                    ]);
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
-                } else {
-                    const f: CFunction = source_of_var.parseFunction(undefined, [v.scope])[0];
-                    const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[1], [
-                        v.name,
-                        f.name
-                    ]);
-                    issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
+
+                for (const n of source_of_var.getParents(v.location.id)) {
+                    const c: Contract[] = source_of_var.parseContracts(undefined, [n.id]);
+                    const f: CFunction[] = source_of_var.parseFunction(undefined, [n.id]);
+                    if (c.length > 0 || f.length > 0) {
+                        if (v.isStateVar) {
+                            const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[0], [
+                                v.name,
+                                c[0].name
+                            ]);
+                            issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
+                        } else {
+                            NodeUtility.printNode(v);
+                            NodeUtility.printNode(f);
+                            const formatted_description: Description = DescriptionUtils.formatParameters(plugin_config.description[1], [
+                                v.name,
+                                f[0].name
+                            ]);
+                            issuePointers.push(new IssuePointer(plugin_config.swcID, formatted_description, v.location));
+                        }
+                    }
+                    break;
                 }
             }
         }

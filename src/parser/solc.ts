@@ -139,9 +139,6 @@ class Solc {
                 logger(`What's version is that ${version}? I can't compile this Beep Beep.`);
             }
 
-            NodeUtility.printNode("inside walkAST");
-            NodeUtility.printNode(file_name);
-            NodeUtility.printNode(compilation_output);
             sources.push(new Source(file_name, nodes));
             nodes = [];
         });

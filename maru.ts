@@ -128,6 +128,13 @@ if (options.help || options.length < 1) {
         if (options.output === "json") {
             Reporter.toJSON(reports);
         } else {
+            for (const sol_file of repo.sol_files) {
+                if (sol_file.errors.length > 0) {
+                    console.log("----------------------------------");
+                    console.log(`Errors in: ${sol_file.file_name}`);
+                    console.log(`Log: ${sol_file.errors}`);
+                }
+            }
             Reporter.toText(reports);
         }
     }
