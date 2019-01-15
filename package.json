@@ -4,6 +4,7 @@
     "description": "A simple, rule based static code analyzer for Solidity smart contracts. ",
     "bin": "./maru",
     "dependencies": {
+        "codecov": "^3.1.0",
         "command-line-args": "5.0.2",
         "command-line-usage": "5.0.5",
         "detect-installed": "^2.0.4",
@@ -30,6 +31,9 @@
         "lint": "tslint -c tslint.json  -p .",
         "updateswc": "curl https://raw.githubusercontent.com/SmartContractSecurity/SWC-registry/master/export/swc-definition.json > src/swc-definition.json",
         "pre_install_supported_solc_versions": "./node_modules/.bin/nyc ts-node ./src/setup/install_solc.ts",
+        "coverage_report_run": "npm run coverage_report_generate && npm run coverage_report_upload",
+        "coverage_report_generate": "./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov",
+        "coverage_report_upload": "./node_modules/.bin/codecov -t '7b49539a-5cf4-4ff1-8174-2feba59eac14'",
         "tsc": "tsc"
     },
     "devDependencies": {
