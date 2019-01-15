@@ -1,7 +1,6 @@
 .idea
 package-lock.json
 node_modules/
-coverage/
 .nyc_output/
 .vscode/
 bin/
@@ -14,5 +13,5 @@ dist/
 src/swc-definition.json
 .pyenv
 .python-version
-coverage/
+coverage/*
 *.tgz
