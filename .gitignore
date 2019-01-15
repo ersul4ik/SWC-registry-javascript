@@ -14,5 +14,5 @@ dist/
 src/swc-definition.json
 .pyenv
 .python-version
-coverage.lcov
+coverage/
 *.tgz
