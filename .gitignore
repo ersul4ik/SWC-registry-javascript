@@ -14,3 +14,4 @@ src/swc-definition.json
 .pyenv
 .python-version
 *.tgz
+coverage.json
