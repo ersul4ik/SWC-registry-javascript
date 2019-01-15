@@ -1,5 +1,5 @@
 import logger from "../../src/logger/logger";
-import { Report, MythXReport } from "../../src/maru/report";
+import { Report, MythXReport, Meta } from "../../src/maru/report";
 import { MythXIssue } from "../../src/maru/mythX";
 import NodeUtility from "../../src/utils/node";
 import SolFile from "../../src/maru/sol_file";
