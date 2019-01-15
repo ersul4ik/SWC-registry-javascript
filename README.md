@@ -10,6 +10,7 @@ A static code analyzer for Solidity smart contracts.
 Installation:
 
 -   Prerequisites: install recent version of `nodejs` 8.x or 10.x
+-   Clone Maru repo based on the [latest release](https://github.com/ConsenSys/maru/releases/latest)
 -   Create a production build: `npm run build:prod`
 -   Install Maru globally `npm -g install .`
 
