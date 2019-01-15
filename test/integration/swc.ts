@@ -10,7 +10,7 @@ describe("Run Maru against all files in the SWC-registry", () => {
     const directory: string = "./test/SWC-registry/test_cases/";
     const pattern: string = ".sol";
     const file_names = FileUtils.searchRecursive(directory, pattern);
-    for (const file_name of file_names[0]) {
+    for (const file_name of file_names) {
         it(`Test Cases: should return MythX formatted JSON output and no errors for ${file_name}`, () => {
             const prc = spawnSync("maru", ["-r", file_name, "-o", "json"]);
             let reports: Report[] = JSON.parse(prc.stdout.toString());
