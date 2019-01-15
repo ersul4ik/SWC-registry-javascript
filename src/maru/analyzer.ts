@@ -12,7 +12,7 @@ import FileUtils from "../utils/file";
 import { IssueDetailed, IssuePointer } from "./issue";
 import Repository from "./repository";
 import PluginConfig from "./plugin_config";
-import { Report, Meta } from "./report";
+import { MythXReport, Report, Meta } from "./report";
 
 class Analyzer {
     static runAllPlugins(repo: Repository, config: { [plugins: string]: any }, sourceType: string, sourceFormat: string): Report[] {
