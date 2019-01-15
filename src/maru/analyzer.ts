@@ -7,12 +7,11 @@ const plugins = require("require-all")({
 });
 
 import Logger from "../logger/logger";
-import NodeUtility from "../utils/node";
 import FileUtils from "../utils/file";
 import { IssueDetailed, IssuePointer } from "./issue";
-import Repository from "./repository";
 import PluginConfig from "./plugin_config";
-import { MythXReport, Report, Meta } from "./report";
+import { Meta, Report } from "./report";
+import Repository from "./repository";
 
 class Analyzer {
     static runAllPlugins(repo: Repository, config: { [plugins: string]: any }, sourceType: string, sourceFormat: string): Report[] {

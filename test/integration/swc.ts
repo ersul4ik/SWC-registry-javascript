@@ -1,13 +1,7 @@
-import logger from "../../src/logger/logger";
-import { Report, MythXReport, Meta } from "../../src/maru/report";
-import { MythXIssue } from "../../src/maru/mythX";
-import NodeUtility from "../../src/utils/node";
-import SolFile from "../../src/maru/sol_file";
-import Repository from "../../src/maru/repository";
-import FileUtils from "../../src/utils/file";
 import { spawnSync } from "child_process";
+import { Report } from "../../src/maru/report";
+import FileUtils from "../../src/utils/file";
 
-const { spawn } = require("child_process");
 const assert = require("assert");
 const expect = require("expect");
 const { version } = require("../../package.json");
