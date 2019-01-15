@@ -112,8 +112,9 @@ if (options.help || options.length < 1) {
             output = repo.sol_files[0].antlrAST;
         }
 
-        if (Object.keys(output).length === 0) {
-            console.log("Provide a valid AST option");
+        if (repo.sol_files[0].errors.length > 0) {
+            console.log(`Compilation error occurred, check ${repo.sol_files[0].file_name}`);
+            console.log(repo.sol_files[0].errors);
         } else {
             const response = JSON.stringify(output, null, 4);
             console.log(response);
@@ -127,6 +128,13 @@ if (options.help || options.length < 1) {
         if (options.output === "json") {
             Reporter.toJSON(reports);
         } else {
+            for (const sol_file of repo.sol_files) {
+                if (sol_file.errors.length > 0) {
+                    console.log("----------------------------------");
+                    console.log(`Errors in: ${sol_file.file_name}`);
+                    console.log(`Log: ${sol_file.errors}`);
+                }
+            }
             Reporter.toText(reports);
         }
     }

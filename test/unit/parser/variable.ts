@@ -7,18 +7,19 @@ import SolidityAntlr from "../../../src/parser/solidity_antlr";
 import NodeUtility from "../../../src/utils/node";
 import Solc from "../../../src/parser/solc";
 import NodeTypes from "../../../src/maru/node_types";
+import CFunction from "../../../src/core/declarations/function";
 
 describe("Variables", () => {
-    const file_name = "./test/sol_files/variable/statements.sol";
-    const sol_file = new SolFile(file_name);
-    const variables_c: Variable[] = sol_file.contracts[0].state_variables;
-    const variables_f: Variable[] = sol_file.contracts[0].functions[0].variables;
+    const file_name1 = "./test/sol_files/variable/statements.sol";
+    const sol_file1 = new SolFile(file_name1);
+    const variables_c: Variable[] = sol_file1.contracts[0].state_variables;
+    const variables_f: Variable[] = sol_file1.contracts[0].functions[0].variables;
 
-    it(`Test case - get correct number of variables for function lol() in ${file_name}`, async () => {
+    it(`Test case - get correct number of variables for function lol() in ${file_name1}`, async () => {
         expect(variables_f.length).toEqual(8);
     });
 
-    it(`Test case - get attributes for variable r in function lol() in ${file_name}`, async () => {
+    it(`Test case - get attributes for variable r in function lol() in ${file_name1}`, async () => {
         const var_r: Variable = variables_f[0];
         expect(var_r.isConstant).toEqual(false);
         expect(var_r.isStateVar).toEqual(false);
@@ -28,7 +29,7 @@ describe("Variables", () => {
         expect(var_r.visibility).toEqual("internal");
     });
 
-    it(`Test case - get attributes for variable gamesplayed in function lol() in ${file_name}`, async () => {
+    it(`Test case - get attributes for variable gamesplayed in function lol() in ${file_name1}`, async () => {
         const gamesPlayed: Variable = variables_f[2];
         expect(gamesPlayed.isConstant).toEqual(false);
         expect(gamesPlayed.isStateVar).toEqual(false);
@@ -38,11 +39,11 @@ describe("Variables", () => {
         expect(gamesPlayed.visibility).toEqual("internal");
     });
 
-    it(`Test case - get correct number of variables in contract TestStorage in ${file_name}`, async () => {
+    it(`Test case - get correct number of variables in contract TestStorage in ${file_name1}`, async () => {
         expect(variables_c.length).toEqual(2);
     });
 
-    it(`Test case - get attributes for variable t in contract TestStorage  in ${file_name}`, async () => {
+    it(`Test case - get attributes for variable t in contract TestStorage  in ${file_name1}`, async () => {
         const var_t: Variable = variables_c[0];
         expect(var_t.isConstant).toEqual(false);
         expect(var_t.isStateVar).toEqual(true);

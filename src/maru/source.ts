@@ -312,14 +312,14 @@ class Source {
         for (const node of filtered_nodes) {
             const location: Location = this.parseLocation(node.id, node.src);
             const scope: number = node.attributes.scope;
-            const function_name: string = node.attributes.name;
+            const name: string = node.attributes.name;
             const type: Type = this.parseType(node.id);
             const visibility: string = node.attributes.visibility;
             const storageLocation: string = node.attributes.storageLocation;
             const isStateVar: boolean = node.attributes.stateVariable;
             const isConstant: boolean = node.attributes.constant;
 
-            variables.push(new Variable(location, scope, function_name, type, visibility, storageLocation, isStateVar, isConstant));
+            variables.push(new Variable(location, scope, name, type, visibility, storageLocation, isStateVar, isConstant));
         }
 
         return variables;

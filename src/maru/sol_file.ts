@@ -31,6 +31,8 @@ class SolFile {
     contracts: Contract[];
     solc_compilation_output: any;
     selected_compiler_version: string;
+    errors: string[];
+    warnings: string[];
 
     constructor(file_name: string) {
         this.file_name = file_name;
@@ -39,6 +41,8 @@ class SolFile {
 
         this.selected_compiler_version = SolidityAntlr.getPragmaVersion(this.antlrAST);
         this.solc_compilation_output = Solc.compile(file_name, this.selected_compiler_version);
+        this.errors = this.getErrors();
+        this.warnings = this.getWarnings();
         this.sources = Solc.walkAST(this.solc_compilation_output, this.selected_compiler_version);
 
         this.contracts = this.getContracts();

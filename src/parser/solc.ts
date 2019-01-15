@@ -4,6 +4,7 @@ import FileUtils from "../utils/file";
 import logger from "../logger/logger";
 import Source from "../maru/source";
 import PragmaUtils from "../utils/pragma";
+import Node from "../misc/node";
 
 const path = require("path");
 
