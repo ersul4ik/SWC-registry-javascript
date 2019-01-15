@@ -22,7 +22,7 @@ describe("Run Maru against all files in the SWC-registry", () => {
             expect(reports[0].sourceList.length).toBeGreaterThanOrEqual(1);
             expect(reports[0].meta.selected_compiler.length).toBeGreaterThan(0);
             expect(reports[0].meta.error.length).toEqual(0);
-            expect(reports[0].meta.error.length).toBeGreaterThanOrEqual(0);
+            expect(reports[0].meta.warning.length).toBeGreaterThanOrEqual(0);
         });
     }
 });
