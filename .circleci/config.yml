@@ -17,6 +17,9 @@ jobs:
                     cd swcregistry
                     npm run test
                     codecov -t $CODECOV_TOKEN
+                    cat /home/circleci/project/swcregistry/coverage.json
+                    cat /home/circleci/project/swcregistry/coverage.lcov
+
     publish:
         docker:
             - image: circleci/node
