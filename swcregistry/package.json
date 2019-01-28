@@ -40,8 +40,8 @@
     },
     "scripts": {
         "build": "tsc && cp src/swc-definition.json lib/ && cp ../README.md ./",
-        "test": "mocha -r ts-node/register __tests__/*.test.ts",
-        "coverage": "mocha -R html-cov > coverage.html",
+        "test": "nyc mocha -r ts-node/register __tests__/*.test.ts",
+        "coverage": "nyc report --reporter=json > coverage.json",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "prepare": "npm run build",
         "prepublishOnly": "npm test",
