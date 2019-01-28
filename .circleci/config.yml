@@ -13,7 +13,10 @@ jobs:
                 command:  cd swcregistry && npm install
             - run:
                 name: Test run
-                command: cd swcregistry && npm test
+                command: |
+                    cd swcregistry
+                    npm test
+                    codecov
     publish:
         docker:
             - image: circleci/node
