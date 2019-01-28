@@ -34,6 +34,7 @@
         "es6-promise": "^4.2.5",
         "expect.js": "^0.3.1",
         "isomorphic-fetch": "^2.2.1",
+        "istanbul": "^0.4.5",
         "load-json-file": "^5.1.0",
         "ts-mockito": "^2.3.1",
         "xmlhttprequest-ts": "^1.0.1"

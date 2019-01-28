@@ -15,8 +15,8 @@ jobs:
                 name: Test run
                 command: |
                     cd swcregistry
-                    npm test
-                    codecov
+                    npm run test
+                    codecov -t $CODECOV_TOKEN
     publish:
         docker:
             - image: circleci/node
