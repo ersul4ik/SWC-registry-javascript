@@ -10,7 +10,7 @@ jobs:
                 command: 'sudo npm install -g npm@latest'
             - run:
                 name: Install dependencies
-                command:  cd swcregistry && npm install
+                command:  cd swcregistry && npm install && npm install codecov
             - run:
                 name: Test run
                 command: |
