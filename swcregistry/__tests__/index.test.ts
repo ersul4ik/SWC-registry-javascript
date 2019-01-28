@@ -1,4 +1,5 @@
 import { SWC } from '../src';
+var expect = require('expect');
 
 describe('Checking SWC class methods', () => {
     it('should get title of SWC', () => {
