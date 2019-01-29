@@ -43,12 +43,25 @@
     "scripts": {
         "build": "tsc && cp src/swc-definition.json lib/ && cp ../README.md ./",
         "test": "nyc mocha -r ts-node/register __tests__/*.test.ts",
-        "coverage": "nyc --reporter=lcov --reporter=text-lcov npm run test",
+        "coverage": "nyc --reporter html --reporter json npm test",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "prepare": "npm run build",
         "prepublishOnly": "npm test",
         "2npm": "npm version patch && npm publish",
         "version": "npm run format"
+    },
+    "nyc": {
+        "extension": [
+          ".ts",
+          ".tsx"
+        ],
+        "exclude": [
+          "**/*.d.ts"
+        ],
+        "reporter": [
+          "html"
+        ],
+        "all": true  
     },
     "author": "ersul4ik"
 }
