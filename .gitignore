@@ -15,3 +15,5 @@ src/swc-definition.json
 .python-version
 *.tgz
 coverage.jsoncoverage
+# Coverage directory used by tools like istanbul
+coverage
