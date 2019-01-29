@@ -16,6 +16,7 @@ jobs:
                 command: |
                     cd swcregistry
                     npm run test
+                    npm run coverage
                     codecov -t $CODECOV_TOKEN -f .nyc_output/*.json
 
     publish:
