@@ -1,6 +1,8 @@
 # SWC-registry-javascript
 [![CircleCI](https://circleci.com/gh/SmartContractSecurity/SWC-registry-javascript.svg?style=svg)](https://circleci.com/gh/SmartContractSecurity/SWC-registry-javascript)
 
+[![codecov.io](https://codecov.io/gh/ersul4ik/SWC-registry-javascript/branch/codecov-set/graphs/badge.svg)](https://codecov.io/github/ersul4ik/SWC-registry-python/)
+
 Javascript library for accessing SWC-registry content
 
 
