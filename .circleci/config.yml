@@ -32,9 +32,8 @@ jobs:
             - run:
                 name: Test success running
                 command: |
-                    cd swcregistry
+                    cd swcregistrdsdy
                     npm run test
-                    npm run coverage
 
     publish:
         docker:
