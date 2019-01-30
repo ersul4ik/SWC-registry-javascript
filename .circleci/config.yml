@@ -18,6 +18,23 @@ jobs:
                     npm run test
                     npm run coverage
                     codecov -t $CODECOV_TOKEN -f coverage/*.info
+    build:
+        docker:
+            - image: circleci/node
+        steps:
+            - checkout
+            - run:
+                name: update-npm
+                command: 'sudo npm install -g npm@latest'
+            - run:
+                name: Install dependencies
+                command:  cd swcregistry && npm install && sudo npm install -g codecov
+            - run:
+                name: Test success running
+                command: |
+                    cd swcregistry
+                    npm run test
+                    npm run coverage
 
     publish:
         docker:
